@@ -3463,10 +3463,10 @@ export let autoBattle = {
         for (let x = 0; x < selectedEffects.length; x++) {
             profile += selectedEffects[x];
             if (selectedEffectsCount[x] > 1)
-                profile += " x" + selectedEffectsCount[x] + "";
-            profile += ", ";
+                profile += "<i></i>x" + selectedEffectsCount[x] + "";
+            profile += "<i></i>，<i></i>";
         }
-        profile = profile.substring(0, profile.length - 2);
+        profile = profile.substring(0, profile.length - 1);
         return profile;
     },
 

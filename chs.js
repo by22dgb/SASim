@@ -132,6 +132,22 @@ var cnItems = {
     'Dustier': '风尘仆仆',
     'Next Limb': '下级一臂之力',
     'Unlock the Ring': '解锁灵戒',
+    'Healthy': '健康',
+    'Fast': '快速',
+    'Strong': '强壮',
+    'Defensive': '守势',
+    'Poisoning': '有毒',
+    'Bloodletting': '出血',
+    'Shocking': '震撼',
+    'Lifestealing': '吸血',
+    'Poison Resistant': '毒抗',
+    'Shock Resistant': '震抗',
+    'Bleed Resistant': '血抗',
+    'Enraging': '激怒',
+    'Explosive': '爆裂',
+    'Berserking': '狂暴',
+    'Slowing': '减速',
+    'Ethereal': '空灵',
     //#endregion 主界面
 
     //原样
