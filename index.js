@@ -90,12 +90,12 @@ const wrapup = () => {
 
     setABResults({ dustPs: base_dust });
 
-    elements.timeSpent.innerHTML = time + " ms";
+    elements.timeSpent.innerHTML = time + "毫秒";
 
     let timeSpent = AB.lootAvg.counter;
     elements.processedTime.innerHTML =
         convertTimeMs(timeSpent) +
-        (ABC.isRunning() ? "/" + ABC.seconds / 3600 + "h" : " (stopped)");
+        (ABC.isRunning() ? "/" + ABC.seconds / 3600 + "小时" : " (已停止)");
 
     let enemiesKilled = AB.sessionEnemiesKilled;
     elements.enemiesKilled.innerHTML = enemiesKilled;
@@ -108,10 +108,10 @@ const wrapup = () => {
     let clearingTime =
         ((toKill / AB.sessionEnemiesKilled) * AB.lootAvg.counter) / 1000;
     elements.clearingTime.innerHTML = convertTime(clearingTime);
-    elements.dustPs.innerHTML = toScientific(base_dust) + " D/s";
+    elements.dustPs.innerHTML = "每秒" + toScientific(base_dust) + "魔尘";
 
     let base_shards = AB.enemyLevel >= 51 ? base_dust / 1e9 : 0;
-    elements.shardsPs.innerHTML = toScientific(base_shards) + " S/s";
+    elements.shardsPs.innerHTML = "每秒" + toScientific(base_shards) + "晶块";
     
     if (base_dust > 0) {
       let unmultipliedDust = base_dust;
@@ -134,13 +134,13 @@ const wrapup = () => {
       if (AB.enemyLevel >= assumeDustierLevel) {
         unmultipliedDust *= 1.5;
       }
-      elements.baseDustPs.innerHTML = toScientific(unmultipliedDust) + " D/s";
-      elements.baseShardsPs.innerHTML = toScientific(AB.enemyLevel >= 51 ? unmultipliedDust / 1e9 : 0) + " S/s";
-      elements.baseInfo.innerHTML = "Assuming " + (AB.enemyLevel >= assumeTomeLevel ? "Tome (>=" : "no Tome (<") + assumeTomeLevel + ") and " + (AB.enemyLevel >= assumeDustierLevel ? "Dustier (>=" : "no Dustier (<") + assumeDustierLevel + ")";
+      elements.baseDustPs.innerHTML = "每秒" + toScientific(unmultipliedDust) + "魔尘";
+      elements.baseShardsPs.innerHTML = "每秒" + toScientific(AB.enemyLevel >= 51 ? unmultipliedDust / 1e9 : 0) + "晶块";
+      elements.baseInfo.innerHTML = "假设" + (AB.enemyLevel >= assumeTomeLevel ? "有尘之卷轴(>=" : "无尘之卷轴(<") + assumeTomeLevel + ")且" + (AB.enemyLevel >= assumeDustierLevel ? "有风尘仆仆(>=" : "无风尘仆仆(<") + assumeDustierLevel + ")";
     } else {
-      elements.baseDustPs.innerHTML = "0 D/s";
-      elements.baseShardsPs.innerHTML = "0 D/s";
-      elements.baseInfo.innerHTML = "great success.";
+      elements.baseDustPs.innerHTML = "每秒0魔尘";
+      elements.baseShardsPs.innerHTML = "每秒0魔尘";
+      elements.baseInfo.innerHTML = "大胜而归。";
     }
     
 
@@ -166,12 +166,12 @@ const wrapup = () => {
             : "-";
     let rb = ABC.resultBest;
     elements.bestFight.innerHTML = rb.win
-        ? "win in " + convertTimeMs(rb.time, 2)
-        : "loss in " +
+        ? "在" + convertTimeMs(rb.time, 2) + "后胜利"
+        : "在" +
           convertTimeMs(rb.time, 2) +
-          " with " +
+          "后失利，此时敌人生命值剩余" +
           Math.round(rb.enemy * 100 * 10) / 10 +
-          "% enemy health left";
+          "%";
 };
 
 const startSimulation = () => {
@@ -289,6 +289,7 @@ function makeOneTimersBtns() {
                 div.appendChild(modDiv);
                 for (const mod in AB.ringStats) {
                     let modifier = document.createElement("button");
+                    modifier.id = mod;
                     modifier.innerHTML = mod;
                     modifier.className = "uncheckedButton";
                     addChangeForButton(modifier);
@@ -329,7 +330,7 @@ function makeOneTimersBtns() {
 
     // Scruffy 21
     let scruffyButton = document.createElement("button");
-    scruffyButton.innerHTML = "S21";
+    scruffyButton.innerHTML = "污污21级技能";
     scruffyButton.id = "S21_Button";
     scruffyButton.classList.add("uncheckedButton", "button");
     mutationsDiv.appendChild(scruffyButton);
@@ -491,9 +492,9 @@ function setOneTimers() {
                 let children = elements.ringMods.children;
                 for (let i = 0; i < children.length; i++) {
                     if (children[i].classList.contains("checkedButton")) {
-                        AB.rings.mods.push(children[i].innerHTML);
+                        AB.rings.mods.push(children[i].id);
                     } else {
-                        let ind = AB.rings.mods.indexOf(children[i].innerHTML);
+                        let ind = AB.rings.mods.indexOf(children[i].id);
                         if (ind >= 0) {
                             AB.rings.mods.splice(ind, 1);
                         }
@@ -602,7 +603,7 @@ function setItemsInHtml(
                 let children = elements.ringMods.children;
                 for (let i = 0; i < children.length; i++) {
                     // check if mod is selected
-                    if (rings.mods.includes(children[i].innerHTML)) {
+                    if (rings.mods.includes(children[i].id)) {
                         children[i].classList.add("checkedButton");
                         children[i].classList.remove("uncheckedButton");
                     } else {
@@ -899,9 +900,9 @@ let findBestStorage = {
     onUpdate: function () {
         let item = findBestStorage.dustForItems[findBestStorage.currentIndex];
         findBestStorage.message(
-            "Testing " +
+            "测试<i></i>" +
                 item.displayName +
-                " " +
+                "<i></i>的效果 " +
                 Math.floor(ABC.getProgress() * 100) +
                 "%"
         );
@@ -1097,16 +1098,16 @@ function convertTime(time) {
     if (time === Infinity) return time;
     time = time.toFixed(1);
     if (time === NaN) {
-        return "error";
+        return "出错";
     } else if (time < 3600) {
-        return time + "s";
+        return time + "秒";
     } else if (time < 86400) {
-        return (time / 3600).toFixed(1) + "h";
+        return (time / 3600).toFixed(1) + "小时";
     } else {
         time = time / 86400;
         let days = Math.floor(time);
         let hours = (time - days) * 24;
-        return days + "d " + hours.toFixed(1) + "h";
+        return days + "天" + hours.toFixed(1) + "小时";
     }
 }
 
@@ -1115,18 +1116,18 @@ function convertTimeMs(time, accuracy = 1) {
     if (time == Infinity) return time;
     time = time.toFixed(accuracy);
     if (time === NaN) {
-        return "error";
+        return "出错";
     } else if (time < 1000) {
-        return time + "ms";
+        return time + "毫秒";
     } else if (time < 3600000) {
-        return (time / 1000).toFixed(accuracy) + "s";
+        return (time / 1000).toFixed(accuracy) + "秒";
     } else if (time < 86400000) {
-        return (time / 3600000).toFixed(accuracy) + "h";
+        return (time / 3600000).toFixed(accuracy) + "小时";
     } else {
         time = time / 86400000;
         let days = Math.floor(time);
         let hours = (time - days) * 24;
-        return days + "d " + hours.toFixed(1) + "h";
+        return days + "天" + hours.toFixed(1) + "小时";
     }
 }
 
@@ -1282,7 +1283,7 @@ function affordTime() {
         span.innerHTML = "You can never afford this upgrade.";
     } else if (time > 0) {
         time = convertTime(time);
-        span.innerHTML = "You can afford this upgrade in " + time + ".";
+        span.innerHTML = "" + time + "后您可以购买它。";
     } else if (time <= 0) {
         span.innerHTML = "You can afford this upgrade now.";
     } else if (isNaN(time)) {
@@ -1299,13 +1300,11 @@ function affordTime() {
 
     if (totalTime > 0 && totalTime !== Infinity) {
         totalTime = convertTime(totalTime);
-        let type = usesShards ? "shards" : "dust";
+        let type = usesShards ? "晶块" : "魔尘";
         span.innerHTML =
-            "You can afford this upgrade in " +
+            "初始为0" + type + "的情况下，" +
             totalTime +
-            " from 0 " +
-            type +
-            ".";
+            "后您可以购买它。";
     }
 }
 
@@ -1430,7 +1429,7 @@ function formatNames(names) {
     for (let i = 0; i < names.length; i++)
         result.push(names[i][0].toUpperCase() + names[i].substring(1));
 
-    return result.join(", ");
+    return result.join("<i></i>，<i></i>");
 }
 
 let ringModsResults = {
@@ -1493,7 +1492,7 @@ let ringModsResults = {
         div.appendChild(mdiv);
         div.appendChild(rdiv);
 
-        ldiv.innerHTML = "<span>Ring Mod(s)</span>";
+        ldiv.innerHTML = "<span>灵戒的词缀</span>";
         mdiv.innerHTML = "<span>Dust/s</span>";
         rdiv.innerHTML = "<span>Kill Time</span>";
 
@@ -1584,9 +1583,9 @@ let ringModsResults = {
 
     onUpdate: function () {
         ringModsResults.message(
-            "Testing " +
+            "测试<i></i>" +
                 formatNames(AB.rings.mods) +
-                " " +
+                "<i></i>的效果 " +
                 Math.floor(ABC.getProgress() * 100) +
                 "%"
         );
