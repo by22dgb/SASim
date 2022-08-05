@@ -3466,7 +3466,7 @@ export let autoBattle = {
                 profile += "<i></i>x" + selectedEffectsCount[x] + "";
             profile += "<i></i>，<i></i>";
         }
-        profile = profile.substring(0, profile.length - 1);
+        profile = profile.substring(0, profile.length - 8);
         return profile;
     },
 
