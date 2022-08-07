@@ -114,35 +114,46 @@ const wrapup = () => {
     elements.shardsPs.innerHTML = "每秒" + toScientific(base_shards) + "晶块";
     
     if (base_dust > 0) {
-      let unmultipliedDust = base_dust;
-      if (AB.scruffyLvl21) {
-        unmultipliedDust /= 5;
-      }
-      if (u2Mutations.tree.Dust.purchased) {
-        unmultipliedDust /= 1.25 + (u2Mutations.tree.Dust2.purchased ? 0.25 : 0);
-      }
-      if (AB.oneTimers.Dusty_Tome.owned) {
-        unmultipliedDust /= 1 + 0.05 * (AB.maxEnemyLevel - 1);
-      }
-      // <standarization stuff>
-      let assumeTomeLevel = 43;
-      let assumeDustierLevel = 85;
-      // </standarization stuff>
-      if (AB.enemyLevel >= assumeTomeLevel) {
-        unmultipliedDust *= 1 + 0.05 * AB.enemyLevel;
-      }
-      if (AB.enemyLevel >= assumeDustierLevel) {
-        unmultipliedDust *= 1.5;
-      }
-      elements.baseDustPs.innerHTML = "每秒" + toScientific(unmultipliedDust) + "魔尘";
-      elements.baseShardsPs.innerHTML = "每秒" + toScientific(AB.enemyLevel >= 51 ? unmultipliedDust / 1e9 : 0) + "晶块";
-      elements.baseInfo.innerHTML = "假设" + (AB.enemyLevel >= assumeTomeLevel ? "有尘之卷轴(>=" : "无尘之卷轴(<") + assumeTomeLevel + ")且" + (AB.enemyLevel >= assumeDustierLevel ? "有风尘仆仆(>=" : "无风尘仆仆(<") + assumeDustierLevel + ")";
+        let unmultipliedDust = base_dust;
+        if (AB.scruffyLvl21) {
+            unmultipliedDust /= 5;
+        }
+        if (u2Mutations.tree.Dust.purchased) {
+            unmultipliedDust /=
+                1.25 + (u2Mutations.tree.Dust2.purchased ? 0.25 : 0);
+        }
+        if (AB.oneTimers.Dusty_Tome.owned) {
+            unmultipliedDust /= 1 + 0.05 * (AB.maxEnemyLevel - 1);
+        }
+        // <standarization stuff>
+        let assumeTomeLevel = 43;
+        let assumeDustierLevel = 85;
+        // </standarization stuff>
+        if (AB.enemyLevel >= assumeTomeLevel) {
+            unmultipliedDust *= 1 + 0.05 * AB.enemyLevel;
+        }
+        if (AB.enemyLevel >= assumeDustierLevel) {
+            unmultipliedDust *= 1.5;
+        }
+        elements.baseDustPs.innerHTML = "每秒" + toScientific(unmultipliedDust) + "魔尘";
+        elements.baseShardsPs.innerHTML =
+            "每秒" + toScientific(AB.enemyLevel >= 51 ? unmultipliedDust / 1e9 : 0) +
+            "晶块";
+        elements.baseInfo.innerHTML =
+            "假设" +
+            (AB.enemyLevel >= assumeTomeLevel ? "有尘之卷轴(>=" : "无尘之卷轴(<") +
+            assumeTomeLevel +
+            ")且" +
+            (AB.enemyLevel >= assumeDustierLevel
+                ? "有风尘仆仆(>="
+                : "无风尘仆仆(<") +
+            assumeDustierLevel +
+            ")";
     } else {
-      elements.baseDustPs.innerHTML = "每秒0魔尘";
-      elements.baseShardsPs.innerHTML = "每秒0魔尘";
-      elements.baseInfo.innerHTML = "大胜而归。";
+        elements.baseDustPs.innerHTML = "每秒0魔尘";
+        elements.baseShardsPs.innerHTML = "每秒0魔尘";
+        elements.baseInfo.innerHTML = "大胜而归。";
     }
-    
 
     let fightTime = timeSpent / (enemiesKilled + trimpsKilled);
     elements.averageFightTime.innerHTML = convertTimeMs(fightTime, 2);
@@ -548,6 +559,7 @@ function calcBuildCost(set = false) {
 
     // Price for extra limbs.
     let extraLimbs = countLimbsUsed() - 4;
+    AB.bonuses["Extra_Limbs"].level = extraLimbs;
     for (let i = 1; i < extraLimbs; i++) {
         let price = AB.bonuses["Extra_Limbs"].price;
         let mod = AB.bonuses["Extra_Limbs"].priceMod;
@@ -1099,10 +1111,16 @@ function convertTime(time) {
     time = time.toFixed(1);
     if (time === NaN) {
         return "出错";
-    } else if (time < 3600) {
+    } else if (time < 60) {
         return time + "秒";
+    } else if (time < 3600) {
+        let seconds = time % 60;
+        let minutes = (time - seconds) / 60;
+        return Math.floor(minutes) + "分" + Math.floor(seconds) + "秒";
     } else if (time < 86400) {
-        return (time / 3600).toFixed(1) + "小时";
+        let minutes = time % 3600;
+        let hours = (time - minutes) / 3600;
+        return Math.floor(hours) + "小时" + Math.floor(minutes / 60) + "分";
     } else {
         time = time / 86400;
         let days = Math.floor(time);
@@ -1119,10 +1137,16 @@ function convertTimeMs(time, accuracy = 1) {
         return "出错";
     } else if (time < 1000) {
         return time + "毫秒";
-    } else if (time < 3600000) {
+    } else if (time < 60000) {
         return (time / 1000).toFixed(accuracy) + "秒";
+    } else if (time < 3600000) {
+        let seconds = time % 60000;
+        let minutes = (time - seconds) / 60000;
+        return Math.floor(minutes) + "分" + Math.floor(seconds) + "秒";
     } else if (time < 86400000) {
-        return (time / 3600000).toFixed(accuracy) + "小时";
+        let minutes = time % 3600000;
+        let hours = (time - minutes) / 3600000;
+        return Math.floor(hours) + "小时" + Math.floor(minutes / 60000) + "分";
     } else {
         time = time / 86400000;
         let days = Math.floor(time);
