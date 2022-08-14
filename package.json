@@ -1,0 +1,9 @@
+{
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GodNooNoo/godnoonoo.github.io.git"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}

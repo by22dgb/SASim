@@ -1,0 +1,203 @@
+body {
+    display: flex;
+    align-items: flex-start;
+}
+
+.dark {
+    background-color: rgb(32, 32, 32);
+}
+
+.dark-light {
+    background-color: rgb(64, 64, 64);
+}
+
+.uncheckedButton {
+    background-color: rgb(11, 89, 153);
+}
+
+.checkedButton {
+    background-color: rgb(174, 92, 10);
+}
+
+.generalButton {
+    min-height: 1.8em;
+}
+
+.generalInput {
+    width: 3em;
+    height: 1.4em;
+    font-size: large;
+    border-color: rgb(64, 64, 64);
+    background-color: rgb(32, 32, 32);
+}
+
+.text {
+    color: rgb(255, 255, 255);
+    font-size: medium;
+}
+
+
+
+/* Hover */
+
+.divToDisplayHover {
+    display: none;
+    background-color: rgb(39, 117, 124);
+    margin-top: 8rem;
+    margin-left: 4rem;
+    padding: 10px;
+    position: absolute;
+    z-index: 1000;
+    width: 30rem;
+}
+
+
+/* Items */
+
+#itemsPanel {
+    display: flex;
+    flex-direction: row;
+    margin-right: 2em;
+}
+
+.partTable {
+    padding: 0.5em 1em;
+    table-layout: fixed;
+}
+
+.partTable > tr {
+        vertical-align: middle;
+}
+
+.equipInpDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: center;
+    }
+
+.itemsButton {
+    text-align: left;
+    order: 0;
+    flex: 5 1 auto;
+    align-self: auto;
+}
+
+.equipInput {
+    order: 1;
+    flex: 0 1 auto;
+    align-self: auto;
+    margin-left: 0.5rem;
+}
+
+/* Bonuses */
+
+#bonusesPanel {
+    margin-bottom: 2em;
+}
+
+#oneTimersPanel {
+    padding: 0.3em 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: flex-start;
+}
+
+.oneTimerButton {
+    order: 0;
+    flex: 1 1 auto;
+    align-self: auto;
+}
+
+#ringDiv {
+    padding: 0.3em 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-content: stretch;
+    align-items: flex-start;
+}
+
+#ringInput {
+    order: 0;
+    flex: 0 1 auto;
+    align-self: auto;
+}
+
+#ringModsDiv {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+#mutationsPanel {
+    padding: 0.3em 1em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: flex-start;
+}
+
+.mutationsButton {
+    order: 0;
+    flex: 1 1 auto;
+    align-self: auto;
+}
+
+
+/* Info */
+
+#infoPanel {
+    width: 100%;
+}
+
+#limbsDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.3em 1em;
+}
+
+#limbsUsed {
+    font-size: large;
+}
+
+#maxLevelDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.3em 1em;
+}
+
+#currentLevelDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.3em 1em;
+}
+
+
+/* Simulation */
+
+#simulationPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3em 1em;
+    margin-left: 2em;
+}
+
+#saveImportInp {
+    width: 7em;
+}
