@@ -1,8 +1,14 @@
-
-import { getOneTimersSA, getPossibleRingMods, getMutations, equipOneTimer, equipRing, equipMutation, equipScruffy } from "../controller/bonusesController.js";
-import { capitaliseFirstLetter } from "../controller/utility.js";
+import {
+    getOneTimersSA,
+    getPossibleRingMods,
+    getMutations,
+    equipOneTimer,
+    equipRing,
+    equipMutation,
+    equipScruffy,
+} from "../controller/bonusesController.js";
+import { capitaliseFirstLetter } from "../utility.js";
 import { IRing, ISaveString } from "../data/buildString.js";
-
 
 export function bonusesView() {
     makeOneTimerBtns();
@@ -15,9 +21,14 @@ function makeOneTimerBtns() {
     const oneTimers = getOneTimersSA();
     Object.entries(oneTimers).forEach(([key, _]) => {
         const button = document.createElement("button");
-        button.innerHTML = key.replaceAll('_', ' ');
+        button.innerHTML = key.replaceAll("_", " ");
         button.id = key + "_Button";
-        button.classList.add("uncheckedButton", "text", "generalButton", "oneTimerButton");
+        button.classList.add(
+            "uncheckedButton",
+            "text",
+            "generalButton",
+            "oneTimerButton"
+        );
         oneTimersPanel.appendChild(button);
         addChangeForOneTimerButton(button, key);
     });
@@ -35,7 +46,7 @@ function makeRingBtns() {
 
     Object.entries(ringMods).forEach(([key, _]) => {
         const modButton = document.createElement("button");
-        let name = key.replaceAll('_', ' ');
+        let name = key.replaceAll("_", " ");
         name = name.replace("Mult", "");
         name = capitaliseFirstLetter(name);
         modButton.innerHTML = name;
@@ -46,7 +57,9 @@ function makeRingBtns() {
         addChangeForRingButton(modButton, mod);
     });
 
-    const ringInput = document.querySelector("#Ring_Input")! as HTMLInputElement;
+    const ringInput = document.querySelector(
+        "#Ring_Input"
+    )! as HTMLInputElement;
     addChangeForRingInput(ringInput);
 }
 
@@ -68,9 +81,14 @@ function makeMutationsBtn() {
 
     Object.entries(mutations).forEach(([key, value]) => {
         const button = document.createElement("button");
-        button.innerHTML = value.dn.replaceAll('_', ' ');
+        button.innerHTML = value.dn.replaceAll("_", " ");
         button.id = key + "_Button";
-        button.classList.add("uncheckedButton", "text", "generalButton", "mutationsButton");
+        button.classList.add(
+            "uncheckedButton",
+            "text",
+            "generalButton",
+            "mutationsButton"
+        );
         mutationsPanel.appendChild(button);
         const mutation = key as keyof ISaveString["mutations"];
         addChangeForMutationButton(button, mutation);
@@ -80,12 +98,20 @@ function makeMutationsBtn() {
     const button = document.createElement("button");
     button.innerHTML = "S21";
     button.id = "S21_Button";
-    button.classList.add("uncheckedButton", "text", "generalButton", "mutationsButton");
+    button.classList.add(
+        "uncheckedButton",
+        "text",
+        "generalButton",
+        "mutationsButton"
+    );
     mutationsPanel.appendChild(button);
     addChangeForScruffyButton(button);
 }
 
-function addChangeForMutationButton(button: HTMLButtonElement, mutation: keyof ISaveString["mutations"]) {
+function addChangeForMutationButton(
+    button: HTMLButtonElement,
+    mutation: keyof ISaveString["mutations"]
+) {
     button.addEventListener("click", () => {
         equipMutation(mutation);
     });

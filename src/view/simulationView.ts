@@ -1,10 +1,6 @@
 import { loadPreset } from "../controller/buildController.js";
 import { stringPaste } from "../controller/importController.js";
-import {
-    clickingAnimation,
-    getHTMLElement,
-    updateButton,
-} from "../controller/utility.js";
+import { clickingAnimation, getHTMLElement, updateButton } from "../utility.js";
 import { autoBattle } from "../data/object.js";
 
 export function simulationViews() {

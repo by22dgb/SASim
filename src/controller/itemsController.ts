@@ -1,7 +1,7 @@
 import { ISaveString } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";
 import { updateItem } from "../view/itemsView.js";
-import { updateInput } from "./utility.js";
+import { updateInput } from "../utility.js";
 
 export function equipItem(
     item: keyof ISaveString["items"],

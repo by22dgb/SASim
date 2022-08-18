@@ -8,7 +8,7 @@ import {
     hideHover,
     showHover,
     updateButton,
-} from "../controller/utility.js";
+} from "../utility.js";
 import { ISaveString } from "../data/buildString.js";
 
 export function itemsView() {
