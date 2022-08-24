@@ -1,4 +1,4 @@
-import { builderData } from "../data/builderData.js";
+import { builderData } from "../data/buildData.js";
 import { ISaveString } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";
 import { getOneTimersSA, getRing } from "./bonusesController.js";

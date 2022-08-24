@@ -2,22 +2,25 @@ import { ISaveString } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";
 import { updateItem } from "../view/itemsView.js";
 import { updateInput } from "../utility.js";
+import { changeLimbs } from "./levelsController.js";
 
 export function equipItem(
-    item: keyof ISaveString["items"],
+    itemName: keyof ISaveString["items"],
     level?: number,
     frontendCall?: boolean
 ) {
     // Backend
-    autoBattle.equip(item);
+    autoBattle.equip(itemName);
+    const item = getItem(itemName);
+    changeLimbs(item);
     if (level) {
-        autoBattle.items[item].level = level;
+        item.level = level;
     }
 
     // Frontend
-    updateItem(item);
+    updateItem(itemName);
     if (level && !frontendCall) {
-        levelItem(item, level, frontendCall);
+        levelItem(itemName, level, frontendCall);
     }
 }
 
@@ -27,7 +30,8 @@ export function levelItem(
     frontendCall?: boolean
 ) {
     // Backend
-    autoBattle.items[item].level = level;
+    const items = getItems();
+    items[item].level = level;
 
     // Frontend
     if (!frontendCall) {
@@ -52,13 +56,17 @@ export function getItems(): ISaveString["items"] {
     return autoBattle.items;
 }
 
+export function getItem(item: keyof ISaveString["items"]): ISaveString["items"][keyof ISaveString["items"]] {
+    return autoBattle.items[item];
+}
+
 export function clearItems() {
     const items = getItems();
-    Object.entries(items).forEach(([key, value]) => {
+    for (const [key, value] of Object.entries(items)) {
         value.equipped = false;
         value.level = 1;
         const name = key as keyof ISaveString["items"];
         updateItem(name, true);
         updateInput(name, 1);
-    });
+    }
 }

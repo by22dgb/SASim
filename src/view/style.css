@@ -1,3 +1,7 @@
+/*
+Stylesheet
+*/
+
 body {
     display: flex;
     align-items: flex-start;
@@ -51,22 +55,32 @@ body {
     width: 30rem;
 }
 
-
-/* Items */
-
+/* Main panels */
 #itemsPanel {
     display: flex;
     flex-direction: row;
     margin-right: 2em;
 }
 
+#simulationPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3em 1em;
+    margin-left: 2em;
+}
+
+
+/* Items */
+
 .partTable {
     padding: 0.5em 1em;
     table-layout: fixed;
 }
 
-.partTable > tr {
-        vertical-align: middle;
+.partTable>tr {
+    vertical-align: middle;
 }
 
 .equipInpDiv {
@@ -76,7 +90,7 @@ body {
     justify-content: flex-start;
     align-content: stretch;
     align-items: center;
-    }
+}
 
 .itemsButton {
     text-align: left;
@@ -155,7 +169,24 @@ body {
 /* Info */
 
 #infoPanel {
-    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2em;
+}
+
+#infoPanel>tbody>tr>td {
+    border-width: 1px 0;
+    border-style: solid;
+    border-color: black;
+}
+
+#buildCostDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: stretch;
+    align-items: flex-start;
+    padding: 0.3em 1em;
 }
 
 #limbsDiv {
@@ -186,17 +217,28 @@ body {
     padding: 0.3em 1em;
 }
 
+#effectsDiv {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding: 0.3em 1em;
+}
+
+/* Resistance */
+
+#resistancePanel {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: stretch;
+    align-items: flex-start;
+    padding: 0.3em 1em;
+}
+
 
 /* Simulation */
-
-#simulationPanel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0.3em 1em;
-    margin-left: 2em;
-}
 
 #saveImportInp {
     width: 7em;

@@ -1,3 +1,8 @@
+/*
+Bonuses view panel, used for setting and leveling bonuses.
+This file should not interact directly with the data layer.
+*/
+
 import {
     getOneTimersSA,
     getPossibleRingMods,
@@ -11,15 +16,15 @@ import { capitaliseFirstLetter } from "../utility.js";
 import { IRing, ISaveString } from "../data/buildString.js";
 
 export function bonusesView() {
-    makeOneTimerBtns();
-    makeRingBtns();
-    makeMutationsBtn();
+    setupOneTimerBtns();
+    setupRingBtns();
+    setupMutationsBtn();
 }
 
-function makeOneTimerBtns() {
+function setupOneTimerBtns() {
     const oneTimersPanel = document.querySelector("#oneTimersPanel")!;
     const oneTimers = getOneTimersSA();
-    Object.entries(oneTimers).forEach(([key, _]) => {
+    for (const [key, _] of Object.entries(oneTimers)) {
         const button = document.createElement("button");
         button.innerHTML = key.replaceAll("_", " ");
         button.id = key + "_Button";
@@ -31,7 +36,7 @@ function makeOneTimerBtns() {
         );
         oneTimersPanel.appendChild(button);
         addChangeForOneTimerButton(button, key);
-    });
+    }
 }
 
 function addChangeForOneTimerButton(button: HTMLButtonElement, oneTimer: any) {
@@ -40,7 +45,7 @@ function addChangeForOneTimerButton(button: HTMLButtonElement, oneTimer: any) {
     });
 }
 
-function makeRingBtns() {
+function setupRingBtns() {
     const ringMods = getPossibleRingMods();
     const ringModsDiv = document.querySelector("#ringModsDiv")!;
 
@@ -75,7 +80,7 @@ function addChangeForRingInput(input: HTMLInputElement) {
         equipRing(undefined, value, true);
     });
 }
-function makeMutationsBtn() {
+function setupMutationsBtn() {
     const mutationsPanel = document.querySelector("#mutationsPanel")!;
     const mutations = getMutations();
 

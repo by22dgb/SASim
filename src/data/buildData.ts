@@ -1,5 +1,4 @@
-import { ISaveString } from "./buildString";
-import { autoBattle } from "./object";
+import { ISaveString } from "./buildString.js";
 
 export const builderData = {
     costItems: new Map<keyof ISaveString["items"], number>(),
@@ -7,4 +6,5 @@ export const builderData = {
     costRing: 0,
     costDust: 0,
     costShard: 0,
+    limbs: 0,
 };

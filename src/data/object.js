@@ -3376,7 +3376,6 @@ export let autoBattle = {
     },
     hideMode: false,
     getEffects: function (level) {
-        let profile = "";
         if (level == 1) return;
         let seed = this.seed;
 
@@ -3517,13 +3516,10 @@ export let autoBattle = {
                     break;
             }
         }
+        const profile = new Map();
         for (let x = 0; x < selectedEffects.length; x++) {
-            profile += selectedEffects[x];
-            if (selectedEffectsCount[x] > 1)
-                profile += " x" + selectedEffectsCount[x] + "";
-            profile += ", ";
+            profile.set(selectedEffects[x], selectedEffectsCount[x]);
         }
-        profile = profile.substring(0, profile.length - 2);
         return profile;
     },
 
@@ -3651,7 +3647,6 @@ export let autoBattle = {
     },
 };
 
-// Functions from other trimps scripts.
 /*
 const prettify = (num) => {
     return num.toLocaleString("en-US", {
@@ -3661,6 +3656,8 @@ const prettify = (num) => {
     });
 };
 */
+
+// Functions from other trimps scripts.
 
 const seededRandom = (seed) => {
     let x = Math.sin(seed++) * 10000;
@@ -3673,7 +3670,7 @@ const getRandomIntSeeded = (seed, minIncl, maxExcl) => {
     return toReturn === maxExcl ? minIncl : toReturn;
 };
 
-function prettify(number) {
+export function prettify(number) {
     var numberTmp = number;
     if (!isFinite(number)) return "<span class='icomoon icon-infinity'></span>";
     if (number >= 1000 && number < 10000) return Math.floor(number);

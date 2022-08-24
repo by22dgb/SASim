@@ -1,9 +1,8 @@
 import { Build, IRing } from "../data/buildString.js";
 import { LZString } from "./lz-string.js";
 import { buildItems, buildSave, setPresets } from "./buildController.js";
-import { clearItems } from "./itemsController.js";
+import { clearItems, getItems } from "./itemsController.js";
 import { ISaveString } from "../data/buildString.js";
-import { autoBattle } from "../data/object.js";
 import { clearBonuses } from "./bonusesController.js";
 
 export function stringPaste(paste: string) {
@@ -48,7 +47,7 @@ function importSave(savegame: any) {
 }
 
 function importSpreadsheet(row: string) {
-    const items = JSON.parse(JSON.stringify(autoBattle.items));
+    const items = JSON.parse(JSON.stringify(getItems()));
 
     const itemLevels = row.split("\t");
     itemLevels.forEach((itemLevel, index) => {

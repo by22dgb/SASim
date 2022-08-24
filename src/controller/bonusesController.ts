@@ -21,10 +21,12 @@ export function getOneTimersSA(saveString?: any): typeof autoBattle.oneTimers {
 
 export function getRing() {
     const mods = autoBattle.rings.mods as any;
+    const chances = autoBattle.getRingStatusChance();
     return {
         owned: autoBattle.oneTimers.The_Ring.owned,
         level: autoBattle.rings.level,
         mods: mods,
+        chances: chances,
     };
 }
 

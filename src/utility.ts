@@ -33,6 +33,7 @@ export function updateInput(
 ) {
     let input;
     if (typeof name === "string") {
+        name = "#" + name + "_Input";
         input = getHTMLElement(name) as HTMLInputElement;
     } else {
         input = name;
@@ -49,10 +50,6 @@ export function clickingAnimation(button: HTMLElement) {
             button.classList.add("uncheckedButton");
         }, 269);
     });
-}
-
-export function changeValueSafe(value: number, change: number) {
-    return value + change > 0 ? value + change : 0;
 }
 
 export function getHTMLElement(name: string): HTMLElement {

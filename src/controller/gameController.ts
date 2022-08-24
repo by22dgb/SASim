@@ -1,3 +1,9 @@
+/* 
+Controller for the autobattle simulation.
+Should only be interacted with from the autoBattleController and index.
+*/
+
+
 import { autoBattle } from "../data/object.js";
 
 interface IConfig {
@@ -10,8 +16,8 @@ interface IConfig {
     updateInterval: number; // Update interval in milliseconds
 }
 
-const controller = {
-    framesPerChunk: 100,
+export const gameController = {
+    framesPerChunk: 200,
     battles: 1000,
     battleCount: 0,
     complete: false,
@@ -98,6 +104,7 @@ const controller = {
         this.lastUpdate = Date.now();
         this.timeStart = this.lastUpdate;
         this.interval = setInterval(this.loop, 0);
+        
     },
 
     stop() {
@@ -105,34 +112,35 @@ const controller = {
     },
 
     loop() {
+        // Use gameController instead of this to reference the correct object.
         for (
             let frame = 0;
-            !this.halt && frame < this.framesPerChunk;
+            !gameController.halt && frame < gameController.framesPerChunk;
             ++frame
         ) {
             autoBattle.update();
-            this.complete =
-                autoBattle.lootAvg.counter / 1000 >= this.runtime ||
-                this.battleCount >= this.battles;
-            this.halt == this.complete;
+            gameController.complete =
+                autoBattle.lootAvg.counter / 1000 >= gameController.runtime ||
+                gameController.battleCount >= gameController.battles;
+                gameController.halt == gameController.complete;
         }
 
         const now = Date.now();
-        if (this.halt && this.interval) {
-            clearInterval(this.interval);
-            this.interval = null;
-            this.timeUsed = now - this.timeStart;
+        if (gameController.halt && gameController.interval) {
+            clearInterval(gameController.interval);
+            gameController.interval = null;
+            gameController.timeUsed = now - gameController.timeStart;
         }
-        if (this.halt || now - this.lastUpdate >= this.updateInterval) {
-            this.lastUpdate = now;
-            if (this.onUpdate) {
-                this.onUpdate();
+        if (gameController.halt || now - gameController.lastUpdate >= gameController.updateInterval) {
+            gameController.lastUpdate = now;
+            if (gameController.onUpdate) {
+                gameController.onUpdate();
             }
-            if (this.halt) {
-                if (this.complete && this.onSimComplete) {
-                    this.onSimComplete();
-                } else if (this.onSimInterrupt) {
-                    this.onSimInterrupt();
+            if (gameController.halt) {
+                if (gameController.complete && gameController.onSimComplete) {
+                    gameController.onSimComplete();
+                } else if (gameController.onSimInterrupt) {
+                    gameController.onSimInterrupt();
                 }
             }
         }
@@ -182,8 +190,6 @@ const controller = {
 };
 
 export function setupController() {
-    autoBattle.onEnemyDied = controller.battleSuccess.bind(controller);
-    autoBattle.onTrimpDied = controller.battleFailure.bind(controller);
+    autoBattle.onEnemyDied = gameController.battleSuccess.bind(gameController);
+    autoBattle.onTrimpDied = gameController.battleFailure.bind(gameController);
 }
-
-export { controller as gameController };

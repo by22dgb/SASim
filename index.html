@@ -46,6 +46,13 @@
             <tbody>
                 <tr>
                     <td>
+                        <div id="buildCostDiv">
+                            Build cost: <div><span id="dustCost">0</span> Dust &emsp; <span id="shardsCost">0</span> Shards</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <div id="limbsDiv">
                             Limbs:
                             <div id="limbsUsed">0</span>
@@ -68,7 +75,29 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div id="effectsDiv" class="text"></div>
+                    </td>
+                </tr>
             </tbody>
+        </table>
+        <table id="resistancePanel" class="dark-light text">
+            <tr>
+                <td>
+                    Huffy
+                    <div id="huffyChancesDiv"></div>
+                    <div id="huffyShank" hidden>Shank reduces: <span></span></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Enemy
+                    <div id="enemyResistancesDiv"></div>
+                    <div id="enemyChancesDiv"></div>
+                    <div id="enemyShank" hidden>Shank reduces: <span></span></div>
+                </td>
+            </tr>
         </table>
     </div>
     <table id="simulationPanel" class="dark-light text">

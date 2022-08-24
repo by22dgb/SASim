@@ -1,3 +1,9 @@
+/*
+Controller for controlling the autobattle simulation. 
+Get information about the simulation, start and stop it.
+*/
+
+
 import { ISaveString } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";
 import { getOneTimersSA, getRing } from "./bonusesController.js";
@@ -6,28 +12,29 @@ import { getItems } from "./itemsController.js";
 
 const controllerConfig = gameController.getDefaultConfig();
 
-function startSimulation() {
+export function startSimulation() {
     if (gameController.isRunning()) {
         return;
     }
 
-    controllerConfig.onSimInterrupt = null;
-    controllerConfig.onSimInterrupt = null;
     controllerConfig.onUpdate = wrapup;
     gameController.configure(controllerConfig);
 
     runSimulation();
 }
 
-function stopSimulation() {
+export function stopSimulation() {
     gameController.stop();
 }
 
 function wrapup() {}
 
-function runSimulation() {}
+function runSimulation() {
+    gameController.start();
+}
 
 function calcBuildCost() {
+    // Not here I think
     let dustCost = 0;
     let shardCost = 0;
 
@@ -69,4 +76,12 @@ function calcBuildCost() {
 
     // Price for extra limbs.
     // TODO: once builder from ymh is added
+}
+
+export function getEnemyLevel() {
+    return autoBattle.enemyLevel;
+}
+
+export function getMaxEnemyLevel() {
+    return autoBattle.maxEnemyLevel;
 }

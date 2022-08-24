@@ -1,10 +1,14 @@
+/*
+Items view panel, used for equipping and leveling items.
+This file should not interact directly with the data layer.
+*/
+
 import {
     equipItem,
     getItemsInOrder,
     levelItem,
 } from "../controller/itemsController.js";
 import {
-    changeValueSafe,
     hideHover,
     showHover,
     updateButton,
@@ -12,10 +16,10 @@ import {
 import { ISaveString } from "../data/buildString.js";
 
 export function itemsView() {
-    makeItemBtns();
+    setupItemBtns();
 }
 
-function makeItemBtns() {
+function setupItemBtns() {
     let itemsPanel = document.querySelector("#itemsPanel")!;
     for (let i = 0; i < 2; i++) {
         let partDiv = partItemsDiv(2, i);
@@ -34,15 +38,15 @@ function partItemsDiv(parts: number, ind: number) {
     const table = document.createElement("table");
     table.classList.add("partTable");
     for (let i = start; i < end; i++) {
-        const item = itemNames[i];
+        const itemName = itemNames[i];
         const div = document.createElement("div");
         div.classList.add("equipInpDiv");
         table.insertRow(-1).insertCell(-1).appendChild(div);
 
         const button = document.createElement("button");
-        const name = item.replaceAll("_", " ");
+        const name = itemName.replaceAll("_", " ");
         button.innerHTML = name;
-        button.id = item + "_Button";
+        button.id = itemName + "_Button";
         button.classList.add(
             "uncheckedButton",
             "text",
@@ -50,20 +54,24 @@ function partItemsDiv(parts: number, ind: number) {
             "generalButton"
         );
         div.appendChild(button);
-        addChangeForItemButton(button, item);
+        addChangeForItemButton(button, itemName);
 
         const input = document.createElement("input");
         input.type = "number";
         input.value = "1";
         input.classList.add("equipInput", "generalInput", "text");
-        input.id = item + "_Input";
-        addChangeForLevel(input, item);
+        input.id = itemName + "_Input";
+        addChangeForLevel(input, itemName);
         div.appendChild(input);
 
         const descriptionDiv = document.createElement("div");
         descriptionDiv.classList.add("divToDisplayHover");
-        const description =
-            items[item as keyof ISaveString["items"]].description();
+        const item = items[itemName as keyof ISaveString["items"]];
+        let description =
+            item.description();
+        if ("zone" in item) {
+            description += " Contract at zone " + item.zone.toString() + ".";
+        }
         descriptionDiv.innerHTML = description;
         div.appendChild(descriptionDiv);
         addChangeForHover(button, descriptionDiv);
@@ -97,17 +105,5 @@ export function updateItem(
     item: keyof ISaveString["items"],
     setUnselected?: boolean
 ) {
-    let beingEquipped: boolean;
-    if (setUnselected) {
-        beingEquipped = false;
-    } else {
-        beingEquipped = document
-            .querySelector("#" + item + "_Button")!
-            .classList.contains("uncheckedButton");
-    }
-    const span = document.querySelector("#limbsUsed")!;
-    const limbsUsed = parseInt(span.innerHTML);
-    const newValue = changeValueSafe(limbsUsed, beingEquipped ? 1 : -1);
-    span.innerHTML = newValue.toString();
     updateButton(item, setUnselected);
 }
