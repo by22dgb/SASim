@@ -1,43 +1,47 @@
-import { ISaveString } from "../data/buildString.js";
+import { IABTypes } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";
 import {
     equipMutation,
     equipOneTimer,
-    equipRing,
+    equipRingMods,
     equipScruffy,
     getOneTimersSA,
+    setRingLevel,
+    unequipRingMods,
 } from "./bonusesController.js";
 import { equipItem, getItems, levelItem } from "./itemsController.js";
 import { u2Mutations } from "../data/mutations.js";
 import { updatePresetButton } from "../view/simulationView.js";
 
-export function buildItems(items: ISaveString["items"]) {
-    Object.entries(items).forEach(([key, value]) => {
-        const name = key as keyof ISaveString["items"];
+export function buildItems(items: IABTypes["items"]) {
+    for (const [key, value] of Object.entries(items)) {
+        const name = key as keyof IABTypes["items"];
         if (value.equipped) {
             equipItem(name, value.level);
         } else {
             levelItem(name, value.level);
         }
-    });
+    }
 }
 
-export function buildSave(saveString: ISaveString) {
+export function buildSave(saveString: IABTypes) {
     buildItems(saveString.items);
 
     // Set ring
-    equipRing(saveString.ring.mods, saveString.ring.level);
+    const ringMods = saveString.ring.mods as any as string[];
+    equipRingMods(ringMods);
+    setRingLevel(saveString.ring.level);
 
     // Set oneTimers
     const oneTimers = getOneTimersSA(saveString);
     Object.entries(oneTimers).forEach(([key, _]) => {
-        const name = key as keyof ISaveString["oneTimers"];
+        const name = key as keyof IABTypes["oneTimers"];
         equipOneTimer(name);
     });
 
     // Set mutations
     Object.entries(saveString.mutations).forEach(([key, _]) => {
-        const name = key as keyof ISaveString["mutations"];
+        const name = key as keyof IABTypes["mutations"];
         if (name in u2Mutations.tree) {
             equipMutation(name);
         }
@@ -65,18 +69,20 @@ export function setPresets(presets: typeof autoBattle.presets) {
 
 export function loadPreset(buttonName: string) {
     const r = /\d/;
-    const id = buttonName.match(r)! as any as number;
+    const id = Number(buttonName.match(r)!);
     const presetName = ("p" + id) as keyof typeof autoBattle.presets;
-    const preset = autoBattle.presets[presetName];
+    const preset = autoBattle.presets[presetName] as any[];
     const newItems: string[] = [];
 
     preset.forEach((row) => {
         if (typeof row === "object") {
             switch (row[0]) {
                 case "level":
+                    // TODO
                     break;
                 case "ring":
-                    break;
+                    const ringMods = row.slice(1);
+                    equipRingMods(ringMods);
             }
         } else {
             // Item
@@ -85,10 +91,10 @@ export function loadPreset(buttonName: string) {
     });
 
     const items = Object.entries(getItems());
-    items.forEach(([key, item]) => {
-        if (newItems.includes(key) != item.equipped) {
-            const name = key as keyof ISaveString["items"];
-            equipItem(name);
+    for (const [_, [key, item]] of Object.entries(items)) {
+        if (newItems.includes(key) !== item.equipped) {
+            const itemName = key as keyof IABTypes["items"];
+            equipItem(itemName);
         }
-    });
+    }
 }

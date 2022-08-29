@@ -1,7 +1,7 @@
 import { autoBattle } from "./object";
 import { u2Mutations } from "./mutations.js";
 
-export interface ISaveString {
+export interface IABTypes {
     items: typeof autoBattle.items;
     ring: IRing;
     oneTimers: typeof autoBattle.oneTimers;
@@ -11,13 +11,8 @@ export interface ISaveString {
     maxEnemyLevel: number;
 }
 
-export interface IItem {
-    equipped: boolean;
-    level: number;
-}
-
 export interface IRing {
-    mods: keyof typeof autoBattle.ringStats;
+    mods: typeof autoBattle.ringStats;
     level: number;
 }
 

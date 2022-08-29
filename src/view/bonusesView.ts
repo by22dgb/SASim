@@ -8,17 +8,19 @@ import {
     getPossibleRingMods,
     getMutations,
     equipOneTimer,
-    equipRing,
     equipMutation,
     equipScruffy,
+    getRingStatAmt,
+    equipRingMods,
+    setRingLevel,
 } from "../controller/bonusesController.js";
-import { capitaliseFirstLetter } from "../utility.js";
-import { IRing, ISaveString } from "../data/buildString.js";
+import { addHover, capitaliseFirstLetter, prettyNumber } from "../utility.js";
+import { IRing, IABTypes } from "../data/buildString.js";
 
 export function bonusesView() {
     setupOneTimerBtns();
     setupRingBtns();
-    setupMutationsBtn();
+    setupMutationsBtns();
 }
 
 function setupOneTimerBtns() {
@@ -36,6 +38,18 @@ function setupOneTimerBtns() {
         );
         oneTimersPanel.appendChild(button);
         addChangeForOneTimerButton(button, key);
+
+        const descriptionDiv = document.createElement("div");
+        descriptionDiv.classList.add("hover", "bonusHover");
+        const oneTimer = oneTimers[key as keyof IABTypes["oneTimers"]];
+        let description = oneTimer.description;
+        description +=
+            " Unlocks at " +
+            (oneTimer.requiredItems - 4).toString() +
+            " contracts.";
+        descriptionDiv.innerHTML = description;
+        button.appendChild(descriptionDiv);
+        addHover(button, descriptionDiv);
     }
 }
 
@@ -49,7 +63,7 @@ function setupRingBtns() {
     const ringMods = getPossibleRingMods();
     const ringModsDiv = document.querySelector("#ringModsDiv")!;
 
-    Object.entries(ringMods).forEach(([key, _]) => {
+    for (const [key, ringMod] of Object.entries(ringMods)) {
         const modButton = document.createElement("button");
         let name = key.replaceAll("_", " ");
         name = name.replace("Mult", "");
@@ -58,9 +72,22 @@ function setupRingBtns() {
         modButton.id = key + "_Button";
         modButton.classList.add("uncheckedButton", "text", "generalButton");
         ringModsDiv.appendChild(modButton);
-        const mod = [key] as any;
+        const mod = [key];
         addChangeForRingButton(modButton, mod);
-    });
+
+        const descriptionDiv = document.createElement("div");
+        descriptionDiv.classList.add("hover", "ringHover");
+        modButton.addEventListener("mouseover", () => {
+            const stat = prettyNumber(getRingStatAmt(ringMod)).toString();
+            const description =
+                "+ " +
+                stat +
+                (key === "lifesteal" || key === "dustMult" ? "%" : "");
+            descriptionDiv.innerHTML = description;
+        });
+        modButton.appendChild(descriptionDiv);
+        addHover(modButton, descriptionDiv);
+    }
 
     const ringInput = document.querySelector(
         "#Ring_Input"
@@ -68,25 +95,26 @@ function setupRingBtns() {
     addChangeForRingInput(ringInput);
 }
 
-function addChangeForRingButton(button: HTMLButtonElement, mod: IRing["mods"]) {
+function addChangeForRingButton(button: HTMLButtonElement, mod: string[]) {
     button.addEventListener("click", () => {
-        equipRing(mod);
+        equipRingMods(mod);
     });
 }
 
 function addChangeForRingInput(input: HTMLInputElement) {
     input.addEventListener("change", () => {
         const value = parseInt(input.value);
-        equipRing(undefined, value, true);
+        setRingLevel(value, true);
     });
 }
-function setupMutationsBtn() {
+
+function setupMutationsBtns() {
     const mutationsPanel = document.querySelector("#mutationsPanel")!;
     const mutations = getMutations();
 
-    Object.entries(mutations).forEach(([key, value]) => {
+    for (const [key, mutation] of Object.entries(mutations)) {
         const button = document.createElement("button");
-        button.innerHTML = value.dn.replaceAll("_", " ");
+        button.innerHTML = mutation.dn.replaceAll("_", " ");
         button.id = key + "_Button";
         button.classList.add(
             "uncheckedButton",
@@ -95,11 +123,30 @@ function setupMutationsBtn() {
             "mutationsButton"
         );
         mutationsPanel.appendChild(button);
-        const mutation = key as keyof ISaveString["mutations"];
-        addChangeForMutationButton(button, mutation);
-    });
+        const mutationName = key as keyof IABTypes["mutations"];
+        addChangeForMutationButton(button, mutationName);
 
-    // Scruffy 21 button, move if needed.
+        const descriptionDiv = document.createElement("div");
+        descriptionDiv.classList.add("hover", "mutationHover");
+        descriptionDiv.innerHTML = mutation.description;
+        button.appendChild(descriptionDiv);
+        addHover(button, descriptionDiv);
+    }
+
+    // Move if needed.
+    setupS21Btn(mutationsPanel);
+}
+
+function addChangeForMutationButton(
+    button: HTMLButtonElement,
+    mutation: keyof IABTypes["mutations"]
+) {
+    button.addEventListener("click", () => {
+        equipMutation(mutation);
+    });
+}
+
+function setupS21Btn(mutationsPanel: Element) {
     const button = document.createElement("button");
     button.innerHTML = "S21";
     button.id = "S21_Button";
@@ -111,15 +158,13 @@ function setupMutationsBtn() {
     );
     mutationsPanel.appendChild(button);
     addChangeForScruffyButton(button);
-}
 
-function addChangeForMutationButton(
-    button: HTMLButtonElement,
-    mutation: keyof ISaveString["mutations"]
-) {
-    button.addEventListener("click", () => {
-        equipMutation(mutation);
-    });
+    const descriptionDiv = document.createElement("div");
+    descriptionDiv.classList.add("hover", "mutationHover");
+    descriptionDiv.innerHTML =
+        "Scruffy teaches Huffy how to find 5x Dust from SA enemies.";
+    button.appendChild(descriptionDiv);
+    addHover(button, descriptionDiv);
 }
 
 function addChangeForScruffyButton(button: HTMLButtonElement) {

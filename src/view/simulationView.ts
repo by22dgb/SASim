@@ -8,6 +8,7 @@ import { stringPaste } from "../controller/importController.js";
 import { clickingAnimation, getHTMLElement, updateButton } from "../utility.js";
 import { getItems } from "../controller/itemsController.js";
 import {
+    printAllInfo,
     startSimulation,
     stopSimulation,
 } from "../controller/autoBattleController.js";
@@ -26,9 +27,7 @@ function setupImportBtns() {
     const resetBtn = getHTMLElement("#saveResetBtn") as HTMLButtonElement;
     clickingAnimation(resetBtn);
 
-    resetBtn.addEventListener("click", () => {
-        console.log(getItems());
-    });
+    resetBtn.addEventListener("click", () => {});
 }
 
 function addImportAction(field: HTMLInputElement) {
@@ -83,6 +82,7 @@ function addChangeForAutoRun(button: HTMLButtonElement) {
         updateButton(button);
         // TODO: Add auto run functionality
         readEquips();
+        printAllInfo();
     });
 }
 

@@ -185,7 +185,7 @@ export function readEquips() {
     }
 
     const ring = getRing();
-    if (ring.owned) {
+    if (ring.bonus.owned) {
         huffy.bleedMax += ring.chances;
         huffy.bleedMin += ring.chances;
         huffy.poisonMax += ring.chances;

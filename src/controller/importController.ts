@@ -2,7 +2,7 @@ import { Build, IRing } from "../data/buildString.js";
 import { LZString } from "./lz-string.js";
 import { buildItems, buildSave, setPresets } from "./buildController.js";
 import { clearItems, getItems } from "./itemsController.js";
-import { ISaveString } from "../data/buildString.js";
+import { IABTypes } from "../data/buildString.js";
 import { clearBonuses } from "./bonusesController.js";
 
 export function stringPaste(paste: string) {
@@ -25,7 +25,7 @@ export function stringPaste(paste: string) {
 }
 
 function importSave(savegame: any) {
-    const saveString = {} as ISaveString;
+    const saveString = {} as IABTypes;
     const abData = savegame.global.autoBattleData;
 
     saveString.items = abData.items;

@@ -8,12 +8,8 @@ import {
     getItemsInOrder,
     levelItem,
 } from "../controller/itemsController.js";
-import {
-    hideHover,
-    showHover,
-    updateButton,
-} from "../utility.js";
-import { ISaveString } from "../data/buildString.js";
+import { addHover, updateButton } from "../utility.js";
+import { IABTypes } from "../data/buildString.js";
 
 export function itemsView() {
     setupItemBtns();
@@ -49,7 +45,7 @@ function partItemsDiv(parts: number, ind: number) {
         button.id = itemName + "_Button";
         button.classList.add(
             "uncheckedButton",
-            "text",
+            "small-text",
             "itemsButton",
             "generalButton"
         );
@@ -59,22 +55,21 @@ function partItemsDiv(parts: number, ind: number) {
         const input = document.createElement("input");
         input.type = "number";
         input.value = "1";
-        input.classList.add("equipInput", "generalInput", "text");
+        input.classList.add("equipInput", "generalInput", "small-text");
         input.id = itemName + "_Input";
         addChangeForLevel(input, itemName);
         div.appendChild(input);
 
         const descriptionDiv = document.createElement("div");
-        descriptionDiv.classList.add("divToDisplayHover");
-        const item = items[itemName as keyof ISaveString["items"]];
-        let description =
-            item.description();
+        descriptionDiv.classList.add("hover", "itemHover");
+        const item = items[itemName as keyof IABTypes["items"]];
+        let description = item.description();
         if ("zone" in item) {
             description += " Contract at zone " + item.zone.toString() + ".";
         }
         descriptionDiv.innerHTML = description;
         div.appendChild(descriptionDiv);
-        addChangeForHover(button, descriptionDiv);
+        addHover(button, descriptionDiv);
     }
     return table;
 }
@@ -92,17 +87,8 @@ function addChangeForLevel(input: HTMLInputElement, item: any) {
     });
 }
 
-function addChangeForHover(hoverDiv: HTMLElement, displayDiv: HTMLDivElement) {
-    hoverDiv.addEventListener("mouseover", () => {
-        showHover(displayDiv);
-    });
-    hoverDiv.addEventListener("mouseout", () => {
-        hideHover(displayDiv);
-    });
-}
-
 export function updateItem(
-    item: keyof ISaveString["items"],
+    item: keyof IABTypes["items"],
     setUnselected?: boolean
 ) {
     updateButton(item, setUnselected);

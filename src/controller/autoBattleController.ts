@@ -1,10 +1,10 @@
 /*
-Controller for controlling the autobattle simulation. 
+Controls the autobattle simulation. 
 Get information about the simulation, start and stop it.
 */
 
-
-import { ISaveString } from "../data/buildString.js";
+import { IABTypes } from "../data/buildString.js";
+import { u2Mutations } from "../data/mutations.js";
 import { autoBattle } from "../data/object.js";
 import { getOneTimersSA, getRing } from "./bonusesController.js";
 import { gameController } from "./gameController.js";
@@ -59,7 +59,7 @@ function calcBuildCost() {
     // Price for one timers.
     const oneTimers = getOneTimersSA();
     Object.entries(oneTimers).forEach(([key, value]) => {
-        const name = key as keyof ISaveString["oneTimers"];
+        const name = key as keyof IABTypes["oneTimers"];
         const cost = autoBattle.oneTimerPrice(name);
         if ("useShards" in value && value.useShards) {
             shardCost += cost;
@@ -70,8 +70,8 @@ function calcBuildCost() {
 
     // Price for ring.
     const ring = getRing();
-    if (ring.owned) {
-        shardCost += Math.ceil(15 * Math.pow(2, ring.level) - 30);
+    if (ring.bonus.owned) {
+        shardCost += Math.ceil(15 * Math.pow(2, ring.stats.level) - 30);
     }
 
     // Price for extra limbs.
@@ -84,4 +84,49 @@ export function getEnemyLevel() {
 
 export function getMaxEnemyLevel() {
     return autoBattle.maxEnemyLevel;
+}
+
+export function printAllInfo() {
+    // Returns all info for human eye, interacts directly with autoBattle object for safety, use for testing, do not use for anything useful.
+    const info = [];
+
+    const uneqItems = {} as any;
+    const items = {} as any;
+    for (const [item, value] of Object.entries(autoBattle.items)) {
+        if (value.equipped) {
+            items[item] = value.level;
+        } else {
+            uneqItems[item] = value.level;
+        }
+    }
+    info.push(uneqItems);
+    info.push(items);
+
+    const SAOneTimers = getOneTimersSA();
+    for (const [oneTimer, value] of Object.entries(autoBattle.oneTimers)) {
+        if (value.owned && oneTimer in SAOneTimers) {
+            info.push(oneTimer);
+        }
+    }
+
+    if (autoBattle.oneTimers.The_Ring.owned) {
+        const level = autoBattle.rings.level;
+        const mods = autoBattle.rings.mods;
+        const ring = `${level} ${mods.join()}`;
+        info.push(ring);
+    }
+
+    for (const [mutation, value] of Object.entries(u2Mutations.tree)) {
+        if (value.purchased) {
+            info.push(mutation);
+        }
+    }
+
+    if (autoBattle.scruffyLvl21) {
+        info.push("Scruffy 21");
+    }
+
+    info.forEach((entry) => {
+        console.log(entry);
+    });
 }

@@ -1,3 +1,5 @@
+import { prettify } from "./data/object.js";
+
 export function pick(obj: any, ...keys: any) {
     return Object.fromEntries(
         keys.filter((key: any) => key in obj).map((key: any) => [key, obj[key]])
@@ -60,10 +62,23 @@ export function getHTMLElement(name: string): HTMLElement {
     return element as HTMLElement;
 }
 
-export function showHover(element: HTMLElement) {
+export function addHover(hoverDiv: HTMLElement, displayDiv: HTMLDivElement) {
+    hoverDiv.addEventListener("mouseover", () => {
+        showHover(displayDiv);
+    });
+    hoverDiv.addEventListener("mouseout", () => {
+        hideHover(displayDiv);
+    });
+}
+
+function showHover(element: HTMLElement) {
     element.style.display = "block";
 }
 
-export function hideHover(element: HTMLElement) {
+function hideHover(element: HTMLElement) {
     element.style.display = "none";
+}
+
+export function prettyNumber(number: number) {
+    return prettify(number);
 }

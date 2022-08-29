@@ -1,11 +1,16 @@
-import { ISaveString } from "../data/buildString.js";
+/*
+Controls equipping and leveling items.
+Sends calls both to frontend and backend.
+*/
+
+import { IABTypes } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";
 import { updateItem } from "../view/itemsView.js";
 import { updateInput } from "../utility.js";
 import { changeLimbs } from "./levelsController.js";
 
 export function equipItem(
-    itemName: keyof ISaveString["items"],
+    itemName: keyof IABTypes["items"],
     level?: number,
     frontendCall?: boolean
 ) {
@@ -25,7 +30,7 @@ export function equipItem(
 }
 
 export function levelItem(
-    item: keyof ISaveString["items"],
+    item: keyof IABTypes["items"],
     level: number,
     frontendCall?: boolean
 ) {
@@ -39,24 +44,26 @@ export function levelItem(
     }
 }
 
-export function getItemsInOrder(): ISaveString["items"] {
+export function getItemsInOrder(): IABTypes["items"] {
     /* Warning this is a copy of the items object, not a reference to it */
     const order = autoBattle.getItemOrder();
     const items = getItems();
     // Order items
     const orderedItems: any = {};
     order.forEach((item) => {
-        const name = item.name as keyof ISaveString["items"];
+        const name = item.name as keyof IABTypes["items"];
         orderedItems[name] = items[name];
     });
     return orderedItems;
 }
 
-export function getItems(): ISaveString["items"] {
+export function getItems(): IABTypes["items"] {
     return autoBattle.items;
 }
 
-export function getItem(item: keyof ISaveString["items"]): ISaveString["items"][keyof ISaveString["items"]] {
+export function getItem(
+    item: keyof IABTypes["items"]
+): IABTypes["items"][keyof IABTypes["items"]] {
     return autoBattle.items[item];
 }
 
@@ -65,7 +72,7 @@ export function clearItems() {
     for (const [key, value] of Object.entries(items)) {
         value.equipped = false;
         value.level = 1;
-        const name = key as keyof ISaveString["items"];
+        const name = key as keyof IABTypes["items"];
         updateItem(name, true);
         updateInput(name, 1);
     }

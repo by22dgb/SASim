@@ -1,8 +1,8 @@
-import { ISaveString } from "./buildString.js";
+import { IABTypes } from "./buildString.js";
 
 export const builderData = {
-    costItems: new Map<keyof ISaveString["items"], number>(),
-    costOneTimers: new Map<keyof ISaveString["oneTimers"], number>(),
+    costItems: new Map<keyof IABTypes["items"], number>(),
+    costOneTimers: new Map<keyof IABTypes["oneTimers"], number>(),
     costRing: 0,
     costDust: 0,
     costShard: 0,

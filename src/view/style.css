@@ -30,7 +30,6 @@ body {
 .generalInput {
     width: 3em;
     height: 1.4em;
-    font-size: large;
     border-color: rgb(64, 64, 64);
     background-color: rgb(32, 32, 32);
 }
@@ -40,19 +39,32 @@ body {
     font-size: medium;
 }
 
+.small-text {
+    color: rgb(255, 255, 255);
+    font-size: small;
+}
 
 
 /* Hover */
 
-.divToDisplayHover {
+.hover {
     display: none;
     background-color: rgb(39, 117, 124);
-    margin-top: 8rem;
-    margin-left: 4rem;
-    padding: 10px;
     position: absolute;
     z-index: 1000;
-    width: 30rem;
+}
+
+.itemHover {
+    margin-top: 8em;
+    margin-left: 4em;
+    padding: 10px;
+    width: 30em;
+}
+
+.bonusHover {
+    margin-top: 0.5em;
+    padding: 10px;
+    width: 24em;
 }
 
 /* Main panels */
@@ -103,7 +115,7 @@ body {
     order: 1;
     flex: 0 1 auto;
     align-self: auto;
-    margin-left: 0.5rem;
+    margin-left: 0.5em;
 }
 
 /* Bonuses */
