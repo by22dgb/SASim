@@ -6,13 +6,11 @@ This file should not interact directly with the data layer.
 import { loadPreset } from "../controller/buildController.js";
 import { stringPaste } from "../controller/importController.js";
 import { clickingAnimation, getHTMLElement, updateButton } from "../utility.js";
-import { getItems } from "../controller/itemsController.js";
 import {
     printAllInfo,
     startSimulation,
     stopSimulation,
 } from "../controller/autoBattleController.js";
-import { readEquips } from "../controller/resistanceController.js";
 
 export function simulationViews() {
     setupImportBtns();
@@ -81,7 +79,6 @@ function addChangeForAutoRun(button: HTMLButtonElement) {
     button.addEventListener("click", () => {
         updateButton(button);
         // TODO: Add auto run functionality
-        readEquips();
         printAllInfo();
     });
 }

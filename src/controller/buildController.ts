@@ -12,6 +12,7 @@ import {
 import { equipItem, getItems, levelItem } from "./itemsController.js";
 import { u2Mutations } from "../data/mutations.js";
 import { updatePresetButton } from "../view/simulationView.js";
+import { setEnemyLevel, setMaxEnemyLevel } from "./levelsController.js";
 
 export function buildItems(items: IABTypes["items"]) {
     for (const [key, value] of Object.entries(items)) {
@@ -49,6 +50,10 @@ export function buildSave(saveString: IABTypes) {
 
     // Set S21
     equipScruffy(saveString.scruffy);
+
+    // Set levels
+    setEnemyLevel(saveString.currentLevel);
+    setMaxEnemyLevel(saveString.maxEnemyLevel);
 }
 
 export function setPresets(presets: typeof autoBattle.presets) {
@@ -82,6 +87,7 @@ export function loadPreset(buttonName: string) {
                     break;
                 case "ring":
                     const ringMods = row.slice(1);
+                    unequipRingMods();
                     equipRingMods(ringMods);
             }
         } else {

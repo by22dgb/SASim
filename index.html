@@ -23,16 +23,9 @@
                 <tr>
                     <td>
                         <div id="ringPanel">
-                            <div id="ringDiv">
-                                <div id="ringModsDiv"></div>
-                                <input type="number" value="0" class="generalInput text" id="Ring_Input" />
-                            </div>
+                            <div id="ringModsDiv"></div>
+                            <input type="number" value="0" class="generalInput text" id="Ring_Input" />
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="scruffyPanel"></div>
                     </td>
                 </tr>
                 <tr>
@@ -100,44 +93,59 @@
             </tr>
         </table>
     </div>
-    <table id="simulationPanel" class="dark-light text">
-        <tbody>
-            <tr>
-                <td>
-                    <div id="saveImport">
-                        <span>
-                            <input type="text" id="saveImportInp" placeholder="Import save!" class="generalInput" />
-                            <button id="saveResetBtn" class="uncheckedButton text generalButton">
-                                Reset!
+    <div id="panel3">
+        <table id="simulationPanel" class="dark-light text">
+            <tbody>
+                <tr>
+                    <td>
+                        <div id="saveImport">
+                            <span>
+                                <input type="text" id="saveImportInp" placeholder="Import save!" class="generalInput" />
+                                <button id="saveResetBtn" class="uncheckedButton text generalButton">
+                                    Reset!
+                                </button>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="presetDiv">
+                            <button id="Preset1_Button" class="uncheckedButton text generalButton" hidden></button>
+                            <button id="Preset2_Button" class="uncheckedButton text generalButton" hidden></button>
+                            <button id="Preset3_Button" class="uncheckedButton text generalButton" hidden></button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="runButtons">
+                            <button id="start_Button" class="uncheckedButton text generalButton">
+                                &#x25B6; Run the simulation!
                             </button>
-                        </span>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="presetDiv">
-                        <button id="Preset1_Button" class="uncheckedButton text generalButton" hidden></button>
-                        <button id="Preset2_Button" class="uncheckedButton text generalButton" hidden></button>
-                        <button id="Preset3_Button" class="uncheckedButton text generalButton" hidden></button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="runButtons">
-                        <button id="start_Button" class="uncheckedButton text generalButton">
-                            &#x25B6; Run the simulation!
-                        </button>
-                        <button id="stop_Button" class="uncheckedButton text generalButton">&#x25A0; Stop!</button>
-                        <button id="autoRun_Button" class="checkedButton text generalButton">
-                            Auto run!
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                            <button id="stop_Button" class="uncheckedButton text generalButton">&#x25A0; Stop!</button>
+                            <button id="autoRun_Button" class="checkedButton text generalButton">
+                                Auto run!
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="resultsPanel" class="dark-light text">
+            <tbody>
+                <tr>
+                    <td>
+                        <div id="killsDiv">
+                            Enemies killed: <span id="enemiesKilled">0</span>
+                            Trimps killed: <span id="trimpsKilled">0</span>
+                            WR: <span id="winRate">0</span>%
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </body>
 
 </html>

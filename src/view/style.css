@@ -68,26 +68,24 @@ body {
 }
 
 /* Main panels */
+
 #itemsPanel {
     display: flex;
     flex-direction: row;
-    margin-right: 2em;
 }
 
-#simulationPanel {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0.3em 1em;
+#panel2 {
     margin-left: 2em;
 }
 
+#panel3 {
+    margin-left: 2em;
+}
 
 /* Items */
 
 .partTable {
-    padding: 0.5em 1em;
+    margin: 0.5em 1em;
     table-layout: fixed;
 }
 
@@ -122,10 +120,10 @@ body {
 
 #bonusesPanel {
     margin-bottom: 2em;
+    padding: 0.5em 1em;
 }
 
 #oneTimersPanel {
-    padding: 0.3em 1em;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -140,8 +138,8 @@ body {
     align-self: auto;
 }
 
-#ringDiv {
-    padding: 0.3em 1em;
+#ringPanel {
+    margin-top: 0.3em;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -162,7 +160,7 @@ body {
 }
 
 #mutationsPanel {
-    padding: 0.3em 1em;
+    margin-top: 0.3em;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -252,6 +250,30 @@ body {
 
 /* Simulation */
 
+#simulationPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em 1em;
+    margin-bottom: 2em;
+}
+
 #saveImportInp {
     width: 7em;
+}
+
+
+/* Results */
+
+#resultsPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3em 1em;
+}
+
+#killsDiv {
+    
 }

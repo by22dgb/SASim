@@ -29,8 +29,7 @@ export function getRing() {
     const chances = autoBattle.getRingStatusChance();
     return {
         bonus: autoBattle.oneTimers.The_Ring,
-        stats: autoBattle.rings,
-        mods: mods,
+        stats: autoBattle.rings as any,
         chances: chances,
     };
 }
@@ -59,7 +58,7 @@ export function clearBonuses() {
     const mods = getPossibleRingMods();
     ring.bonus.owned = false;
     ring.stats.level = 0;
-    ring.mods = [];
+    ring.stats.mods = [];
 
     updateInput("Ring", 0);
     for (const key of Object.keys(mods)) {
@@ -93,17 +92,17 @@ export function equipOneTimer(
 export function equipRingMods(ringMods: string[]) {
     const ring = getRing();
 
-    // Backend
-    const index = ring.mods.indexOf(ringMods);
-    if (index === -1) {
-        ring.mods.push(ringMods);
-    } else {
-        ring.mods.splice(index);
-    }
+    for (const mod of ringMods) {
+        // Backend
+        const index = ring.stats.mods.indexOf(mod);
+        if (index === -1) {
+            ring.stats.mods.push(mod);
+        } else {
+            ring.stats.mods.splice(index);
+        }
 
-    // Frontend
-    for (const value of Object.values(ringMods)) {
-        updateButton(value);
+        // Frontend
+        updateButton(mod);
     }
 }
 
@@ -111,12 +110,12 @@ export function unequipRingMods() {
     const ring = getRing();
 
     // Frontend
-    for (const value of Object.values(ring.mods[0])) {
+    for (const value of Object.values(ring.stats.mods)) {
         updateButton(value as string);
     }
 
     // Backend
-    ring.mods = [];
+    ring.stats.mods = [];
 }
 
 export function setRingLevel(level: number, frontendCall?: boolean) {

@@ -5,13 +5,14 @@ Controller for the levels, effects and resistance divs.
 import { builderData } from "../data/buildData.js";
 import { IABTypes } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";
-import { updateLimbs } from "../view/levelsView.js";
+import { updateInput } from "../utility.js";
+import { updateEffects, updateLimbs } from "../view/levelsView.js";
 import { getEnemyLevel } from "./autoBattleController.js";
+import { updateResistances } from "./resistanceController.js";
 
 export function getActiveEffects() {
-    // TODO: Fix this
     const level = getEnemyLevel();
-    const effects = autoBattle.getEffects(100);
+    const effects = autoBattle.getEffects(level);
     if (effects === undefined) {
         return new Map();
     }
@@ -22,4 +23,27 @@ export function changeLimbs(item: IABTypes["items"][keyof IABTypes["items"]]) {
     const increment = item.equipped ? 1 : -1;
     builderData.limbs += increment;
     updateLimbs(increment);
+}
+
+export function setEnemyLevel(level: number, frontendCall?: boolean) {
+    // Backend
+    autoBattle.enemyLevel = level;
+
+    // Frontend
+    if (!frontendCall) {
+        updateInput("currentEnemyLevel", level);
+        updateEffects();
+    }
+
+    updateResistances();
+}
+
+export function setMaxEnemyLevel(level: number, frontendCall?: boolean) {
+    // Backend
+    autoBattle.maxEnemyLevel = level;
+
+    // Frontend
+    if (!frontendCall) {
+        updateInput("maxEnemyLevel", level);
+    }
 }

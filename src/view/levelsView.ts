@@ -3,7 +3,11 @@ Levels view panel, used for setting levels and displaying relevant information.
 This file should not interact directly with the data layer.
 */
 
-import { getActiveEffects } from "../controller/levelsController.js";
+import {
+    getActiveEffects,
+    setEnemyLevel,
+    setMaxEnemyLevel,
+} from "../controller/levelsController.js";
 import { capitaliseFirstLetter, getHTMLElement } from "../utility.js";
 
 export function levelsView() {
@@ -19,16 +23,31 @@ function setWidth() {
     levelsPanel.style.width = bonusesPanel.offsetWidth + "px";
 }
 
-function setupMaxLevelInput() {}
+function setupMaxLevelInput() {
+    const input = getHTMLElement("#maxEnemyLevel_Input") as HTMLInputElement;
+    input.addEventListener("change", () => {
+        const value = parseInt(input.value);
+        setMaxEnemyLevel(value, true);
+    });
+}
 
-function setupEnemyLevelInput() {}
+function setupEnemyLevelInput() {
+    const input = getHTMLElement(
+        "#currentEnemyLevel_Input"
+    ) as HTMLInputElement;
+    input.addEventListener("change", () => {
+        const value = parseInt(input.value);
+        setEnemyLevel(value, true);
+        updateEffects();
+    });
+}
 
 export function updateLimbs(increment: -1 | 1) {
     const limbsDiv = getHTMLElement("#limbsUsed");
     limbsDiv.innerHTML = (Number(limbsDiv.innerHTML) + increment).toString();
 }
 
-function updateEffects() {
+export function updateEffects() {
     const effectsDiv = document.querySelector("#effectsDiv")!;
     const effects = getActiveEffects();
     let effectsString = "";

@@ -90,6 +90,10 @@ export function printAllInfo() {
     // Returns all info for human eye, interacts directly with autoBattle object for safety, use for testing, do not use for anything useful.
     const info = [];
 
+    const maxEnemyLevel = autoBattle.maxEnemyLevel;
+    const enemyLevel = autoBattle.enemyLevel;
+    info.push(`Levels: ${maxEnemyLevel} ${enemyLevel}`);
+
     const uneqItems = {} as any;
     const items = {} as any;
     for (const [item, value] of Object.entries(autoBattle.items)) {

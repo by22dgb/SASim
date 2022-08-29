@@ -15,7 +15,7 @@ import {
     setRingLevel,
 } from "../controller/bonusesController.js";
 import { addHover, capitaliseFirstLetter, prettyNumber } from "../utility.js";
-import { IRing, IABTypes } from "../data/buildString.js";
+import { IABTypes } from "../data/buildString.js";
 
 export function bonusesView() {
     setupOneTimerBtns();

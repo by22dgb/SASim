@@ -71,6 +71,11 @@ function partItemsDiv(parts: number, ind: number) {
         div.appendChild(descriptionDiv);
         addHover(button, descriptionDiv);
     }
+
+    // Styling
+    if (ind !== 0) {
+        table.style.marginLeft = "0em";
+    }
     return table;
 }
 
