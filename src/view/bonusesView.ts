@@ -102,7 +102,7 @@ function addChangeForRingButton(button: HTMLButtonElement, mod: string[]) {
 }
 
 function addChangeForRingInput(input: HTMLInputElement) {
-    input.addEventListener("change", () => {
+    input.addEventListener("input", () => {
         const value = parseInt(input.value);
         setRingLevel(value, true);
     });

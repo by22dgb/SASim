@@ -86,7 +86,7 @@ function addChangeForItemButton(button: HTMLButtonElement, item: any) {
 }
 
 function addChangeForLevel(input: HTMLInputElement, item: any) {
-    input.addEventListener("change", () => {
+    input.addEventListener("input", () => {
         const value = parseInt(input.value);
         levelItem(item, value, true);
     });

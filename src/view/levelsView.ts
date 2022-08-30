@@ -25,7 +25,7 @@ function setWidth() {
 
 function setupMaxLevelInput() {
     const input = getHTMLElement("#maxEnemyLevel_Input") as HTMLInputElement;
-    input.addEventListener("change", () => {
+    input.addEventListener("input", () => {
         const value = parseInt(input.value);
         setMaxEnemyLevel(value, true);
     });
@@ -35,7 +35,7 @@ function setupEnemyLevelInput() {
     const input = getHTMLElement(
         "#currentEnemyLevel_Input"
     ) as HTMLInputElement;
-    input.addEventListener("change", () => {
+    input.addEventListener("input", () => {
         const value = parseInt(input.value);
         setEnemyLevel(value, true);
         updateEffects();
