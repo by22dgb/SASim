@@ -5,10 +5,13 @@ Controller for the resitance and chance info.
 import { getEnemyLevel } from "./autoBattleController.js";
 import { getItem, getItems } from "./itemsController.js";
 import { enemy, huffy, shankInfo } from "../data/resistanceData.js";
-import { autoBattle } from "../data/object.js";
 import { getRing } from "./bonusesController.js";
-import { updateShank } from "../view/levelsView.js";
 import { getActiveEffects } from "./levelsController.js";
+import {
+    uiUpdateChances,
+    uiUpdateResistances,
+    updateShank,
+} from "../view/levelsView.js";
 
 const modifierFunctions = {
     items: getItems(),
@@ -146,13 +149,13 @@ export function readEnemy() {
 
         // Chances
         enemy.bleed = effects.has("Bloodletting")
-            ? level * 3 * (2 - Math.pow(0.5, effects.get("Bloodletting")) - 1)
+            ? level * 3 * (2 - Math.pow(0.5, effects.get("Bloodletting") - 1))
             : 0;
         enemy.poison = effects.has("Poisoning")
-            ? level * 3 * (2 - Math.pow(0.5, effects.get("Poisoning")) - 1)
+            ? level * 3 * (2 - Math.pow(0.5, effects.get("Poisoning") - 1))
             : 0;
         enemy.shock = effects.has("Shocking")
-            ? level * 3 * (2 - Math.pow(0.5, effects.get("Shocking")) - 1)
+            ? level * 3 * (2 - Math.pow(0.5, effects.get("Shocking") - 1))
             : 0;
 
         // Resistances
@@ -165,13 +168,14 @@ export function readEnemy() {
     const shank = Math.max(enemy.bleed, enemy.poison, enemy.shock);
     if (shank > 0) {
         enemy.shank = shank * 0.25;
-        enemy.shankedEffect = [
-            enemy.poison === shank,
-            enemy.bleed === shank,
-            enemy.shock === shank,
-        ];
+        if (enemy.poison === shank) {
+            enemy.shankedEffect = "poison";
+        } else if (enemy.bleed === shank) {
+            enemy.shankedEffect = "bleed";
+        } else if (enemy.shock === shank) {
+            enemy.shankedEffect = "shock";
+        }
     }
-    updateShank("enemy", enemy.shankedEffect);
 }
 
 export function readHuffy() {
@@ -259,7 +263,11 @@ function calculateShank() {
     shankInfo.bleed[1] = shankedBleed ? shankInfo.bleed[1] : huffy.bleedMax;
     shankInfo.shock[1] = shankedShock ? shankInfo.shock[1] : huffy.shockMax;
     shankInfo.shanked = true;
-    updateShank("huffy", [shankedPoison, shankedBleed, shankedShock]);
+    huffy.shankedEffect = shankedPoison
+        ? "poison"
+        : shankedBleed
+        ? "bleed"
+        : "shock";
 }
 
 export function updateResistances() {
@@ -267,6 +275,7 @@ export function updateResistances() {
     readEnemy();
     resetHuffy();
     readHuffy();
-    console.log(huffy);
-    console.log(enemy);
+    uiUpdateResistances(enemy);
+    uiUpdateChances(huffy, enemy, shankInfo);
+    updateShank(shankInfo, huffy.shankedEffect, enemy.shankedEffect);
 }

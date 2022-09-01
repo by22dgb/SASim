@@ -79,15 +79,27 @@
             <tr>
                 <td>
                     Huffy
-                    <div id="huffyChancesDiv"></div>
+                    <div id="huffyChanceDiv">
+                        <div hidden>Poison chance: <span id="huffyPoisonChance"></span>%</div>
+                        <div hidden>Bleed chance: <span id="huffyBleedChance"></span>%</div>
+                        <div hidden>Shock chance: <span id="huffyShockChance"></span>%</div>
+                    </div>
                     <div id="huffyShank" hidden>Shank reduces: <span></span></div>
                 </td>
             </tr>
             <tr>
                 <td>
                     Enemy
-                    <div id="enemyResistancesDiv"></div>
-                    <div id="enemyChancesDiv"></div>
+                    <div id="enemyResistanceDiv">
+                        <div>Poison resist: <span id="enemyPoisonResist">1</span>%</div>
+                        <div>Bleed resist: <span id="enemyBleedResist">1</span>%</div>
+                        <div>Shock resist: <span id="enemyShockResist">1</span>%</div>
+                    </div>
+                    <div id="enemyChanceDiv">
+                        <div hidden>Poison chance: <span id="enemyPoisonChance"></span>%</div>
+                        <div hidden>Bleed chance: <span id="enemyBleedChance"></span>%</div>
+                        <div hidden>Shock chance: <span id="enemyShockChance"></span>%</div>
+                    </div>
                     <div id="enemyShank" hidden>Shank reduces: <span></span></div>
                 </td>
             </tr>
@@ -136,11 +148,21 @@
             <tbody>
                 <tr>
                     <td>
+                        <div id="simTimeDiv">Time processed: <span id="timeProcessed"></span> <span id="isRunning">&#9208;</span> <span id="finalTime"></span></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <div id="killsDiv">
                             Enemies killed: <span id="enemiesKilled">0</span>
                             Trimps killed: <span id="trimpsKilled">0</span>
                             WR: <span id="winRate">0</span>%
                         </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
                     </td>
                 </tr>
             </tbody>

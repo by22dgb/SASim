@@ -247,6 +247,16 @@ body {
     padding: 0.3em 1em;
 }
 
+#enemyResistanceDiv {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: stretch;
+    align-items: flex-start;
+    padding: 0.2em;
+}
+
 
 /* Simulation */
 

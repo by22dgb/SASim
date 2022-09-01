@@ -6,7 +6,7 @@ export interface IEnemy {
     resistPoison: number;
     resistShock: number;
     shank: number;
-    shankedEffect: boolean[];
+    shankedEffect: "poison" | "bleed" | "shock" | "none";
 }
 
 export interface IHuffy {
@@ -24,6 +24,7 @@ export interface IHuffy {
     resistPoison: number;
     resistShock: number;
     warningAegis: boolean;
+    shankedEffect: "poison" | "bleed" | "shock" | "none";
 }
 
 export interface IShank {
@@ -43,7 +44,7 @@ export const enemy: IEnemy = {
     resistPoison: 0,
     resistShock: 0,
     shank: 0,
-    shankedEffect: [false, false, false],
+    shankedEffect: "none",
 };
 
 export const huffy: IHuffy = {
@@ -61,6 +62,7 @@ export const huffy: IHuffy = {
     shockMax: 0,
     shockMin: 0,
     warningAegis: false,
+    shankedEffect: "none",
 };
 
 export const shankInfo: IShank = {

@@ -94,3 +94,23 @@ function setupStopBtn(button: HTMLButtonElement) {
         stopSimulation();
     });
 }
+
+export function updateTimeSpent(
+    isRunning: boolean,
+    timeProcessed: number,
+    finalTime: number
+) {
+    const timeProcessedSpan = getHTMLElement("#timeProcessed");
+    const finalTimeSpan = getHTMLElement("#finalTime");
+    const isRunningSpan = getHTMLElement("#isRunning");
+
+    if (isRunning) {
+        timeProcessedSpan.innerHTML = timeProcessed.toString();
+        finalTimeSpan.innerHTML = finalTime.toString();
+        isRunningSpan.innerHTML = "/";
+    } else {
+        timeProcessedSpan.innerText = "";
+        finalTimeSpan.innerHTML = "";
+        isRunningSpan.innerHTML = "&#9208;";
+    }
+}
