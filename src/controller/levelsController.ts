@@ -47,3 +47,10 @@ export function setMaxEnemyLevel(level: number, frontendCall?: boolean) {
         updateInput("maxEnemyLevel", level);
     }
 }
+
+export function checkMaxLevel(level: number) {
+    const maxLevel = autoBattle.maxEnemyLevel;
+    if (level > maxLevel) {
+        setMaxEnemyLevel(level);
+    }
+}

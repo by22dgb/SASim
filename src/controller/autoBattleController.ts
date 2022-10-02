@@ -6,10 +6,27 @@ Get information about the simulation, start and stop it.
 import { IABTypes } from "../data/buildString.js";
 import { u2Mutations } from "../data/mutations.js";
 import { autoBattle } from "../data/object.js";
-import { updateTimeSpent } from "../view/simulationView.js";
+import { updateLiveResults } from "../view/simulationView.js";
 import { getOneTimersSA, getRing } from "./bonusesController.js";
-import { gameController } from "./gameController.js";
+import { gameController, getResults } from "./gameController.js";
 import { getItems } from "./itemsController.js";
+
+export interface IResults {
+    isRunning: boolean;
+    timeUsed: number;
+    runtime: number;
+    enemiesKilled: number;
+    trimpsKilled: number;
+    gameDust: number;
+    baseDust: number;
+    clearingTime: number;
+    remainingTime: number;
+    fightTime: number;
+    killTime: number;
+    enemyHealth: number;
+    enemyHealthLoss: number;
+    bestFight: string;
+}
 
 const controllerConfig = gameController.getDefaultConfig();
 
@@ -29,11 +46,8 @@ export function stopSimulation() {
 }
 
 function liveUpdate() {
-    updateTimeSpent(
-        gameController.isRunning(),
-        gameController.getTimeUsed(),
-        gameController.runtime
-    );
+    const results = getResults();
+    updateLiveResults(results);
 }
 
 function runSimulation() {

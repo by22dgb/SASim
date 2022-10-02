@@ -24,7 +24,7 @@
                     <td>
                         <div id="ringPanel">
                             <div id="ringModsDiv"></div>
-                            <input type="number" value="0" class="generalInput text" id="Ring_Input" />
+                            <input type="number" min="0" value="0" class="generalInput text" id="Ring_Input" />
                         </div>
                     </td>
                 </tr>
@@ -40,7 +40,8 @@
                 <tr>
                     <td>
                         <div id="buildCostDiv">
-                            Build cost: <div><span id="dustCost">0</span> Dust &emsp; <span id="shardsCost">0</span> Shards</div>
+                            Build cost: <div><span id="dustCost">0</span> Dust &emsp; <span id="shardsCost">0</span>
+                                Shards</div>
                         </div>
                     </td>
                 </tr>
@@ -56,7 +57,7 @@
                     <td>
                         <div id="maxLevelDiv">
                             Max enemy level:
-                            <input type="number" value="1" class="generalInput text" id="maxEnemyLevel_Input">
+                            <input type="number" min="1" value="1" class="generalInput text" id="maxEnemyLevel_Input">
                         </div>
                     </td>
                 </tr>
@@ -64,7 +65,7 @@
                     <td>
                         <div id="currentLevelDiv">
                             Set level:
-                            <input type="number" value="1" class="generalInput text" id="currentEnemyLevel_Input">
+                            <input type="number" min="1" value="1" class="generalInput text" id="currentEnemyLevel_Input">
                         </div>
                     </td>
                 </tr>
@@ -131,7 +132,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div id="runButtons">
+                        <div id="runBtns">
                             <button id="start_Button" class="uncheckedButton text generalButton">
                                 &#x25B6; Run the simulation!
                             </button>
@@ -142,27 +143,69 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        <div>
+                            Simulate: <input type="number" min="1" value="8" class="generalInput text" id="simulations_Input"> hour(s).
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <table id="resultsPanel" class="dark-light text">
             <tbody>
                 <tr>
                     <td>
-                        <div id="simTimeDiv">Time processed: <span id="timeProcessed"></span> <span id="isRunning">&#9208;</span> <span id="finalTime"></span></div>
+                        <div id="simTimeDiv">Time processed: <span id="timeProcessed"></span> <span
+                                id="isRunning">&#9208;</span> <span id="finalTime"></span></div>
                     </td>
                 </tr>
                 <tr>
                     <td>
                         <div id="killsDiv">
-                            Enemies killed: <span id="enemiesKilled">0</span>
-                            Trimps killed: <span id="trimpsKilled">0</span>
-                            WR: <span id="winRate">0</span>%
+                            <div>Enemies killed: <span id="enemiesKilled">0</span></div>
+                            <div>Trimps killed [WR]: <span id="trimpsKilled">0</span> [<span id="winRate">0</span>%]</div>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-
+                        <div id="dustGainsDiv">
+                            <div>Dust: <span id="gameDust">0</span> D/s [<span id="baseDust">0</span> D/s]</div>
+                            <div>Shards: <span id="shardsDust">0</span> S/s [<span id="baseShards">0</span> S/s]</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="clearingTimeDiv">
+                            <div>Clearing time: <span id="clearingTime">0</span></div>
+                            <div>Remaining time: <span id="remainingTime">0</span></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="fightInformationDiv">
+                            <div>Average fight time: <span id="fightTime">0</span></div>
+                            <div>Average kill time: <span id="killTime">0</span></div>
+                            <div>Average enemy health: <span id="enemyHealth">0</span></div>
+                            <div>Average enemy health left on losses: <span id="enemyHealthLoss">0</span></div>
+                            <div>Best fight: <span id="bestFight">-</span></div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table id="calcPanel" class="dark-light text">
+            <tbody>
+                <tr>
+                    <td>
+                        <div id="calcBtns">
+                            <div><button class="uncheckedButton text generalButton" id="bestUpgradesBtn">Best upgrades!</button><button class="uncheckedButton text generalButton" id="bestDowngradesBtn">Best downgrades!</button></div>
+                            <div><button class="uncheckedButton text generalButton" id="bestRingModsBtn">Best ring mods!</button></div>
+                            <div><button class="uncheckedButton text generalButton" id="timeAffordBtn">Time to afford!</button><select class="generalInput text" id="timeAffordSelect"></select></div>
+                        </div>
                     </td>
                 </tr>
             </tbody>

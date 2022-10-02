@@ -3,76 +3,62 @@ Controller for the autobattle simulation.
 Should only be interacted with from the autoBattleController and index.
 */
 
-
+import { u2Mutations } from "../data/mutations.js";
 import { autoBattle } from "../data/object.js";
+import { convertMilliSecondsToTime } from "../utility.js";
+import { IResults } from "./autoBattleController.js";
 
 interface IConfig {
-    fights: number; // Max enemy + huffy deaths
     framesPerChunk: number;
     onSimInterrupt: Function | null; // Function to call when simulation is interrupted
     onSimComplete: Function | null; // Function to call when simulation is complete
     onUpdate: Function | null; // Function to call when simulation is updated
-    runtime: number; // Max runtime in seconds
+    runtime: number; // Max runtime in milliseconds
     updateInterval: number; // Update interval in milliseconds
 }
 
 export const gameController = {
     framesPerChunk: 200,
-    battles: 1000,
     battleCount: 0,
     complete: false,
     interval: null as number | null, // Interval ID
-    lastFrame: 0,
     halt: false,
     onSimInterrupt: null as Function | null,
     onSimComplete: null as Function | null,
     onUpdate: null as Function | null,
     resultBest: { enemy: 1, time: 0, win: false },
-    resultCounter: { fights: 0, healthSum: 0, loses: 0 },
-    runtime: 8 * 60 * 60,
-    modificated: true,
-    timeStart: 0,
-    timeUsed: 0,
-    updateInterval: 1000,
-    lastUpdate: Date.now(),
+    resultCounter: { fights: 0, healthSum: 0, losses: 0 },
+    runtime: 8 * 60 * 60 * 1000, // 8 hours
+    modified: true,
+    lastUpdate: 0,
+    updateInterval: 4 * 60 * 60 * 1000, // 4 hours
 
     getDefaultConfig(): IConfig {
         return {
-            fights: 1000,
             framesPerChunk: 200,
             onSimInterrupt: null,
             onSimComplete: null,
             onUpdate: null,
-            runtime: 8 * 60 * 60,
-            updateInterval: 1000,
+            runtime: 8 * 60 * 60 * 1000, // 8 hours
+            updateInterval: 4 * 60 * 60 * 1000, // 4 hours
         };
     },
 
-    getProgress(): number {
-        const progress = Math.max(
-            autoBattle.lootAvg.counter / 1000 / this.runtime,
-            this.battleCount / this.battles
-        );
+    getProgress() {
+        const progress = autoBattle.lootAvg.counter / this.runtime;
         return this.complete ? 1 : progress;
     },
 
-    getTimeUsed(): number {
-        const interval =
-            this.interval == null ? 0 : Date.now() - this.timeStart;
-        return this.timeUsed + interval;
-    },
-
-    isRunning(): boolean {
+    isRunning() {
         return this.interval != null;
     },
 
     modifiedAutoBattle() {
         this.halt = true;
-        this.modificated = true;
+        this.modified = true;
     },
 
     configure(config: IConfig) {
-        this.battles = config.fights;
         this.framesPerChunk = config.framesPerChunk;
         this.onSimInterrupt = config.onSimInterrupt;
         this.onSimComplete = config.onSimComplete;
@@ -84,27 +70,23 @@ export const gameController = {
     resetStats() {
         autoBattle.resetAll();
         this.resultBest = { enemy: 1, time: 0, win: false };
-        this.resultCounter = { fights: 0, healthSum: 0, loses: 0 };
-        this.timeUsed = 0;
+        this.resultCounter = { fights: 0, healthSum: 0, losses: 0 };
     },
 
     start() {
         if (this.interval != null) {
             return; // Already running
         }
-        if (this.modificated) {
+        if (this.modified) {
             this.resetStats();
-            this.modificated = false;
+            this.modified = false;
         }
 
         this.battleCount =
             autoBattle.sessionEnemiesKilled + autoBattle.sessionTrimpsKilled;
         this.complete = false;
         this.halt = false;
-        this.lastUpdate = Date.now();
-        this.timeStart = this.lastUpdate;
         this.interval = setInterval(this.loop, 0);
-        
     },
 
     stop() {
@@ -112,7 +94,7 @@ export const gameController = {
     },
 
     loop() {
-        // Use gameController instead of this to reference the correct object.
+        // Use gameController instead of "this" to reference the correct object.
         for (
             let frame = 0;
             !gameController.halt && frame < gameController.framesPerChunk;
@@ -120,19 +102,21 @@ export const gameController = {
         ) {
             autoBattle.update();
             gameController.complete =
-                autoBattle.lootAvg.counter / 1000 >= gameController.runtime ||
-                gameController.battleCount >= gameController.battles;
-                gameController.halt == gameController.complete;
+                autoBattle.lootAvg.counter >= gameController.runtime;
+            gameController.halt = gameController.complete;
         }
 
-        const now = Date.now();
         if (gameController.halt && gameController.interval) {
             clearInterval(gameController.interval);
             gameController.interval = null;
-            gameController.timeUsed = now - gameController.timeStart;
         }
-        if (gameController.halt || now - gameController.lastUpdate >= gameController.updateInterval) {
-            gameController.lastUpdate = now;
+
+        const newUpdate = Math.floor(
+            autoBattle.lootAvg.counter / gameController.updateInterval
+        );
+
+        if (gameController.halt || newUpdate > gameController.lastUpdate) {
+            gameController.lastUpdate = newUpdate;
             if (gameController.onUpdate) {
                 gameController.onUpdate();
             }
@@ -161,7 +145,7 @@ export const gameController = {
 
     battleFailure() {
         ++this.resultCounter.fights;
-        ++this.resultCounter.loses;
+        ++this.resultCounter.losses;
         const enemy = autoBattle.enemy as any;
         const enemyHealthPercentage = Math.max(
             0,
@@ -189,7 +173,86 @@ export const gameController = {
     },
 };
 
+export function getResults(): IResults {
+    const enemyLevel = autoBattle.enemyLevel;
+    const toKill = enemyCount(enemyLevel);
+
+    // Standards
+    const assumeTomeLevel = 43;
+    const assumeDustierLevel = 85;
+
+    // Kills
+    const enemiesKilled = autoBattle.sessionEnemiesKilled;
+    const trimpsKilled = autoBattle.sessionTrimpsKilled;
+
+    // Dust gains
+    let baseDust = autoBattle.getDustPs();
+    const gameDust = baseDust;
+
+    // Remove multipliers
+    baseDust = autoBattle.scruffyLvl21 ? baseDust / 5 : baseDust;
+    if (enemyLevel < assumeDustierLevel) {
+        baseDust = u2Mutations.tree.Dust.purchased
+            ? baseDust / (1.25 + (u2Mutations.tree.Dust2.purchased ? 0.25 : 0))
+            : baseDust;
+
+        if (enemyLevel < assumeTomeLevel) {
+            baseDust = autoBattle.oneTimers.Dusty_Tome.owned
+                ? baseDust / (1 + 0.05 * (autoBattle.maxEnemyLevel - 1))
+                : baseDust;
+        }
+    }
+
+    // Times
+    const timeUsed = autoBattle.lootAvg.counter;
+    const killTime = timeUsed / enemiesKilled;
+    const fightTime = timeUsed / (enemiesKilled + trimpsKilled);
+    const clearingTime =
+        (toKill / autoBattle.sessionEnemiesKilled) * autoBattle.lootAvg.counter;
+    const remainingTime = toKill * killTime; // TODO: Add support for save loading
+
+    // Health
+    const resultCounter = gameController.resultCounter;
+    const enemyHealth = Math.round(
+        resultCounter.healthSum / resultCounter.fights
+    );
+    const enemyHealthLoss = Math.round(
+        resultCounter.healthSum / resultCounter.losses
+    );
+    // Best fight
+    const resultBest = gameController.resultBest;
+    const bestFight = resultBest.win
+        ? "win in " + convertMilliSecondsToTime(resultBest.time)
+        : "loss in " +
+          convertMilliSecondsToTime(resultBest.time) +
+          " with " +
+          Math.round(resultBest.enemy * 100 * 10) / 10 +
+          "% enemy health left";
+
+    return {
+        isRunning: gameController.isRunning(),
+        timeUsed,
+        runtime: gameController.runtime,
+        enemiesKilled,
+        trimpsKilled,
+        gameDust,
+        baseDust,
+        killTime,
+        clearingTime,
+        remainingTime,
+        fightTime,
+        enemyHealth,
+        enemyHealthLoss,
+        bestFight,
+    };
+}
+
 export function setupController() {
     autoBattle.onEnemyDied = gameController.battleSuccess.bind(gameController);
     autoBattle.onTrimpDied = gameController.battleFailure.bind(gameController);
 }
+
+const enemyCount = (level: number) => {
+    if (level < 20) return 10 * level;
+    return 190 + 15 * (level - 19);
+};

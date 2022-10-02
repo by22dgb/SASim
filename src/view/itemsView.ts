@@ -54,6 +54,7 @@ function partItemsDiv(parts: number, ind: number) {
 
         const input = document.createElement("input");
         input.type = "number";
+        input.min = "1";
         input.value = "1";
         input.classList.add("equipInput", "generalInput", "small-text");
         input.id = itemName + "_Input";

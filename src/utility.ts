@@ -82,3 +82,26 @@ function hideHover(element: HTMLElement) {
 export function prettyNumber(number: number) {
     return prettify(number);
 }
+
+export function convertSecondsToTime(seconds: number) {
+    if (!isFinite(seconds)) return "♾️";
+
+    // Seconds, minutes, hours, days and years
+    const s = +(seconds % 60).toFixed(2);
+    const m = Math.floor(seconds / 60) % 60;
+    const h = Math.floor(seconds / 3600) % 24;
+    const d = Math.floor(seconds / 86400) % 365;
+    const y = Math.floor(seconds / 31536000);
+    // Return the time
+    return (
+        (y > 0 ? y + "y " : "") +
+        (d > 0 ? d + "d " : "") +
+        (h > 0 ? h + "h " : "") +
+        (m > 0 ? m + "m " : "") +
+        (s > 0 ? s + "s " : "")
+    );
+}
+
+export function convertMilliSecondsToTime(ms: number) {
+    return convertSecondsToTime(ms / 1000);
+}

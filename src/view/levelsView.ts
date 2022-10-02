@@ -5,6 +5,7 @@ This file should not interact directly with the data layer.
 
 import { getItem } from "../controller/itemsController.js";
 import {
+    checkMaxLevel,
     getActiveEffects,
     setEnemyLevel,
     setMaxEnemyLevel,
@@ -40,6 +41,7 @@ function setupEnemyLevelInput() {
     input.addEventListener("input", () => {
         const value = parseInt(input.value);
         setEnemyLevel(value, true);
+        checkMaxLevel(value);
         updateEffects();
     });
 }
@@ -252,9 +254,12 @@ export function uiUpdateChances(
     hfBleedChanceSpan.parentElement!.hidden = !huffy.canBleed;
     hfShockChanceSpan.parentElement!.hidden = !huffy.canShock;
 
-    enPoisonChanceSpan.innerHTML = enPoisonChance.toString();
-    enBleedChanceSpan.innerHTML = enBleedChance.toString();
-    enShockChanceSpan.innerHTML = enShockChance.toString();
+    enPoisonChance = enPoisonChance.map((x) => Math.round(x));
+    enBleedChance = enBleedChance.map((x) => Math.round(x));
+    enShockChance = enShockChance.map((x) => Math.round(x));
+    enPoisonChanceSpan.innerHTML = enPoisonChance.join("% to ");
+    enBleedChanceSpan.innerHTML = enBleedChance.join("% to ");
+    enShockChanceSpan.innerHTML = enShockChance.join("% to ");
     enPoisonChanceSpan.parentElement!.hidden = enemy.poison <= 0;
     enBleedChanceSpan.parentElement!.hidden = enemy.bleed <= 0;
     enShockChanceSpan.parentElement!.hidden = enemy.shock <= 0;

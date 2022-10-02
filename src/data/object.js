@@ -3672,7 +3672,7 @@ const getRandomIntSeeded = (seed, minIncl, maxExcl) => {
 
 export function prettify(number) {
     var numberTmp = number;
-    if (!isFinite(number)) return "<span class='icomoon icon-infinity'></span>";
+    if (!isFinite(number)) return "♾️";
     if (number >= 1000 && number < 10000) return Math.floor(number);
     if (number == 0) return prettifySub(0);
     if (number < 0) return "-" + prettify(-number);
