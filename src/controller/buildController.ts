@@ -29,19 +29,20 @@ export function buildSave(saveString: IABTypes) {
     buildItems(saveString.items);
 
     // Set ring
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ringMods = saveString.ring.mods as any as string[];
     equipRingMods(ringMods);
     setRingLevel(saveString.ring.level);
 
     // Set oneTimers
     const oneTimers = getOneTimersSA(saveString);
-    Object.entries(oneTimers).forEach(([key, _]) => {
+    Object.keys(oneTimers).forEach((key) => {
         const name = key as keyof IABTypes["oneTimers"];
         equipOneTimer(name);
     });
 
     // Set mutations
-    Object.entries(saveString.mutations).forEach(([key, _]) => {
+    Object.keys(saveString.mutations).forEach((key) => {
         const name = key as keyof IABTypes["mutations"];
         if (name in u2Mutations.tree) {
             equipMutation(name);
@@ -64,6 +65,7 @@ export function setPresets(presets: typeof autoBattle.presets) {
         const presetName = Object.keys(autoBattle.presets)[
             index
         ] as keyof typeof autoBattle.presets;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const preset = presets[presetName] as any;
         if (preset.length > 0) {
             updatePresetButton(name, index);
@@ -74,8 +76,9 @@ export function setPresets(presets: typeof autoBattle.presets) {
 
 export function loadPreset(buttonName: string) {
     const r = /\d/;
-    const id = Number(buttonName.match(r)!);
+    const id = Number(buttonName.match(r));
     const presetName = ("p" + id) as keyof typeof autoBattle.presets;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const preset = autoBattle.presets[presetName] as any[];
     const newItems: string[] = [];
 
@@ -85,10 +88,11 @@ export function loadPreset(buttonName: string) {
                 case "level":
                     // TODO
                     break;
-                case "ring":
+                case "ring": {
                     const ringMods = row.slice(1);
                     unequipRingMods();
                     equipRingMods(ringMods);
+                }
             }
         } else {
             // Item
@@ -97,7 +101,7 @@ export function loadPreset(buttonName: string) {
     });
 
     const items = Object.entries(getItems());
-    for (const [_, [key, item]] of Object.entries(items)) {
+    for (const [key, item] of Object.values(items)) {
         if (newItems.includes(key) !== item.equipped) {
             const itemName = key as keyof IABTypes["items"];
             equipItem(itemName);

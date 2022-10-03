@@ -1,216 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="build/index.js" type="module" async></script>
+        <link
+            href="https://fonts.googleapis.com/css?family=Lato:300,400,700"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <link rel="stylesheet" href="src/view/index.css" />
+        <link rel="stylesheet" href="src/view/foreground.css" />
+        <link rel="stylesheet" href="src/view/stars.css" />
+        <title>SA Simulator (5.8.0)</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="build/index.js" type="module" async></script>
-    <link rel="stylesheet" href="src/view/style.css" />
-    <title>SA Simulator (5.8.0)</title>
-</head>
-
-<body class="dark">
-    <div id="itemsPanel" class="dark-light text"></div>
-    <div id="panel2">
-        <table id="bonusesPanel" class="dark-light text">
-            <tbody>
-                <tr>
-                    <td>
-                        <div id="oneTimersPanel"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="ringPanel">
-                            <div id="ringModsDiv"></div>
-                            <input type="number" min="0" value="0" class="generalInput text" id="Ring_Input" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="mutationsPanel"></div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table id="infoPanel" class="dark-light text">
-            <tbody>
-                <tr>
-                    <td>
-                        <div id="buildCostDiv">
-                            Build cost: <div><span id="dustCost">0</span> Dust &emsp; <span id="shardsCost">0</span>
-                                Shards</div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="limbsDiv">
-                            Limbs:
-                            <div id="limbsUsed">0</span>
-                            </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="maxLevelDiv">
-                            Max enemy level:
-                            <input type="number" min="1" value="1" class="generalInput text" id="maxEnemyLevel_Input">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="currentLevelDiv">
-                            Set level:
-                            <input type="number" min="1" value="1" class="generalInput text" id="currentEnemyLevel_Input">
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="effectsDiv" class="text"></div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table id="resistancePanel" class="dark-light text">
-            <tr>
-                <td>
-                    Huffy
-                    <div id="huffyChanceDiv">
-                        <div hidden>Poison chance: <span id="huffyPoisonChance"></span>%</div>
-                        <div hidden>Bleed chance: <span id="huffyBleedChance"></span>%</div>
-                        <div hidden>Shock chance: <span id="huffyShockChance"></span>%</div>
-                    </div>
-                    <div id="huffyShank" hidden>Shank reduces: <span></span></div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Enemy
-                    <div id="enemyResistanceDiv">
-                        <div>Poison resist: <span id="enemyPoisonResist">1</span>%</div>
-                        <div>Bleed resist: <span id="enemyBleedResist">1</span>%</div>
-                        <div>Shock resist: <span id="enemyShockResist">1</span>%</div>
-                    </div>
-                    <div id="enemyChanceDiv">
-                        <div hidden>Poison chance: <span id="enemyPoisonChance"></span>%</div>
-                        <div hidden>Bleed chance: <span id="enemyBleedChance"></span>%</div>
-                        <div hidden>Shock chance: <span id="enemyShockChance"></span>%</div>
-                    </div>
-                    <div id="enemyShank" hidden>Shank reduces: <span></span></div>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <div id="panel3">
-        <table id="simulationPanel" class="dark-light text">
-            <tbody>
-                <tr>
-                    <td>
-                        <div id="saveImport">
-                            <span>
-                                <input type="text" id="saveImportInp" placeholder="Import save!" class="generalInput" />
-                                <button id="saveResetBtn" class="uncheckedButton text generalButton">
-                                    Reset!
-                                </button>
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="presetDiv">
-                            <button id="Preset1_Button" class="uncheckedButton text generalButton" hidden></button>
-                            <button id="Preset2_Button" class="uncheckedButton text generalButton" hidden></button>
-                            <button id="Preset3_Button" class="uncheckedButton text generalButton" hidden></button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="runBtns">
-                            <button id="start_Button" class="uncheckedButton text generalButton">
-                                &#x25B6; Run the simulation!
-                            </button>
-                            <button id="stop_Button" class="uncheckedButton text generalButton">&#x25A0; Stop!</button>
-                            <button id="autoRun_Button" class="checkedButton text generalButton">
-                                Auto run!
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div>
-                            Simulate: <input type="number" min="1" value="8" class="generalInput text" id="simulations_Input"> hour(s).
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table id="resultsPanel" class="dark-light text">
-            <tbody>
-                <tr>
-                    <td>
-                        <div id="simTimeDiv">Time processed: <span id="timeProcessed"></span> <span
-                                id="isRunning">&#9208;</span> <span id="finalTime"></span></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="killsDiv">
-                            <div>Enemies killed: <span id="enemiesKilled">0</span></div>
-                            <div>Trimps killed [WR]: <span id="trimpsKilled">0</span> [<span id="winRate">0</span>%]</div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="dustGainsDiv">
-                            <div>Dust: <span id="gameDust">0</span> D/s [<span id="baseDust">0</span> D/s]</div>
-                            <div>Shards: <span id="shardsDust">0</span> S/s [<span id="baseShards">0</span> S/s]</div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="clearingTimeDiv">
-                            <div>Clearing time: <span id="clearingTime">0</span></div>
-                            <div>Remaining time: <span id="remainingTime">0</span></div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div id="fightInformationDiv">
-                            <div>Average fight time: <span id="fightTime">0</span></div>
-                            <div>Average kill time: <span id="killTime">0</span></div>
-                            <div>Average enemy health: <span id="enemyHealth">0</span></div>
-                            <div>Average enemy health left on losses: <span id="enemyHealthLoss">0</span></div>
-                            <div>Best fight: <span id="bestFight">-</span></div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table id="calcPanel" class="dark-light text">
-            <tbody>
-                <tr>
-                    <td>
-                        <div id="calcBtns">
-                            <div><button class="uncheckedButton text generalButton" id="bestUpgradesBtn">Best upgrades!</button><button class="uncheckedButton text generalButton" id="bestDowngradesBtn">Best downgrades!</button></div>
-                            <div><button class="uncheckedButton text generalButton" id="bestRingModsBtn">Best ring mods!</button></div>
-                            <div><button class="uncheckedButton text generalButton" id="timeAffordBtn">Time to afford!</button><select class="generalInput text" id="timeAffordSelect"></select></div>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</body>
-
+    <body>
+        <div id="wrapper">
+            <div id="foreground">
+                <div id="itemsPanel" class="dark-light text"></div>
+                <div id="panel2">
+                    <table id="bonusesPanel" class="dark-light text">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div id="oneTimersPanel"></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="ringPanel">
+                                        <div id="ringModsDiv"></div>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value="0"
+                                            class="generalInput text"
+                                            id="Ring_Input"
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="mutationsPanel"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="infoPanel" class="dark-light text">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div id="buildCostDiv">
+                                        Build cost:
+                                        <div>
+                                            <span id="dustCost">0</span> Dust
+                                            &emsp;
+                                            <span id="shardsCost">0</span>
+                                            Shards
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="limbsDiv">
+                                        Limbs:
+                                        <div id="limbsUsed">0</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="maxLevelDiv">
+                                        Max enemy level:
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value="1"
+                                            class="generalInput text"
+                                            id="maxEnemyLevel_Input"
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="currentLevelDiv">
+                                        Set level:
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value="1"
+                                            class="generalInput text"
+                                            id="currentEnemyLevel_Input"
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="effectsDiv" class="text"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="resistancePanel" class="dark-light text">
+                        <tr>
+                            <td>
+                                Huffy
+                                <div id="huffyChanceDiv">
+                                    <div hidden>
+                                        Poison chance:
+                                        <span id="huffyPoisonChance"></span>%
+                                    </div>
+                                    <div hidden>
+                                        Bleed chance:
+                                        <span id="huffyBleedChance"></span>%
+                                    </div>
+                                    <div hidden>
+                                        Shock chance:
+                                        <span id="huffyShockChance"></span>%
+                                    </div>
+                                </div>
+                                <div id="huffyShank" hidden>
+                                    Shank reduces: <span></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Enemy
+                                <div id="enemyResistanceDiv">
+                                    <div>
+                                        Poison resist:
+                                        <span id="enemyPoisonResist">1</span>%
+                                    </div>
+                                    <div>
+                                        Bleed resist:
+                                        <span id="enemyBleedResist">1</span>%
+                                    </div>
+                                    <div>
+                                        Shock resist:
+                                        <span id="enemyShockResist">1</span>%
+                                    </div>
+                                </div>
+                                <div id="enemyChanceDiv">
+                                    <div hidden>
+                                        Poison chance:
+                                        <span id="enemyPoisonChance"></span>%
+                                    </div>
+                                    <div hidden>
+                                        Bleed chance:
+                                        <span id="enemyBleedChance"></span>%
+                                    </div>
+                                    <div hidden>
+                                        Shock chance:
+                                        <span id="enemyShockChance"></span>%
+                                    </div>
+                                </div>
+                                <div id="enemyShank" hidden>
+                                    Shank reduces: <span></span>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div id="panel3">
+                    <table id="simulationPanel" class="dark-light text">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div id="saveImport">
+                                        <span>
+                                            <input
+                                                type="text"
+                                                id="saveImportInp"
+                                                placeholder="Import save!"
+                                                class="generalInput"
+                                            />
+                                            <button
+                                                id="saveResetBtn"
+                                                class="uncheckedButton text generalButton"
+                                            >
+                                                Reset!
+                                            </button>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="presetDiv">
+                                        <button
+                                            id="Preset1_Button"
+                                            class="uncheckedButton text generalButton"
+                                            hidden
+                                        ></button>
+                                        <button
+                                            id="Preset2_Button"
+                                            class="uncheckedButton text generalButton"
+                                            hidden
+                                        ></button>
+                                        <button
+                                            id="Preset3_Button"
+                                            class="uncheckedButton text generalButton"
+                                            hidden
+                                        ></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="runBtns">
+                                        <button
+                                            id="start_Button"
+                                            class="uncheckedButton text generalButton"
+                                        >
+                                            &#x25B6; Run the simulation!
+                                        </button>
+                                        <button
+                                            id="stop_Button"
+                                            class="uncheckedButton text generalButton"
+                                        >
+                                            &#x25A0; Stop!
+                                        </button>
+                                        <button
+                                            id="autoRun_Button"
+                                            class="checkedButton text generalButton"
+                                        >
+                                            Auto run!
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        Simulate:
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            value="8"
+                                            class="generalInput text"
+                                            id="runtimeInput"
+                                        />
+                                        hour(s).
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="resultsPanel" class="dark-light text">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div id="simTimeDiv">
+                                        Time processed:
+                                        <span id="timeProcessed"></span>
+                                        <span id="isRunning">&#9208;</span>
+                                        <span id="finalTime"></span>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="killsDiv">
+                                        <div>
+                                            Enemies killed:
+                                            <span id="enemiesKilled">0</span>
+                                        </div>
+                                        <div>
+                                            Trimps killed [WR]:
+                                            <span id="trimpsKilled">0</span>
+                                            [<span id="winRate">0</span>%]
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="dustGainsDiv">
+                                        <div>
+                                            Dust:
+                                            <span id="gameDust">0</span> D/s
+                                            [<span id="baseDust">0</span> D/s]
+                                        </div>
+                                        <div>
+                                            Shards:
+                                            <span id="shardsDust">0</span> S/s
+                                            [<span id="baseShards">0</span> S/s]
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="clearingTimeDiv">
+                                        <div>
+                                            Clearing time:
+                                            <span id="clearingTime">0</span>
+                                        </div>
+                                        <div>
+                                            Remaining time:
+                                            <span id="remainingTime">0</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="fightInformationDiv">
+                                        <div>
+                                            Average fight time:
+                                            <span id="fightTime">0</span>
+                                        </div>
+                                        <div>
+                                            Average kill time:
+                                            <span id="killTime">0</span>
+                                        </div>
+                                        <div>
+                                            Average enemy health:
+                                            <span id="enemyHealth">0</span>
+                                        </div>
+                                        <div>
+                                            Average enemy health left on losses:
+                                            <span id="enemyHealthLoss">0</span>
+                                        </div>
+                                        <div>
+                                            Best fight:
+                                            <span id="bestFight">-</span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="calcPanel" class="dark-light text">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div id="calcBtns">
+                                        <div>
+                                            <button
+                                                class="uncheckedButton text generalButton"
+                                                id="bestUpgradesBtn"
+                                            >
+                                                Best upgrades!</button
+                                            ><button
+                                                class="uncheckedButton text generalButton"
+                                                id="bestDowngradesBtn"
+                                            >
+                                                Best downgrades!
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                class="uncheckedButton text generalButton"
+                                                id="bestRingModsBtn"
+                                            >
+                                                Best ring mods!
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button
+                                                class="uncheckedButton text generalButton"
+                                                id="timeAffordBtn"
+                                            >
+                                                Time to afford!</button
+                                            ><select
+                                                class="generalInput text"
+                                                id="timeAffordSelect"
+                                            ></select>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="background">
+                <div id="stars1"></div>
+                <div id="stars2"></div>
+                <div id="stars3"></div>
+            </div>
+        </div>
+    </body>
 </html>

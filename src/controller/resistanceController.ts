@@ -124,21 +124,25 @@ const modifierFunctions = {
 
 function resetHuffy() {
     for (const [key, value] of Object.entries(huffy)) {
+        /* eslint-disable @typescript-eslint/no-explicit-any */ // The typeof handles what eslint and TS thinks are errors.
         if (typeof value === "number") {
             (huffy as any)[key] = 0;
         } else if (typeof value === "boolean") {
             (huffy as any)[key] = false;
         }
+        /* eslint-enable @typescript-eslint/no-explicit-any */
     }
 }
 
 function resetEnemy() {
     for (const [key, value] of Object.entries(enemy)) {
+        /* eslint-disable @typescript-eslint/no-explicit-any */ // The typeof handles what eslint and TS thinks are errors.
         if (typeof value === "number") {
             (enemy as any)[key] = 0;
         } else if (Array.isArray(value)) {
             (enemy as any)[key] = [false, false, false];
         }
+        /* eslint-enable @typescript-eslint/no-explicit-any */
     }
 }
 
@@ -183,6 +187,7 @@ export function readHuffy() {
         if (item.equipped) {
             const functions = Object.keys(modifierFunctions);
             if (functions.includes(itemName)) {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (modifierFunctions as any)[itemName]();
             }
         }
@@ -218,11 +223,11 @@ function calculateShank() {
     shankInfo.reductionMin = Infinity;
     shankInfo.shock[0] = huffy.shockMin;
     shankInfo.shock[1] = 0;
-    for (let bleed of [huffy.bleedMin, huffy.bleedMax]) {
-        for (let poison of [huffy.poisonMin, huffy.poisonMax]) {
-            for (let shock of [huffy.shockMin, huffy.shockMax]) {
-                let max = Math.max(bleed, poison, shock);
-                let reduction = 0.25 * max;
+    for (const bleed of [huffy.bleedMin, huffy.bleedMax]) {
+        for (const poison of [huffy.poisonMin, huffy.poisonMax]) {
+            for (const shock of [huffy.shockMin, huffy.shockMax]) {
+                const max = Math.max(bleed, poison, shock);
+                const reduction = 0.25 * max;
                 shankInfo.reductionMin = Math.min(
                     shankInfo.reductionMin,
                     reduction

@@ -18,7 +18,7 @@ interface IConfig {
 }
 
 export const gameController = {
-    framesPerChunk: 200,
+    framesPerChunk: 0,
     battleCount: 0,
     complete: false,
     interval: null as number | null, // Interval ID
@@ -28,10 +28,10 @@ export const gameController = {
     onUpdate: null as Function | null,
     resultBest: { enemy: 1, time: 0, win: false },
     resultCounter: { fights: 0, healthSum: 0, losses: 0 },
-    runtime: 8 * 60 * 60 * 1000, // 8 hours
+    runtime: 0,
     modified: true,
     lastUpdate: 0,
-    updateInterval: 4 * 60 * 60 * 1000, // 4 hours
+    updateInterval: 0,
 
     getDefaultConfig(): IConfig {
         return {
@@ -51,11 +51,6 @@ export const gameController = {
 
     isRunning() {
         return this.interval != null;
-    },
-
-    modifiedAutoBattle() {
-        this.halt = true;
-        this.modified = true;
     },
 
     configure(config: IConfig) {
@@ -146,6 +141,7 @@ export const gameController = {
     battleFailure() {
         ++this.resultCounter.fights;
         ++this.resultCounter.losses;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const enemy = autoBattle.enemy as any;
         const enemyHealthPercentage = Math.max(
             0,
@@ -171,6 +167,15 @@ export const gameController = {
         this.battleCount =
             autoBattle.sessionEnemiesKilled + autoBattle.sessionTrimpsKilled;
     },
+};
+
+export const config: IConfig = {
+    framesPerChunk: 200,
+    onSimInterrupt: null,
+    onSimComplete: null,
+    onUpdate: null,
+    runtime: 8 * 60 * 60 * 1000, // 8 hours
+    updateInterval: 4 * 60 * 60 * 1000, // 4 hours
 };
 
 export function getResults(): IResults {

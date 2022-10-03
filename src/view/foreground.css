@@ -2,7 +2,7 @@
 Stylesheet
 */
 
-body {
+#foreground {
     display: flex;
     align-items: flex-start;
 }
@@ -43,7 +43,6 @@ body {
     color: rgb(255, 255, 255);
     font-size: small;
 }
-
 
 /* Hover */
 
@@ -89,7 +88,7 @@ body {
     table-layout: fixed;
 }
 
-.partTable>tr {
+.partTable > tr {
     vertical-align: middle;
 }
 
@@ -175,7 +174,6 @@ body {
     align-self: auto;
 }
 
-
 /* Info */
 
 #infoPanel {
@@ -183,7 +181,7 @@ body {
     margin-bottom: 2em;
 }
 
-#infoPanel>tbody>tr>td {
+#infoPanel > tbody > tr > td {
     border-width: 1px 0;
     border-style: solid;
     border-color: black;
@@ -257,7 +255,6 @@ body {
     padding: 0.2em;
 }
 
-
 /* Simulation */
 
 #simulationPanel {
@@ -290,8 +287,4 @@ body {
     align-items: center;
     justify-content: center;
     padding: 0.3em 1em;
-}
-
-#killsDiv {
-    
 }

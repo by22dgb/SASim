@@ -7,8 +7,7 @@ import { IABTypes } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";
 import { updateInput } from "../utility.js";
 import { updateEffects, updateLimbs } from "../view/levelsView.js";
-import { getEnemyLevel } from "./autoBattleController.js";
-import { updateResistances } from "./resistanceController.js";
+import { getEnemyLevel, modifiedAutoBattle } from "./autoBattleController.js";
 
 export function getActiveEffects() {
     const level = getEnemyLevel();
@@ -35,7 +34,7 @@ export function setEnemyLevel(level: number, frontendCall?: boolean) {
         updateEffects();
     }
 
-    updateResistances();
+    modifiedAutoBattle();
 }
 
 export function setMaxEnemyLevel(level: number, frontendCall?: boolean) {
@@ -46,6 +45,8 @@ export function setMaxEnemyLevel(level: number, frontendCall?: boolean) {
     if (!frontendCall) {
         updateInput("maxEnemyLevel", level);
     }
+
+    modifiedAutoBattle();
 }
 
 export function checkMaxLevel(level: number) {

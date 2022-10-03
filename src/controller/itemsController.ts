@@ -8,6 +8,7 @@ import { autoBattle } from "../data/object.js";
 import { updateItem } from "../view/itemsView.js";
 import { updateInput } from "../utility.js";
 import { changeLimbs } from "./levelsController.js";
+import { modifiedAutoBattle } from "./autoBattleController.js";
 
 export function equipItem(
     itemName: keyof IABTypes["items"],
@@ -27,6 +28,8 @@ export function equipItem(
     if (level && !frontendCall) {
         levelItem(itemName, level, frontendCall);
     }
+
+    modifiedAutoBattle();
 }
 
 export function levelItem(
@@ -42,6 +45,8 @@ export function levelItem(
     if (!frontendCall) {
         updateInput(item, level);
     }
+
+    modifiedAutoBattle();
 }
 
 export function getItemsInOrder(): IABTypes["items"] {
@@ -49,6 +54,7 @@ export function getItemsInOrder(): IABTypes["items"] {
     const order = autoBattle.getItemOrder();
     const items = getItems();
     // Order items
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const orderedItems: any = {};
     order.forEach((item) => {
         const name = item.name as keyof IABTypes["items"];

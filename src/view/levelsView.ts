@@ -52,7 +52,7 @@ export function updateLimbs(increment: -1 | 1) {
 }
 
 export function updateEffects() {
-    const effectsDiv = document.querySelector("#effectsDiv")!;
+    const effectsDiv = getHTMLElement("#effectsDiv");
     const effects = getActiveEffects();
     let effectsString = "";
     const effectsIter = effects.entries();
@@ -96,11 +96,10 @@ export function uiUpdateResistances(enemy: IEnemy) {
     const poisonResistSpan = getHTMLElement("#enemyPoisonResist");
     const bleedResistSpan = getHTMLElement("#enemyBleedResist");
     const shockResistSpan = getHTMLElement("#enemyShockResist");
-    let poisonResist: number;
+    const poisonResist = enemy.resistPoison;
     let bleedResist: number;
     let shockResist: number;
 
-    poisonResist = enemy.resistPoison;
     if (getItem("Stormbringer").equipped) {
         bleedResist = enemy.resistBleed + enemy.resistShock;
         shockResist = 0;
@@ -120,9 +119,9 @@ export function uiUpdateChances(
     shankInfo: IShank
 ) {
     // Huffy chances
-    let hfPoisonChance: number[] = [];
-    let hfBleedChance: number[] = [];
-    let hfShockChance: number[] = [];
+    const hfPoisonChance: number[] = [];
+    const hfBleedChance: number[] = [];
+    const hfShockChance: number[] = [];
 
     // Enemy chances
     let enPoisonChance: number[] = [];
@@ -140,11 +139,11 @@ export function uiUpdateChances(
     const shank = getItem("Sacrificial_Shank");
 
     if (shank.equipped) {
-        let resistAllMax =
+        const resistAllMax =
             huffy.resistAll +
             Math.floor((shankInfo.reductionMax + enemy.shank) / 10) *
                 shank.level;
-        let resistAllMin =
+        const resistAllMin =
             huffy.resistAll +
             Math.floor((shankInfo.reductionMin + enemy.shank) / 10) *
                 shank.level;
@@ -250,6 +249,7 @@ export function uiUpdateChances(
     hfBleedChanceSpan.innerHTML = hfBleedChance.join("% to ");
     hfShockChanceSpan.innerHTML = hfShockChance.join("% to ");
 
+    /* eslint-disable @typescript-eslint/no-non-null-assertion */
     hfPoisonChanceSpan.parentElement!.hidden = !huffy.canPoison;
     hfBleedChanceSpan.parentElement!.hidden = !huffy.canBleed;
     hfShockChanceSpan.parentElement!.hidden = !huffy.canShock;
@@ -263,4 +263,5 @@ export function uiUpdateChances(
     enPoisonChanceSpan.parentElement!.hidden = enemy.poison <= 0;
     enBleedChanceSpan.parentElement!.hidden = enemy.bleed <= 0;
     enShockChanceSpan.parentElement!.hidden = enemy.shock <= 0;
+    /* eslint-enable @typescript-eslint/no-non-null-assertion*/
 }

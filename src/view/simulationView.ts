@@ -8,7 +8,6 @@ import { stringPaste } from "../controller/importController.js";
 import {
     clickingAnimation,
     convertMilliSecondsToTime,
-    convertSecondsToTime,
     getHTMLElement,
     prettyNumber,
     updateButton,
@@ -17,7 +16,8 @@ import {
     getEnemyLevel,
     IResults,
     printAllInfo,
-    startSimulation,
+    setRuntime,
+    startSimulationFromButton,
     stopSimulation,
 } from "../controller/autoBattleController.js";
 
@@ -25,6 +25,7 @@ export function simulationViews() {
     setupImportBtns();
     setupPresetBtns();
     setupRunBtns();
+    setupRuntimeInp();
 }
 
 function setupImportBtns() {
@@ -34,12 +35,14 @@ function setupImportBtns() {
     const resetBtn = getHTMLElement("#saveResetBtn") as HTMLButtonElement;
     clickingAnimation(resetBtn);
 
-    resetBtn.addEventListener("click", () => {});
+    resetBtn.addEventListener("click", () => {
+        console.log("not implemented");
+    });
 }
 
 function addImportAction(field: HTMLInputElement) {
     field.addEventListener("paste", (event) => {
-        let paste = event.clipboardData?.getData("text");
+        const paste = event.clipboardData?.getData("text");
         if (paste) {
             stringPaste(paste);
         }
@@ -94,7 +97,7 @@ function addChangeForAutoRun(button: HTMLButtonElement) {
 
 function setupStartBtn(button: HTMLButtonElement) {
     button.addEventListener("click", () => {
-        startSimulation();
+        startSimulationFromButton();
     });
 }
 
@@ -130,7 +133,8 @@ function updateTimeSpent(
     } else {
         timeProcessedSpan.innerText = "";
         finalTimeSpan.innerHTML = "";
-        isRunningSpan.innerHTML = "&#9208;";
+        isRunningSpan.innerHTML =
+            "&#9208; / " + convertMilliSecondsToTime(runtime);
     }
 }
 
@@ -190,4 +194,11 @@ function updateFightingTimes(fightTime: number, killTime: number) {
 
     fightTimeSpan.innerHTML = convertMilliSecondsToTime(fightTime);
     killTimeSpan.innerHTML = convertMilliSecondsToTime(killTime);
+}
+function setupRuntimeInp() {
+    const runtimeInput = getHTMLElement("#runtimeInput") as HTMLInputElement;
+    runtimeInput.addEventListener("input", () => {
+        const runtime = parseInt(runtimeInput.value);
+        setRuntime(runtime);
+    });
 }

@@ -4,13 +4,18 @@ import { buildItems, buildSave, setPresets } from "./buildController.js";
 import { clearItems, getItems } from "./itemsController.js";
 import { IABTypes } from "../data/buildString.js";
 import { clearBonuses } from "./bonusesController.js";
+import { modifiedAutoBattle } from "./autoBattleController.js";
 
 export function stringPaste(paste: string) {
     clear();
     let savegame;
     try {
+        // Wtf do you think the try catch is for you stupid linter
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         savegame = JSON.parse(LZString.decompressFromBase64(paste)!);
-    } catch (error) {}
+    } catch (error) {
+        // Do nothing
+    }
     if (savegame) {
         //  Import save
         if (savegame.global) {
@@ -24,7 +29,10 @@ export function stringPaste(paste: string) {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function importSave(savegame: any) {
+    modifiedAutoBattle();
+
     const saveString = {} as IABTypes;
     const abData = savegame.global.autoBattleData;
 
@@ -47,6 +55,8 @@ function importSave(savegame: any) {
 }
 
 function importSpreadsheet(row: string) {
+    modifiedAutoBattle();
+
     const items = JSON.parse(JSON.stringify(getItems()));
 
     const itemLevels = row.split("\t");

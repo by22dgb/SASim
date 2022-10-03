@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { builderData } from "../data/buildData.js";
 import { IABTypes } from "../data/buildString.js";
 import { autoBattle } from "../data/object.js";

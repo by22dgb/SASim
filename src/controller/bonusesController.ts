@@ -7,11 +7,13 @@ import { autoBattle } from "../data/object.js";
 import { pick, updateButton, updateInput } from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
 import { IRing, IABTypes } from "../data/buildString.js";
+import { modifiedAutoBattle } from "./autoBattleController.js";
 
 export function getOneTimers(): typeof autoBattle.oneTimers {
     return autoBattle.oneTimers;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getOneTimersSA(saveString?: any): IABTypes["oneTimers"] {
     const data = saveString ? saveString : autoBattle;
     const oneTimers = data.oneTimers;
@@ -25,10 +27,10 @@ export function getOneTimersSA(saveString?: any): IABTypes["oneTimers"] {
 }
 
 export function getRing() {
-    const mods = autoBattle.rings.mods as any;
     const chances = autoBattle.getRingStatusChance();
     return {
         bonus: autoBattle.oneTimers.The_Ring,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         stats: autoBattle.rings as any,
         chances: chances,
     };
@@ -38,6 +40,7 @@ export function getPossibleRingMods(): typeof autoBattle.ringStats {
     return autoBattle.ringStats;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getRingStatAmt(mod: any) {
     return autoBattle.getRingStatAmt(mod);
 }
@@ -75,6 +78,8 @@ export function clearBonuses() {
 
     autoBattle.scruffyLvl21 = false;
     updateButton("S21", true);
+
+    modifiedAutoBattle();
 }
 
 export function equipOneTimer(
@@ -87,6 +92,8 @@ export function equipOneTimer(
 
     // Frontend
     updateButton(oneTimer, setUnselected);
+
+    modifiedAutoBattle();
 }
 
 export function equipRingMods(ringMods: string[]) {
@@ -104,6 +111,8 @@ export function equipRingMods(ringMods: string[]) {
         // Frontend
         updateButton(mod);
     }
+
+    modifiedAutoBattle();
 }
 
 export function unequipRingMods() {
@@ -116,6 +125,8 @@ export function unequipRingMods() {
 
     // Backend
     ring.stats.mods = [];
+
+    modifiedAutoBattle();
 }
 
 export function setRingLevel(level: number, frontendCall?: boolean) {
@@ -127,6 +138,8 @@ export function setRingLevel(level: number, frontendCall?: boolean) {
     if (!frontendCall) {
         updateInput("Ring", level);
     }
+
+    modifiedAutoBattle();
 }
 
 export function equipMutation(
@@ -139,6 +152,8 @@ export function equipMutation(
 
     // Frontend
     updateButton(mutation, setUnselected);
+
+    modifiedAutoBattle();
 }
 
 export function equipScruffy(xp?: number, setUnselected?: boolean) {
@@ -151,4 +166,6 @@ export function equipScruffy(xp?: number, setUnselected?: boolean) {
         // Frontend
         updateButton("S21", setUnselected);
     }
+
+    modifiedAutoBattle();
 }

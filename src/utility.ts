@@ -1,10 +1,12 @@
 import { prettify } from "./data/object.js";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function pick(obj: any, ...keys: any) {
     return Object.fromEntries(
         keys.filter((key: any) => key in obj).map((key: any) => [key, obj[key]])
     );
 }
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 export function capitaliseFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

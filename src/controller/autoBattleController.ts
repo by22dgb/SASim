@@ -10,6 +10,7 @@ import { updateLiveResults } from "../view/simulationView.js";
 import { getOneTimersSA, getRing } from "./bonusesController.js";
 import { gameController, getResults } from "./gameController.js";
 import { getItems } from "./itemsController.js";
+import { updateResistances } from "./resistanceController.js";
 
 export interface IResults {
     isRunning: boolean;
@@ -37,7 +38,6 @@ export function startSimulation() {
 
     controllerConfig.onUpdate = liveUpdate;
     gameController.configure(controllerConfig);
-
     runSimulation();
 }
 
@@ -54,6 +54,19 @@ function runSimulation() {
     gameController.start();
 }
 
+export function startSimulationFromButton() {
+    if (!gameController.modified) {
+        const newConfig = { ...gameController.getDefaultConfig() };
+        newConfig.runtime += gameController.runtime;
+        gameController.configure(newConfig);
+        if (!gameController.isRunning()) {
+            runSimulation();
+        }
+    } else {
+        startSimulation();
+    }
+}
+
 function calcBuildCost() {
     // Not here I think
     let dustCost = 0;
@@ -61,7 +74,7 @@ function calcBuildCost() {
 
     // Price for items.
     const items = getItems();
-    Object.entries(items).forEach(([_, value]) => {
+    Object.values(items).forEach((value) => {
         if (value.equipped) {
             const startPrice = "startPrice" in value ? value.startPrice : 5;
             const priceMod = "priceMod" in value ? value.priceMod : 3;
@@ -97,6 +110,7 @@ function calcBuildCost() {
 
     // Price for extra limbs.
     // TODO: once builder from ymh is added
+    return [dustCost, shardCost];
 }
 
 export function getEnemyLevel() {
@@ -115,8 +129,10 @@ export function printAllInfo() {
     const enemyLevel = autoBattle.enemyLevel;
     info.push(`Levels: ${maxEnemyLevel} ${enemyLevel}`);
 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     const uneqItems = {} as any;
     const items = {} as any;
+    /* eslint-enable @typescript-eslint/no-explicit-any */
     for (const [item, value] of Object.entries(autoBattle.items)) {
         if (value.equipped) {
             items[item] = value.level;
@@ -154,4 +170,17 @@ export function printAllInfo() {
     info.forEach((entry) => {
         console.log(entry);
     });
+}
+
+export function modifiedAutoBattle() {
+    gameController.halt = true;
+    gameController.modified = true;
+    updateResistances();
+}
+
+export function setRuntime(runtime: number) {
+    const milliSeconds = runtime * 1000 * 60 * 60;
+    const newConfig = { ...gameController.getDefaultConfig() };
+    newConfig.runtime = milliSeconds;
+    gameController.configure(newConfig);
 }

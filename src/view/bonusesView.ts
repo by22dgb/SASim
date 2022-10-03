@@ -14,7 +14,12 @@ import {
     equipRingMods,
     setRingLevel,
 } from "../controller/bonusesController.js";
-import { addHover, capitaliseFirstLetter, prettyNumber } from "../utility.js";
+import {
+    addHover,
+    capitaliseFirstLetter,
+    getHTMLElement,
+    prettyNumber,
+} from "../utility.js";
 import { IABTypes } from "../data/buildString.js";
 
 export function bonusesView() {
@@ -24,9 +29,9 @@ export function bonusesView() {
 }
 
 function setupOneTimerBtns() {
-    const oneTimersPanel = document.querySelector("#oneTimersPanel")!;
+    const oneTimersPanel = getHTMLElement("#oneTimersPanel");
     const oneTimers = getOneTimersSA();
-    for (const [key, _] of Object.entries(oneTimers)) {
+    for (const key in oneTimers) {
         const button = document.createElement("button");
         button.innerHTML = key.replaceAll("_", " ");
         button.id = key + "_Button";
@@ -37,7 +42,7 @@ function setupOneTimerBtns() {
             "oneTimerButton"
         );
         oneTimersPanel.appendChild(button);
-        addChangeForOneTimerButton(button, key);
+        addChangeForOneTimerButton(button, key as keyof IABTypes["oneTimers"]);
 
         const descriptionDiv = document.createElement("div");
         descriptionDiv.classList.add("hover", "bonusHover");
@@ -53,7 +58,10 @@ function setupOneTimerBtns() {
     }
 }
 
-function addChangeForOneTimerButton(button: HTMLButtonElement, oneTimer: any) {
+function addChangeForOneTimerButton(
+    button: HTMLButtonElement,
+    oneTimer: keyof IABTypes["oneTimers"]
+) {
     button.addEventListener("click", () => {
         equipOneTimer(oneTimer);
     });
@@ -61,7 +69,7 @@ function addChangeForOneTimerButton(button: HTMLButtonElement, oneTimer: any) {
 
 function setupRingBtns() {
     const ringMods = getPossibleRingMods();
-    const ringModsDiv = document.querySelector("#ringModsDiv")!;
+    const ringModsDiv = getHTMLElement("#ringModsDiv");
 
     for (const [key, ringMod] of Object.entries(ringMods)) {
         const modButton = document.createElement("button");
@@ -89,9 +97,7 @@ function setupRingBtns() {
         addHover(modButton, descriptionDiv);
     }
 
-    const ringInput = document.querySelector(
-        "#Ring_Input"
-    )! as HTMLInputElement;
+    const ringInput = getHTMLElement("#Ring_Input") as HTMLInputElement;
     addChangeForRingInput(ringInput);
 }
 
@@ -109,7 +115,7 @@ function addChangeForRingInput(input: HTMLInputElement) {
 }
 
 function setupMutationsBtns() {
-    const mutationsPanel = document.querySelector("#mutationsPanel")!;
+    const mutationsPanel = getHTMLElement("#mutationsPanel");
     const mutations = getMutations();
 
     for (const [key, mutation] of Object.entries(mutations)) {

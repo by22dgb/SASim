@@ -8,7 +8,7 @@ import {
     getItemsInOrder,
     levelItem,
 } from "../controller/itemsController.js";
-import { addHover, updateButton } from "../utility.js";
+import { addHover, getHTMLElement, updateButton } from "../utility.js";
 import { IABTypes } from "../data/buildString.js";
 
 export function itemsView() {
@@ -16,9 +16,9 @@ export function itemsView() {
 }
 
 function setupItemBtns() {
-    let itemsPanel = document.querySelector("#itemsPanel")!;
+    const itemsPanel = getHTMLElement("#itemsPanel");
     for (let i = 0; i < 2; i++) {
-        let partDiv = partItemsDiv(2, i);
+        const partDiv = partItemsDiv(2, i);
         itemsPanel.appendChild(partDiv);
     }
 }
@@ -34,7 +34,7 @@ function partItemsDiv(parts: number, ind: number) {
     const table = document.createElement("table");
     table.classList.add("partTable");
     for (let i = start; i < end; i++) {
-        const itemName = itemNames[i];
+        const itemName = itemNames[i] as keyof IABTypes["items"];
         const div = document.createElement("div");
         div.classList.add("equipInpDiv");
         table.insertRow(-1).insertCell(-1).appendChild(div);
@@ -80,13 +80,19 @@ function partItemsDiv(parts: number, ind: number) {
     return table;
 }
 
-function addChangeForItemButton(button: HTMLButtonElement, item: any) {
+function addChangeForItemButton(
+    button: HTMLButtonElement,
+    item: keyof IABTypes["items"]
+) {
     button.addEventListener("click", () => {
         equipItem(item);
     });
 }
 
-function addChangeForLevel(input: HTMLInputElement, item: any) {
+function addChangeForLevel(
+    input: HTMLInputElement,
+    item: keyof IABTypes["items"]
+) {
     input.addEventListener("input", () => {
         const value = parseInt(input.value);
         levelItem(item, value, true);
