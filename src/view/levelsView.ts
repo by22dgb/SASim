@@ -3,27 +3,41 @@ Levels view panel, used for setting levels and displaying relevant information.
 This file should not interact directly with the data layer.
 */
 
-import { getItem } from "../controller/itemsController.js";
+import { getOneTimersSA, getUnlocks } from "../controller/bonusesController.js";
+import {
+    getCurrency,
+    getItem,
+    getItemsInOrder,
+} from "../controller/itemsController.js";
 import {
     checkMaxLevel,
     getActiveEffects,
     setEnemyLevel,
     setMaxEnemyLevel,
 } from "../controller/levelsController.js";
+import { Currency, IABTypes } from "../data/buildTypes.js";
 import { IEnemy, IHuffy, IShank } from "../data/resistanceData.js";
-import { capitaliseFirstLetter, getHTMLElement } from "../utility.js";
+import {
+    capitaliseFirstLetter,
+    getHTMLElement,
+    prettyNumber,
+    round,
+} from "../utility.js";
 
 export function levelsView() {
     setWidth();
     setupMaxLevelInput();
     setupEnemyLevelInput();
     updateEffects();
+    setupTimeAfford();
 }
 
 function setWidth() {
     const bonusesPanel = getHTMLElement("#bonusesPanel");
     const levelsPanel = getHTMLElement("#infoPanel");
+    const moreInfoPanel = getHTMLElement("#moreInfoPanel");
     levelsPanel.style.width = bonusesPanel.offsetWidth + "px";
+    moreInfoPanel.style.width = bonusesPanel.offsetWidth + "px";
 }
 
 function setupMaxLevelInput() {
@@ -254,9 +268,9 @@ export function uiUpdateChances(
     hfBleedChanceSpan.parentElement!.hidden = !huffy.canBleed;
     hfShockChanceSpan.parentElement!.hidden = !huffy.canShock;
 
-    enPoisonChance = enPoisonChance.map((x) => Math.round(x));
-    enBleedChance = enBleedChance.map((x) => Math.round(x));
-    enShockChance = enShockChance.map((x) => Math.round(x));
+    enPoisonChance = enPoisonChance.map((x) => round(x));
+    enBleedChance = enBleedChance.map((x) => round(x));
+    enShockChance = enShockChance.map((x) => round(x));
     enPoisonChanceSpan.innerHTML = enPoisonChance.join("% to ");
     enBleedChanceSpan.innerHTML = enBleedChance.join("% to ");
     enShockChanceSpan.innerHTML = enShockChance.join("% to ");
@@ -264,4 +278,82 @@ export function uiUpdateChances(
     enBleedChanceSpan.parentElement!.hidden = enemy.bleed <= 0;
     enShockChanceSpan.parentElement!.hidden = enemy.shock <= 0;
     /* eslint-enable @typescript-eslint/no-non-null-assertion*/
+}
+
+export function uiUpdateBuildCost(dust: number, shards: number) {
+    const dustSpan = getHTMLElement("#dustCost");
+    const shardsSpan = getHTMLElement("#shardsCost");
+
+    dustSpan.innerHTML = prettyNumber(dust);
+    shardsSpan.innerHTML = prettyNumber(shards);
+}
+
+function setupTimeAfford() {
+    setupTimeAffordBtn();
+    setupTimeAffordSelect();
+}
+
+function setupTimeAffordBtn() {
+    const btn = getHTMLElement("#timeAffordBtn");
+}
+
+function setupTimeAffordSelect() {
+    const select = getHTMLElement("#timeAffordSelect") as HTMLSelectElement;
+    // Change background colour based on selected item
+    select.addEventListener("change", (event) => {
+        select.classList.remove(select.classList[1]);
+        const target = event.target as HTMLSelectElement;
+        const colour = target.options[target.selectedIndex].classList;
+        select.classList.add(colour[0]);
+    });
+
+    // Add items options
+    const items = getItemsInOrder();
+    let option;
+    for (const name of Object.keys(items)) {
+        if (name === "Doppelganger_Signet") {
+            continue;
+        }
+        option = document.createElement("option");
+        option.value = name;
+        option.innerHTML = name.replaceAll("_", " ");
+        select.append(option);
+
+        const currency = getCurrency(name as keyof IABTypes["items"]);
+        if (currency === Currency.shards) {
+            option.classList.add("shardsColour");
+        } else if (currency === Currency.dust) {
+            option.classList.add("dustColour");
+        }
+    }
+
+    // Add ring option
+    option = document.createElement("option");
+    option.value = "The_Ring";
+    option.innerHTML = "The Ring";
+    option.classList.add("theRingColour");
+    select.append(option);
+
+    // Add one timers
+    for (const oneTimer in getOneTimersSA()) {
+        option = document.createElement("option");
+        option.value = oneTimer;
+        option.innerHTML = oneTimer.replaceAll("_", " ");
+        option.classList.add("oneTimerColour");
+        select.append(option);
+    }
+    option = document.createElement("option");
+    option.value = "Unlock_The_Ring";
+    option.innerHTML = "Unlock the Ring";
+    option.classList.add("oneTimerColour");
+    select.append(option);
+
+    // Add unlocks options
+    for (const bonus in getUnlocks()) {
+        option = document.createElement("option");
+        option.value = bonus;
+        option.innerHTML = bonus.replaceAll("_", " ");
+        option.classList.add("unlockColour");
+        select.append(option);
+    }
 }

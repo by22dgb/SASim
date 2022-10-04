@@ -1,10 +1,10 @@
-import { Build, IRing } from "../data/buildString.js";
+import { Build, IRing } from "../data/buildTypes.js";
 import { LZString } from "./lz-string.js";
 import { buildItems, buildSave, setPresets } from "./buildController.js";
 import { clearItems, getItems } from "./itemsController.js";
-import { IABTypes } from "../data/buildString.js";
+import { IABTypes } from "../data/buildTypes.js";
 import { clearBonuses } from "./bonusesController.js";
-import { modifiedAutoBattle } from "./autoBattleController.js";
+import { modifiedAutoBattleWithBuild } from "./autoBattleController.js";
 
 export function stringPaste(paste: string) {
     clear();
@@ -31,7 +31,7 @@ export function stringPaste(paste: string) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function importSave(savegame: any) {
-    modifiedAutoBattle();
+    modifiedAutoBattleWithBuild();
 
     const saveString = {} as IABTypes;
     const abData = savegame.global.autoBattleData;
@@ -55,7 +55,7 @@ function importSave(savegame: any) {
 }
 
 function importSpreadsheet(row: string) {
-    modifiedAutoBattle();
+    modifiedAutoBattleWithBuild();
 
     const items = JSON.parse(JSON.stringify(getItems()));
 

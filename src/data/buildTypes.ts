@@ -16,6 +16,11 @@ export interface IRing {
     level: number;
 }
 
+export enum Currency {
+    dust,
+    shards,
+}
+
 export const Build = {
     items: {
         Menacing_Mask: "AA",

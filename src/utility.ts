@@ -89,7 +89,7 @@ export function convertSecondsToTime(seconds: number) {
     if (!isFinite(seconds)) return "♾️";
 
     // Seconds, minutes, hours, days and years
-    const s = +(seconds % 60).toFixed(2);
+    const s = round(seconds % 60, 2);
     const m = Math.floor(seconds / 60) % 60;
     const h = Math.floor(seconds / 3600) % 24;
     const d = Math.floor(seconds / 86400) % 365;
@@ -106,4 +106,18 @@ export function convertSecondsToTime(seconds: number) {
 
 export function convertMilliSecondsToTime(ms: number) {
     return convertSecondsToTime(ms / 1000);
+}
+
+export function round(number: number, precision?: number) {
+    if (precision === undefined) {
+        return Math.round(number);
+    }
+    const factor = Math.pow(10, precision);
+    return Math.round((number + Number.EPSILON) * factor) / factor;
+}
+
+export function clearHTMLChilds(parent: HTMLElement) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
 }

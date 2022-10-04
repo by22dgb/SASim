@@ -3,12 +3,13 @@ Controls equipping and leveling items.
 Sends calls both to frontend and backend.
 */
 
-import { IABTypes } from "../data/buildString.js";
+import { Currency, IABTypes } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
 import { updateItem } from "../view/itemsView.js";
 import { updateInput } from "../utility.js";
 import { changeLimbs } from "./levelsController.js";
-import { modifiedAutoBattle } from "./autoBattleController.js";
+import { modifiedAutoBattleWithBuild } from "./autoBattleController.js";
+import { getRing } from "./bonusesController.js";
 
 export function equipItem(
     itemName: keyof IABTypes["items"],
@@ -29,7 +30,7 @@ export function equipItem(
         levelItem(itemName, level, frontendCall);
     }
 
-    modifiedAutoBattle();
+    modifiedAutoBattleWithBuild();
 }
 
 export function levelItem(
@@ -46,7 +47,20 @@ export function levelItem(
         updateInput(item, level);
     }
 
-    modifiedAutoBattle();
+    modifiedAutoBattleWithBuild();
+}
+
+export function incrementItem(
+    item: keyof IABTypes["items"],
+    increment: number
+) {
+    const items = getItems();
+    items[item].level += increment;
+}
+
+export function incrementRing(increment: number) {
+    const ring = getRing();
+    ring.stats.level += increment;
 }
 
 export function getItemsInOrder(): IABTypes["items"] {
@@ -82,4 +96,24 @@ export function clearItems() {
         updateItem(name, true);
         updateInput(name, 1);
     }
+}
+
+export function getCurrency(name: keyof IABTypes["items"]) {
+    const item = getItem(name);
+    if ("dustType" in item && item.dustType === "shards") {
+        return Currency.shards;
+    } else {
+        return Currency.dust;
+    }
+}
+
+export function getPrice(name: keyof IABTypes["items"], increment?: number) {
+    const item = getItem(name);
+    const startPrice = "startPrice" in item ? item.startPrice : 5;
+    const priceMod = "priceMod" in item ? item.priceMod : 3;
+    const contractPrice = autoBattle.contractPrice(name);
+    let cost = isNaN(contractPrice) ? 0 : contractPrice;
+    const level = increment ? item.level + increment : item.level;
+    cost += startPrice * ((1 - Math.pow(priceMod, level - 1)) / (1 - priceMod));
+    return cost;
 }

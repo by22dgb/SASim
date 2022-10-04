@@ -8,8 +8,8 @@ import {
     getItemsInOrder,
     levelItem,
 } from "../controller/itemsController.js";
-import { addHover, getHTMLElement, updateButton } from "../utility.js";
-import { IABTypes } from "../data/buildString.js";
+import { addHover, getHTMLElement, round, updateButton } from "../utility.js";
+import { IABTypes } from "../data/buildTypes.js";
 
 export function itemsView() {
     setupItemBtns();
@@ -27,7 +27,7 @@ function partItemsDiv(parts: number, ind: number) {
     const items = getItemsInOrder();
     const itemNames = Object.keys(items);
     const length = itemNames.length;
-    const size = Math.round(length / parts);
+    const size = round(length / parts);
     const start = size * ind;
     let end = size * (ind + 1);
     end = length < end ? length : end;

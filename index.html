@@ -108,64 +108,90 @@
                         </tbody>
                     </table>
                     <table id="resistancePanel" class="dark-light text">
-                        <tr>
-                            <td>
-                                Huffy
-                                <div id="huffyChanceDiv">
-                                    <div hidden>
-                                        Poison chance:
-                                        <span id="huffyPoisonChance"></span>%
+                        <tbody>
+                            <tr>
+                                <td>
+                                    Huffy
+                                    <div id="huffyChanceDiv">
+                                        <div hidden>
+                                            Poison chance:
+                                            <span id="huffyPoisonChance"></span
+                                            >%
+                                        </div>
+                                        <div hidden>
+                                            Bleed chance:
+                                            <span id="huffyBleedChance"></span>%
+                                        </div>
+                                        <div hidden>
+                                            Shock chance:
+                                            <span id="huffyShockChance"></span>%
+                                        </div>
                                     </div>
-                                    <div hidden>
-                                        Bleed chance:
-                                        <span id="huffyBleedChance"></span>%
+                                    <div id="huffyShank" hidden>
+                                        Shank reduces: <span></span>
                                     </div>
-                                    <div hidden>
-                                        Shock chance:
-                                        <span id="huffyShockChance"></span>%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Enemy
+                                    <div id="enemyResistanceDiv">
+                                        <div>
+                                            Poison resist:
+                                            <span id="enemyPoisonResist">1</span
+                                            >%
+                                        </div>
+                                        <div>
+                                            Bleed resist:
+                                            <span id="enemyBleedResist">1</span
+                                            >%
+                                        </div>
+                                        <div>
+                                            Shock resist:
+                                            <span id="enemyShockResist">1</span
+                                            >%
+                                        </div>
                                     </div>
-                                </div>
-                                <div id="huffyShank" hidden>
-                                    Shank reduces: <span></span>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Enemy
-                                <div id="enemyResistanceDiv">
+                                    <div id="enemyChanceDiv">
+                                        <div hidden>
+                                            Poison chance:
+                                            <span id="enemyPoisonChance"></span
+                                            >%
+                                        </div>
+                                        <div hidden>
+                                            Bleed chance:
+                                            <span id="enemyBleedChance"></span>%
+                                        </div>
+                                        <div hidden>
+                                            Shock chance:
+                                            <span id="enemyShockChance"></span>%
+                                        </div>
+                                    </div>
+                                    <div id="enemyShank" hidden>
+                                        Shank reduces: <span></span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="moreInfoPanel" class="dark-light text">
+                        <tbody>
+                            <tr>
+                                <td>
                                     <div>
-                                        Poison resist:
-                                        <span id="enemyPoisonResist">1</span>%
+                                        <button
+                                            class="uncheckedButton text generalButton"
+                                            id="timeAffordBtn"
+                                        >
+                                            Time to afford!</button
+                                        ><select
+                                            class="text dustColour"
+                                            id="timeAffordSelect"
+                                        ></select>
                                     </div>
-                                    <div>
-                                        Bleed resist:
-                                        <span id="enemyBleedResist">1</span>%
-                                    </div>
-                                    <div>
-                                        Shock resist:
-                                        <span id="enemyShockResist">1</span>%
-                                    </div>
-                                </div>
-                                <div id="enemyChanceDiv">
-                                    <div hidden>
-                                        Poison chance:
-                                        <span id="enemyPoisonChance"></span>%
-                                    </div>
-                                    <div hidden>
-                                        Bleed chance:
-                                        <span id="enemyBleedChance"></span>%
-                                    </div>
-                                    <div hidden>
-                                        Shock chance:
-                                        <span id="enemyShockChance"></span>%
-                                    </div>
-                                </div>
-                                <div id="enemyShank" hidden>
-                                    Shank reduces: <span></span>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
                 <div id="panel3">
@@ -219,7 +245,7 @@
                                             id="start_Button"
                                             class="uncheckedButton text generalButton"
                                         >
-                                            &#x25B6; Run the simulation!
+                                            &#x25B6; Run!
                                         </button>
                                         <button
                                             id="stop_Button"
@@ -229,7 +255,7 @@
                                         </button>
                                         <button
                                             id="autoRun_Button"
-                                            class="checkedButton text generalButton"
+                                            class="uncheckedButton text generalButton"
                                         >
                                             Auto run!
                                         </button>
@@ -301,11 +327,11 @@
                                     <div id="clearingTimeDiv">
                                         <div>
                                             Clearing time:
-                                            <span id="clearingTime">0</span>
+                                            <span id="clearingTime">0 s</span>
                                         </div>
                                         <div>
                                             Remaining time:
-                                            <span id="remainingTime">0</span>
+                                            <span id="remainingTime">0 s</span>
                                         </div>
                                     </div>
                                 </td>
@@ -315,19 +341,19 @@
                                     <div id="fightInformationDiv">
                                         <div>
                                             Average fight time:
-                                            <span id="fightTime">0</span>
+                                            <span id="fightTime">0 s</span>
                                         </div>
                                         <div>
                                             Average kill time:
-                                            <span id="killTime">0</span>
+                                            <span id="killTime">0 s</span>
                                         </div>
                                         <div>
                                             Average enemy health:
-                                            <span id="enemyHealth">0</span>
+                                            <span id="enemyHealth">0</span>%
                                         </div>
                                         <div>
-                                            Average enemy health left on losses:
-                                            <span id="enemyHealthLoss">0</span>
+                                            Average enemy health on losses:
+                                            <span id="enemyHealthLoss">0</span>%
                                         </div>
                                         <div>
                                             Best fight:
@@ -346,15 +372,16 @@
                                         <div>
                                             <button
                                                 class="uncheckedButton text generalButton"
-                                                id="bestUpgradesBtn"
+                                                id="bestGradesBtn"
                                             >
-                                                Best upgrades!</button
-                                            ><button
-                                                class="uncheckedButton text generalButton"
-                                                id="bestDowngradesBtn"
-                                            >
-                                                Best downgrades!
+                                                Best grades!
                                             </button>
+                                            <input
+                                                type="number"
+                                                id="bestGradesInput"
+                                                class="generalInput text"
+                                                value="1"
+                                            />
                                         </div>
                                         <div>
                                             <button
@@ -364,16 +391,56 @@
                                                 Best ring mods!
                                             </button>
                                         </div>
-                                        <div>
-                                            <button
-                                                class="uncheckedButton text generalButton"
-                                                id="timeAffordBtn"
-                                            >
-                                                Time to afford!</button
-                                            ><select
-                                                class="generalInput text"
-                                                id="timeAffordSelect"
-                                            ></select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table id="calcResultsPanel" class="dark-light text">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div id="calcResultsDiv">
+                                        <div id="bestGradesResults">
+                                            <span id="gradesStatus"></span>
+                                            <div id="gradesItems">
+                                                <span>
+                                                    Items
+                                                    <span
+                                                        id="gradesIncValue"
+                                                    ></span>
+                                                </span>
+                                                <div
+                                                    id="gradesItemsDust"
+                                                    class="columnFlexBox"
+                                                ></div>
+                                                <div
+                                                    id="gradesItemsShards"
+                                                    class="columnFlexBox"
+                                                ></div>
+                                            </div>
+                                            <div id="gradesClearingTime">
+                                                Reduced clearing time
+                                                <div
+                                                    id="gradesClearingDust"
+                                                    class="columnFlexBox"
+                                                ></div>
+                                                <div
+                                                    id="gradesClearingShards"
+                                                    class="columnFlexBox"
+                                                ></div>
+                                            </div>
+                                            <div id="gradesUntilProfit">
+                                                Time until profit
+                                                <div
+                                                    id="gradesProfitDust"
+                                                    class="columnFlexBox"
+                                                ></div>
+                                                <div
+                                                    id="gradesProfitShards"
+                                                    class="columnFlexBox"
+                                                ></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>

@@ -20,7 +20,7 @@ import {
     getHTMLElement,
     prettyNumber,
 } from "../utility.js";
-import { IABTypes } from "../data/buildString.js";
+import { IABTypes } from "../data/buildTypes.js";
 
 export function bonusesView() {
     setupOneTimerBtns();

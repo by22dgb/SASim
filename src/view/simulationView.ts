@@ -10,15 +10,16 @@ import {
     convertMilliSecondsToTime,
     getHTMLElement,
     prettyNumber,
+    round,
     updateButton,
 } from "../utility.js";
 import {
     getEnemyLevel,
     IResults,
-    printAllInfo,
     setRuntime,
     startSimulationFromButton,
     stopSimulation,
+    updateAutoRun,
 } from "../controller/autoBattleController.js";
 
 export function simulationViews() {
@@ -90,8 +91,7 @@ function setupRunBtns() {
 function addChangeForAutoRun(button: HTMLButtonElement) {
     button.addEventListener("click", () => {
         updateButton(button);
-        // TODO: Add auto run functionality
-        printAllInfo();
+        updateAutoRun();
     });
 }
 
@@ -145,10 +145,10 @@ function updateKills(enemiesKilled: number, trimpsKilled: number) {
 
     enemiesKilledSpan.innerHTML = prettyNumber(enemiesKilled);
     trimpsKilledSpan.innerHTML = prettyNumber(trimpsKilled);
-    winRateSpan.innerHTML = (
-        (enemiesKilled / (enemiesKilled + trimpsKilled)) *
-        100
-    ).toFixed(2);
+    winRateSpan.innerHTML = round(
+        (enemiesKilled / (enemiesKilled + trimpsKilled)) * 100,
+        2
+    ).toString();
 }
 
 function updateDustGains(gameDust: number, baseDust: number) {

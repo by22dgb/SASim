@@ -1,4 +1,4 @@
-import { IABTypes } from "./buildString.js";
+import { IABTypes } from "./buildTypes.js";
 
 export const builderData = {
     costItems: new Map<keyof IABTypes["items"], number>(),

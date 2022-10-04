@@ -6,8 +6,11 @@ Sends calls both to frontend and backend.
 import { autoBattle } from "../data/object.js";
 import { pick, updateButton, updateInput } from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
-import { IRing, IABTypes } from "../data/buildString.js";
-import { modifiedAutoBattle } from "./autoBattleController.js";
+import { IRing, IABTypes } from "../data/buildTypes.js";
+import {
+    modifiedAutoBattle,
+    modifiedAutoBattleWithBuild,
+} from "./autoBattleController.js";
 
 export function getOneTimers(): typeof autoBattle.oneTimers {
     return autoBattle.oneTimers;
@@ -36,7 +39,7 @@ export function getRing() {
     };
 }
 
-export function getPossibleRingMods(): typeof autoBattle.ringStats {
+export function getPossibleRingMods() {
     return autoBattle.ringStats;
 }
 
@@ -45,8 +48,12 @@ export function getRingStatAmt(mod: any) {
     return autoBattle.getRingStatAmt(mod);
 }
 
-export function getMutations(): typeof u2Mutations.tree {
+export function getMutations() {
     return u2Mutations.tree;
+}
+
+export function getUnlocks() {
+    return autoBattle.bonuses;
 }
 
 export function clearBonuses() {
@@ -79,7 +86,7 @@ export function clearBonuses() {
     autoBattle.scruffyLvl21 = false;
     updateButton("S21", true);
 
-    modifiedAutoBattle();
+    modifiedAutoBattleWithBuild();
 }
 
 export function equipOneTimer(
@@ -93,26 +100,28 @@ export function equipOneTimer(
     // Frontend
     updateButton(oneTimer, setUnselected);
 
-    modifiedAutoBattle();
+    modifiedAutoBattleWithBuild();
 }
 
 export function equipRingMods(ringMods: string[]) {
     const ring = getRing();
 
-    for (const mod of ringMods) {
-        // Backend
-        const index = ring.stats.mods.indexOf(mod);
-        if (index === -1) {
-            ring.stats.mods.push(mod);
-        } else {
-            ring.stats.mods.splice(index);
+    if (ring.bonus.owned) {
+        for (const mod of ringMods) {
+            // Backend
+            const index = ring.stats.mods.indexOf(mod);
+            if (index === -1) {
+                ring.stats.mods.push(mod);
+            } else {
+                ring.stats.mods.splice(index);
+            }
+
+            // Frontend
+            updateButton(mod);
         }
 
-        // Frontend
-        updateButton(mod);
+        modifiedAutoBattle();
     }
-
-    modifiedAutoBattle();
 }
 
 export function unequipRingMods() {
@@ -139,7 +148,7 @@ export function setRingLevel(level: number, frontendCall?: boolean) {
         updateInput("Ring", level);
     }
 
-    modifiedAutoBattle();
+    modifiedAutoBattleWithBuild();
 }
 
 export function equipMutation(

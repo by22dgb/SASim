@@ -1,4 +1,4 @@
-import { IABTypes } from "../data/buildString.js";
+import { Currency, IABTypes } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
 import {
     equipMutation,
@@ -6,13 +6,25 @@ import {
     equipRingMods,
     equipScruffy,
     getOneTimersSA,
+    getRing,
     setRingLevel,
     unequipRingMods,
 } from "./bonusesController.js";
-import { equipItem, getItems, levelItem } from "./itemsController.js";
+import {
+    equipItem,
+    getCurrency,
+    getItems,
+    getPrice,
+    levelItem,
+} from "./itemsController.js";
 import { u2Mutations } from "../data/mutations.js";
 import { updatePresetButton } from "../view/simulationView.js";
-import { setEnemyLevel, setMaxEnemyLevel } from "./levelsController.js";
+import {
+    getLimbs,
+    setEnemyLevel,
+    setMaxEnemyLevel,
+} from "./levelsController.js";
+import { uiUpdateBuildCost } from "../view/levelsView.js";
 
 export function buildItems(items: IABTypes["items"]) {
     for (const [key, value] of Object.entries(items)) {
@@ -107,4 +119,54 @@ export function loadPreset(buttonName: string) {
             equipItem(itemName);
         }
     }
+}
+
+export function updateBuildCost() {
+    const cost = calcBuildCost();
+    uiUpdateBuildCost(cost[0], cost[1]);
+}
+
+function calcBuildCost() {
+    let dustCost = 0;
+    let shardCost = 0;
+
+    // Price for items.
+    const items = getItems();
+    for (const [name, item] of Object.entries(items)) {
+        if (item.equipped) {
+            const cost = getPrice(name as keyof IABTypes["items"]);
+            const currency = getCurrency(name as keyof IABTypes["items"]);
+            if (currency === Currency.shards) {
+                shardCost += cost;
+            } else if (currency === Currency.dust) {
+                dustCost += cost;
+            }
+        }
+    }
+
+    // Price for one timers.
+    const oneTimers = getOneTimersSA();
+    for (const [key, value] of Object.entries(oneTimers)) {
+        if (value.owned) {
+            const name = key as keyof IABTypes["oneTimers"];
+            const cost = autoBattle.oneTimerPrice(name);
+            if ("useShards" in value && value.useShards) {
+                shardCost += cost;
+            } else {
+                dustCost += cost;
+            }
+        }
+    }
+
+    // Price for ring.
+    const ring = getRing();
+    if (ring.bonus.owned) {
+        shardCost += 13; // Contract cost
+        shardCost += Math.ceil(15 * Math.pow(2, ring.stats.level) - 30);
+    }
+
+    // Price for extra limbs.
+    const limbs = getLimbs();
+    dustCost += limbs > 4 ? (100 * (Math.pow(100, limbs - 4) - 1)) / 99 : 0;
+    return [dustCost, shardCost];
 }

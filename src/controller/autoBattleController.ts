@@ -3,13 +3,13 @@ Controls the autobattle simulation.
 Get information about the simulation, start and stop it.
 */
 
-import { IABTypes } from "../data/buildString.js";
 import { u2Mutations } from "../data/mutations.js";
 import { autoBattle } from "../data/object.js";
+import { convertMilliSecondsToTime, round } from "../utility.js";
 import { updateLiveResults } from "../view/simulationView.js";
-import { getOneTimersSA, getRing } from "./bonusesController.js";
-import { gameController, getResults } from "./gameController.js";
-import { getItems } from "./itemsController.js";
+import { getOneTimersSA } from "./bonusesController.js";
+import { updateBuildCost } from "./buildController.js";
+import { conConfig, gameController } from "./gameController.js";
 import { updateResistances } from "./resistanceController.js";
 
 export interface IResults {
@@ -29,15 +29,35 @@ export interface IResults {
     bestFight: string;
 }
 
-const controllerConfig = gameController.getDefaultConfig();
+let _isAutoRun = false;
 
-export function startSimulation() {
+export function getAutoRun() {
+    return _isAutoRun;
+}
+
+export function updateAutoRun() {
+    _isAutoRun = !_isAutoRun;
+}
+
+export function startSimulation(onUpdate?: Function, onComplete?: Function) {
     if (gameController.isRunning()) {
         return;
     }
 
-    controllerConfig.onUpdate = liveUpdate;
-    gameController.configure(controllerConfig);
+    if (onUpdate) {
+        conConfig.setOnUpdate(onUpdate);
+    } else {
+        conConfig.setOnUpdate(liveUpdate);
+    }
+
+    if (onComplete) {
+        conConfig.setOnComplete(onComplete);
+    }
+
+    if (conConfig.runtime === 0) {
+        conConfig.incRuntime();
+    }
+
     runSimulation();
 }
 
@@ -55,62 +75,15 @@ function runSimulation() {
 }
 
 export function startSimulationFromButton() {
+    conConfig.incRuntime();
     if (!gameController.modified) {
-        const newConfig = { ...gameController.getDefaultConfig() };
-        newConfig.runtime += gameController.runtime;
-        gameController.configure(newConfig);
         if (!gameController.isRunning()) {
+            conConfig.setOnUpdate(liveUpdate);
             runSimulation();
         }
     } else {
         startSimulation();
     }
-}
-
-function calcBuildCost() {
-    // Not here I think
-    let dustCost = 0;
-    let shardCost = 0;
-
-    // Price for items.
-    const items = getItems();
-    Object.values(items).forEach((value) => {
-        if (value.equipped) {
-            const startPrice = "startPrice" in value ? value.startPrice : 5;
-            const priceMod = "priceMod" in value ? value.priceMod : 3;
-            const cost =
-                (startPrice || 5) *
-                ((1 - Math.pow(priceMod || 3, value.level - 1)) /
-                    (1 - (priceMod || 3)));
-            if ("dustType" in value && value.dustType === "shards") {
-                shardCost += cost;
-            } else {
-                dustCost += cost;
-            }
-        }
-    });
-
-    // Price for one timers.
-    const oneTimers = getOneTimersSA();
-    Object.entries(oneTimers).forEach(([key, value]) => {
-        const name = key as keyof IABTypes["oneTimers"];
-        const cost = autoBattle.oneTimerPrice(name);
-        if ("useShards" in value && value.useShards) {
-            shardCost += cost;
-        } else {
-            dustCost += cost;
-        }
-    });
-
-    // Price for ring.
-    const ring = getRing();
-    if (ring.bonus.owned) {
-        shardCost += Math.ceil(15 * Math.pow(2, ring.stats.level) - 30);
-    }
-
-    // Price for extra limbs.
-    // TODO: once builder from ymh is added
-    return [dustCost, shardCost];
 }
 
 export function getEnemyLevel() {
@@ -175,12 +148,117 @@ export function printAllInfo() {
 export function modifiedAutoBattle() {
     gameController.halt = true;
     gameController.modified = true;
+    conConfig.resetRuntime();
+    conConfig.resetFunctions();
     updateResistances();
+    if (getAutoRun()) {
+        startSimulationFromButton();
+    }
+}
+
+export function modifiedAutoBattleWithBuild() {
+    modifiedAutoBattle();
+    updateBuildCost();
 }
 
 export function setRuntime(runtime: number) {
     const milliSeconds = runtime * 1000 * 60 * 60;
-    const newConfig = { ...gameController.getDefaultConfig() };
-    newConfig.runtime = milliSeconds;
-    gameController.configure(newConfig);
+    conConfig.setBaseRuntime(milliSeconds);
+}
+
+export function getDustPs() {
+    return autoBattle.getDustPs();
+}
+
+export function getClearingTime() {
+    const enemyLevel = autoBattle.enemyLevel;
+    const toKill = enemyCount(enemyLevel);
+    return (
+        (toKill / autoBattle.sessionEnemiesKilled) * autoBattle.lootAvg.counter
+    );
+}
+
+export function getResults(): IResults {
+    const enemyLevel = autoBattle.enemyLevel;
+    const toKill = enemyCount(enemyLevel);
+
+    // Standards
+    const assumeTomeLevel = 43;
+    const assumeDustierLevel = 85;
+
+    // Kills
+    const enemiesKilled = autoBattle.sessionEnemiesKilled;
+    const trimpsKilled = autoBattle.sessionTrimpsKilled;
+
+    // Dust gains
+    let baseDust = getDustPs();
+    const gameDust = baseDust;
+
+    // Remove multipliers
+    baseDust = autoBattle.scruffyLvl21 ? baseDust / 5 : baseDust;
+    if (enemyLevel < assumeDustierLevel) {
+        baseDust = u2Mutations.tree.Dust.purchased
+            ? baseDust / (1.25 + (u2Mutations.tree.Dust2.purchased ? 0.25 : 0))
+            : baseDust;
+
+        if (enemyLevel < assumeTomeLevel) {
+            baseDust = autoBattle.oneTimers.Dusty_Tome.owned
+                ? baseDust / (1 + 0.05 * (autoBattle.maxEnemyLevel - 1))
+                : baseDust;
+        }
+    }
+
+    // Times
+    const timeUsed = autoBattle.lootAvg.counter;
+    const killTime = timeUsed / enemiesKilled;
+    const fightTime = timeUsed / (enemiesKilled + trimpsKilled);
+    const clearingTime = getClearingTime();
+    const remainingTime = toKill * killTime; // TODO: Add support for save loading
+
+    // Health
+    const resultCounter = gameController.resultCounter;
+    const enemyHealth = round(
+        (resultCounter.healthSum / resultCounter.fights) * 100,
+        2
+    );
+    const enemyHealthLoss = round(
+        (resultCounter.healthSum / resultCounter.losses) * 100,
+        2
+    );
+
+    // Best fight
+    const resultBest = gameController.resultBest;
+    const bestFight = resultBest.win
+        ? "win in " + convertMilliSecondsToTime(resultBest.time)
+        : "loss in " +
+          convertMilliSecondsToTime(resultBest.time) +
+          " with " +
+          round(resultBest.enemy * 100, 1) +
+          "% enemy health left";
+
+    return {
+        isRunning: gameController.isRunning(),
+        timeUsed,
+        runtime: conConfig.runtime,
+        enemiesKilled,
+        trimpsKilled,
+        gameDust,
+        baseDust,
+        killTime,
+        clearingTime,
+        remainingTime,
+        fightTime,
+        enemyHealth,
+        enemyHealthLoss,
+        bestFight,
+    };
+}
+
+const enemyCount = (level: number) => {
+    if (level < 20) return 10 * level;
+    return 190 + 15 * (level - 19);
+};
+
+export function simIsRunning() {
+    return gameController.isRunning();
 }
