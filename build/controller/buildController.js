@@ -25,8 +25,8 @@ export function buildFromSave() {
     // Set ring
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ringMods = saveString.ring.mods;
-    equipRingMods(ringMods);
     setRingLevel(saveString.ring.level);
+    equipRingMods(ringMods);
     // Set oneTimers
     const oneTimers = getOneTimersSA(saveString);
     Object.keys(oneTimers).forEach((key) => {

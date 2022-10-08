@@ -91,6 +91,7 @@ function runSimulation() {
 }
 
 export function startSimulationFromButton() {
+    printAllInfo();
     conConfig.incRuntime();
     if (!gameController.modified) {
         if (!gameController.isRunning()) {
