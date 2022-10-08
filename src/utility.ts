@@ -135,3 +135,5 @@ export function average(list: number[]) {
     }
     return 0;
 }
+
+export type CallbackFunction = () => void;

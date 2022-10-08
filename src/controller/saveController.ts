@@ -1,5 +1,4 @@
 import { IABTypes } from "../data/buildTypes.js";
-import { autoBattle } from "../data/object.js";
 import { saveData } from "../data/saveData.js";
 
 export function getSaveData() {

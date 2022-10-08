@@ -6,7 +6,7 @@ Sends calls both to frontend and backend.
 import { autoBattle } from "../data/object.js";
 import { pick, updateButton, updateInput } from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
-import { IRing, IABTypes, BuyableObjects } from "../data/buildTypes.js";
+import { IRing, IABTypes } from "../data/buildTypes.js";
 import {
     modifiedAutoBattle,
     modifiedAutoBattleWithBuild,

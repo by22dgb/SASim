@@ -1,6 +1,5 @@
 import { BuyableObjects, Currency } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
-import { prettyNumber } from "../utility.js";
 import { getCurrency, getPrice } from "./general.js";
 import { getSimResultsDps } from "./resultsController.js";
 import { getTotalDust, getTotalShards } from "./saveController.js";

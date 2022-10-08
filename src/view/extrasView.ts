@@ -1,4 +1,4 @@
-import { getHTMLElement } from "../utility.js";
+import { CallbackFunction, getHTMLElement } from "../utility.js";
 import { setupGrades } from "./bestGradesView.js";
 
 export function extrasView() {
@@ -7,7 +7,7 @@ export function extrasView() {
 }
 
 export const currentExtraResults = {
-    functions: [] as Function[],
+    functions: [] as CallbackFunction[],
     clear() {
         if (this.functions.length > 0) {
             for (const func of this.functions) {
@@ -16,7 +16,7 @@ export const currentExtraResults = {
         }
         this.functions = [];
     },
-    add(func: Function) {
+    add(func: CallbackFunction) {
         this.functions.push(func);
     },
 };

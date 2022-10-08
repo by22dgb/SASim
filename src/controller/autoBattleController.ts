@@ -5,7 +5,11 @@ Get information about the simulation, start and stop it.
 
 import { u2Mutations } from "../data/mutations.js";
 import { autoBattle } from "../data/object.js";
-import { convertMilliSecondsToTime, round } from "../utility.js";
+import {
+    CallbackFunction,
+    convertMilliSecondsToTime,
+    round,
+} from "../utility.js";
 import {
     uiUpdateLiveResults,
     updateTimeSpent,
@@ -45,9 +49,9 @@ export function updateAutoRun() {
 }
 
 export function startSimulation(
-    onUpdate?: Function,
-    onComplete?: Function,
-    onInterrupt?: Function
+    onUpdate?: CallbackFunction,
+    onComplete?: CallbackFunction,
+    onInterrupt?: CallbackFunction
 ) {
     if (gameController.isRunning()) {
         return;

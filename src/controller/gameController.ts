@@ -4,12 +4,13 @@ Should only be interacted with from the autoBattleController and index.
 */
 
 import { autoBattle } from "../data/object.js";
+import { CallbackFunction } from "../utility.js";
 
 export const conConfig = {
     framesPerChunk: 200,
-    onSimInterrupt: null as Function | null,
-    onSimComplete: null as Function | null,
-    onUpdate: null as Function | null,
+    onSimInterrupt: null as CallbackFunction | null,
+    onSimComplete: null as CallbackFunction | null,
+    onUpdate: null as CallbackFunction | null,
     baseRuntime: 8 * 60 * 60 * 1000, // 8 hours
     runtime: 0,
     updateInterval: 8 * 60 * 60 * 1000,
@@ -28,15 +29,15 @@ export const conConfig = {
         this.onUpdate = null;
     },
 
-    setOnUpdate(func: Function) {
+    setOnUpdate(func: CallbackFunction) {
         this.onUpdate = func;
     },
 
-    setOnComplete(func: Function) {
+    setOnComplete(func: CallbackFunction) {
         this.onSimComplete = func;
     },
 
-    setOnInterrupt(func: Function) {
+    setOnInterrupt(func: CallbackFunction) {
         this.onSimInterrupt = func;
     },
 

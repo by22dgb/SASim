@@ -6,7 +6,6 @@ This file should not interact directly with the data layer.
 import { buildFromSave, loadPreset } from "../controller/buildController.js";
 import { clear, stringPaste } from "../controller/importController.js";
 import {
-    average,
     clickingAnimation,
     convertMilliSecondsToTime,
     getHTMLElement,
@@ -16,7 +15,6 @@ import {
 } from "../utility.js";
 import {
     getEnemyLevel,
-    getResults,
     IResults,
     setRuntime,
     startSimulationFromButton,

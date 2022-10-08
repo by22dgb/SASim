@@ -3,7 +3,6 @@ Functions for calculating the best upgrade and best downgrade items.
 */
 
 import { Currency, IABTypes } from "../data/buildTypes.js";
-import { prettyNumber } from "../utility.js";
 import { uiSetGradesItems, uiUpdateGradeItem } from "../view/bestGradesView.js";
 import {
     modifiedAutoBattle,

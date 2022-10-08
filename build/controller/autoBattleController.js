@@ -4,7 +4,7 @@ Get information about the simulation, start and stop it.
 */
 import { u2Mutations } from "../data/mutations.js";
 import { autoBattle } from "../data/object.js";
-import { convertMilliSecondsToTime, round } from "../utility.js";
+import { convertMilliSecondsToTime, round, } from "../utility.js";
 import { uiUpdateLiveResults, updateTimeSpent, } from "../view/simulationView.js";
 import { getOneTimersSA } from "./bonusesController.js";
 import { updateBuildCost } from "./buildController.js";

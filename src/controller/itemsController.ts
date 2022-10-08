@@ -3,13 +3,12 @@ Controls equipping and leveling items.
 Sends calls both to frontend and backend.
 */
 
-import { Currency, IABTypes } from "../data/buildTypes.js";
+import { IABTypes } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
 import { updateItem } from "../view/itemsView.js";
 import { updateInput } from "../utility.js";
 import { changeLimbs } from "./levelsController.js";
 import { modifiedAutoBattleWithBuild } from "./autoBattleController.js";
-import { getRing } from "./bonusesController.js";
 
 export function equipItem(
     itemName: keyof IABTypes["items"],
