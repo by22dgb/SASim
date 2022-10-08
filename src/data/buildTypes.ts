@@ -28,6 +28,7 @@ export type BuyableObjects =
     | keyof IABTypes["items"]
     | keyof IABTypes["oneTimers"]
     | "The_Ring"
+    | "Ring"
     | "Extra_Limbs"
     | "Radon"
     | "Stats"

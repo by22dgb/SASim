@@ -8,7 +8,7 @@ import {
 import { getItem, getItemPrice } from "./itemsController.js";
 
 export function getPrice(name: BuyableObjects, level?: number) {
-    if (name === "The_Ring") {
+    if (name === "The_Ring" || name === "Ring") {
         return getRingPrice(level);
     }
     const itemKeys = Object.keys(autoBattle.items);
@@ -31,7 +31,7 @@ export function getPrice(name: BuyableObjects, level?: number) {
 }
 
 export function getCurrency(name: BuyableObjects) {
-    if (name === "The_Ring") {
+    if (name === "The_Ring" || name === "Ring") {
         return Currency.shards;
     }
     const itemKeys = Object.keys(autoBattle.items);
