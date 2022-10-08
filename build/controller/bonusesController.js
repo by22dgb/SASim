@@ -145,3 +145,18 @@ export function getRingPrice(increment) {
     }
     return cost;
 }
+export function getOneTimerPrice(oneTimer) {
+    return autoBattle.oneTimerPrice(oneTimer);
+}
+export function getBonusPrice(bonus) {
+    console.log(bonus);
+    console.log(autoBattle.getBonusCost(bonus));
+    console.log(autoBattle.bonuses);
+    return autoBattle.getBonusCost(bonus);
+}
+export function setBonuses(bonuses) {
+    for (const [bonus, level] of Object.entries(bonuses)) {
+        autoBattle.bonuses[bonus].level =
+            level;
+    }
+}

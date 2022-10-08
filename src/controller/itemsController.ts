@@ -93,16 +93,10 @@ export function clearItems() {
     }
 }
 
-export function getCurrency(name: keyof IABTypes["items"]) {
-    const item = getItem(name);
-    if ("dustType" in item && item.dustType === "shards") {
-        return Currency.shards;
-    } else {
-        return Currency.dust;
-    }
-}
-
-export function getPrice(name: keyof IABTypes["items"], increment?: number) {
+export function getItemPrice(
+    name: keyof IABTypes["items"],
+    increment?: number
+) {
     const item = getItem(name);
     const startPrice = "startPrice" in item ? item.startPrice : 5;
     const priceMod = "priceMod" in item ? item.priceMod : 3;

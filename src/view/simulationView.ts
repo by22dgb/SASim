@@ -110,7 +110,7 @@ function setupStopBtn(button: HTMLButtonElement) {
     });
 }
 
-export function updateLiveResults(results: IResults) {
+export function uiUpdateLiveResults(results: IResults) {
     updateTimeSpent(results.isRunning, results.timeUsed, results.runtime);
     updateKills(results.enemiesKilled, results.trimpsKilled);
     updateDustGains(results.gameDust, results.baseDust);

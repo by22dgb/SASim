@@ -8,3 +8,9 @@ export function setSaveData(data) {
 export function getRemainingEnemies() {
     return saveData.remainingEnemies;
 }
+export function getTotalDust() {
+    return saveData.dust;
+}
+export function getTotalShards() {
+    return saveData.shards;
+}

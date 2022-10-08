@@ -2,7 +2,7 @@ import { Build } from "../data/buildTypes.js";
 import { LZString } from "./lz-string.js";
 import { buildFromSave, buildItems, clearBuilderData, setPresets, } from "./buildController.js";
 import { clearItems, getItems } from "./itemsController.js";
-import { clearBonuses } from "./bonusesController.js";
+import { clearBonuses, setBonuses } from "./bonusesController.js";
 import { enemyCount, modifiedAutoBattleWithBuild, } from "./autoBattleController.js";
 import { setSaveData } from "./saveController.js";
 export function stringPaste(paste) {
@@ -55,7 +55,10 @@ function importSave(savegame) {
         remainingEnemies = enemyCount(abData.enemyLevel) - abData.enemiesKilled;
     }
     saveString.remainingEnemies = remainingEnemies;
+    saveString.dust = abData.dust;
+    saveString.shards = abData.shards;
     setSaveData(saveString);
+    setBonuses(abData.bonuses);
     buildFromSave();
     const presets = savegame.global.autoBattleData.presets;
     setPresets(presets);

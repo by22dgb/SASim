@@ -10,13 +10,7 @@ import {
     setRingLevel,
     unequipRingMods,
 } from "./bonusesController.js";
-import {
-    equipItem,
-    getCurrency,
-    getItems,
-    getPrice,
-    levelItem,
-} from "./itemsController.js";
+import { equipItem, getItems, levelItem } from "./itemsController.js";
 import { u2Mutations } from "../data/mutations.js";
 import { updatePresetButton } from "../view/simulationView.js";
 import {
@@ -27,6 +21,7 @@ import {
 import { uiUpdateBuildCost, updateLimbs } from "../view/levelsView.js";
 import { builderData } from "../data/buildData.js";
 import { getSaveData } from "./saveController.js";
+import { getCurrency, getPrice } from "./general.js";
 
 export function buildItems(items: IABTypes["items"]) {
     for (const [key, value] of Object.entries(items)) {
@@ -149,10 +144,9 @@ function calcBuildCost() {
 
     // Price for one timers.
     const oneTimers = getOneTimersSA();
-    for (const [key, value] of Object.entries(oneTimers)) {
+    for (const [name, value] of Object.entries(oneTimers)) {
         if (value.owned) {
-            const name = key as keyof IABTypes["oneTimers"];
-            const cost = autoBattle.oneTimerPrice(name);
+            const cost = getPrice(name as keyof IABTypes["oneTimers"]);
             if ("useShards" in value && value.useShards) {
                 shardCost += cost;
             } else {

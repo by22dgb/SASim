@@ -12,12 +12,8 @@ import {
     getClearingTime,
 } from "./autoBattleController.js";
 import { getRing, getRingPrice, incrementRing } from "./bonusesController.js";
-import {
-    getCurrency,
-    getItemsInOrder,
-    getPrice,
-    incrementItem,
-} from "./itemsController.js";
+import { getCurrency, getPrice } from "./general.js";
+import { getItemsInOrder, incrementItem } from "./itemsController.js";
 
 export function findBestGrade(increment: number) {
     storage.increment = increment;

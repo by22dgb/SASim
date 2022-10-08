@@ -48,6 +48,9 @@ export function clickingAnimation(button) {
 export function getHTMLElement(name) {
     const element = document.querySelector(name);
     if (!element) {
+        if (!name.startsWith("#") && !name.startsWith(".")) {
+            throw new Error("Invalid selector. Please use a valid CSS selector.");
+        }
         throw new Error("Element not found: " + name);
     }
     return element;
@@ -66,7 +69,11 @@ function showHover(element) {
 function hideHover(element) {
     element.style.display = "none";
 }
-export function prettyNumber(number) {
+export function prettyNumber(...number) {
+    // Return all numbers in an array
+    if (number.length > 1) {
+        return number.map((num) => prettify(num));
+    }
     return prettify(number);
 }
 export function convertSecondsToTime(seconds) {

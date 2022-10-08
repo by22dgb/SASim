@@ -246,6 +246,16 @@ Stylesheet
     padding: 0.2em;
 }
 
+/* More info */
+#timeAffordTime {
+    display: none;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-content: stretch;
+    align-items: flex-start;
+}
+
 /* Simulation */
 
 #simulationPanel {

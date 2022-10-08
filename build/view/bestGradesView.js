@@ -1,6 +1,6 @@
 import { simIsRunning } from "../controller/autoBattleController.js";
 import { findBestGrade } from "../controller/bestGradeController.js";
-import { getCurrency } from "../controller/itemsController.js";
+import { getCurrency } from "../controller/general.js";
 import { Currency } from "../data/buildTypes.js";
 import { clearHTMLChilds, clickingAnimation, convertMilliSecondsToTime, convertSecondsToTime, getHTMLElement, } from "../utility.js";
 import { currentExtraResults } from "./extrasView.js";
@@ -40,23 +40,16 @@ export function uiSetGradesItems(items) {
         const profitSpan = document.createElement("span");
         profitSpan.innerHTML = "-";
         profitSpan.id = `gradesProfit${item}`;
-        if (item === "Ring") {
+        const currency = getCurrency(item);
+        if (currency === Currency.dust) {
+            gradesItemsDust.appendChild(nameSpan);
+            gradesClearingDust.appendChild(clearingSpan);
+            gradesProfitDust.appendChild(profitSpan);
+        }
+        else if (currency === Currency.shards) {
             gradesItemsShards.appendChild(nameSpan);
             gradesClearingShards.appendChild(clearingSpan);
             gradesProfitShards.appendChild(profitSpan);
-        }
-        else {
-            const currency = getCurrency(item);
-            if (currency === Currency.dust) {
-                gradesItemsDust.appendChild(nameSpan);
-                gradesClearingDust.appendChild(clearingSpan);
-                gradesProfitDust.appendChild(profitSpan);
-            }
-            else if (currency === Currency.shards) {
-                gradesItemsShards.appendChild(nameSpan);
-                gradesClearingShards.appendChild(clearingSpan);
-                gradesProfitShards.appendChild(profitSpan);
-            }
         }
     }
 }

@@ -3,10 +3,12 @@ Levels view panel, used for setting levels and displaying relevant information.
 This file should not interact directly with the data layer.
 */
 import { getOneTimersSA, getUnlocks } from "../controller/bonusesController.js";
-import { getCurrency, getItem, getItemsInOrder, } from "../controller/itemsController.js";
+import { getCurrency } from "../controller/general.js";
+import { getItem, getItemsInOrder } from "../controller/itemsController.js";
 import { checkMaxLevel, getActiveEffects, getLimbs, setEnemyLevel, setMaxEnemyLevel, } from "../controller/levelsController.js";
+import { timeToAfford } from "../controller/moreInfoController.js";
 import { Currency } from "../data/buildTypes.js";
-import { capitaliseFirstLetter, getHTMLElement, prettyNumber, round, } from "../utility.js";
+import { capitaliseFirstLetter, clickingAnimation, convertSecondsToTime, getHTMLElement, prettyNumber, round, } from "../utility.js";
 export function levelsView() {
     setWidth();
     setupMaxLevelInput();
@@ -222,6 +224,26 @@ function setupTimeAfford() {
 }
 function setupTimeAffordBtn() {
     const btn = getHTMLElement("#timeAffordBtn");
+    const input = getHTMLElement("#timeAffordLevels");
+    const select = getHTMLElement("#timeAffordSelect");
+    const timeDiv = getHTMLElement("#timeAffordTime");
+    const fromSaveSpan = getHTMLElement("#timeAffordFromSave");
+    const fromScratchSpan = getHTMLElement("#timeAffordFromScratch");
+    btn.addEventListener("click", () => {
+        const item = select.selectedOptions[0].value;
+        const levels = +input.value;
+        const time = timeToAfford(item, levels);
+        timeDiv.style.display = "flex";
+        if (time.fromSave < 0) {
+            fromSaveSpan.innerHTML = "now!";
+        }
+        else {
+            fromSaveSpan.innerHTML =
+                "in: " + convertSecondsToTime(time.fromSave);
+        }
+        fromScratchSpan.innerHTML = convertSecondsToTime(time.fromScratch);
+    });
+    clickingAnimation(btn);
 }
 function setupTimeAffordSelect() {
     const select = getHTMLElement("#timeAffordSelect");

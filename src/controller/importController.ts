@@ -7,7 +7,7 @@ import {
     setPresets,
 } from "./buildController.js";
 import { clearItems, getItems } from "./itemsController.js";
-import { clearBonuses } from "./bonusesController.js";
+import { clearBonuses, setBonuses } from "./bonusesController.js";
 import {
     enemyCount,
     modifiedAutoBattleWithBuild,
@@ -65,7 +65,10 @@ function importSave(savegame: any) {
         remainingEnemies = enemyCount(abData.enemyLevel) - abData.enemiesKilled;
     }
     saveString.remainingEnemies = remainingEnemies;
+    saveString.dust = abData.dust;
+    saveString.shards = abData.shards;
     setSaveData(saveString);
+    setBonuses(abData.bonuses);
     buildFromSave();
 
     const presets = savegame.global.autoBattleData.presets;

@@ -74,7 +74,7 @@ function setupStopBtn(button) {
         stopSimulation();
     });
 }
-export function updateLiveResults(results) {
+export function uiUpdateLiveResults(results) {
     updateTimeSpent(results.isRunning, results.timeUsed, results.runtime);
     updateKills(results.enemiesKilled, results.trimpsKilled);
     updateDustGains(results.gameDust, results.baseDust);

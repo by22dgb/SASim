@@ -10,6 +10,8 @@ export interface IABTypes {
     currentLevel: number;
     maxEnemyLevel: number;
     remainingEnemies: number;
+    dust: number;
+    shards: number;
 }
 
 export interface IRing {
@@ -21,6 +23,15 @@ export enum Currency {
     dust,
     shards,
 }
+
+export type BuyableObjects =
+    | keyof IABTypes["items"]
+    | keyof IABTypes["oneTimers"]
+    | "The_Ring"
+    | "Extra_Limbs"
+    | "Radon"
+    | "Stats"
+    | "Scaffolding";
 
 export const Build = {
     items: {

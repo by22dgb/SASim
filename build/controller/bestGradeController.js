@@ -5,7 +5,8 @@ import { Currency } from "../data/buildTypes.js";
 import { uiSetGradesItems, uiUpdateGradeItem } from "../view/bestGradesView.js";
 import { modifiedAutoBattle, startSimulation, getDustPs, getClearingTime, } from "./autoBattleController.js";
 import { getRing, getRingPrice, incrementRing } from "./bonusesController.js";
-import { getCurrency, getItemsInOrder, getPrice, incrementItem, } from "./itemsController.js";
+import { getCurrency, getPrice } from "./general.js";
+import { getItemsInOrder, incrementItem } from "./itemsController.js";
 export function findBestGrade(increment) {
     storage.increment = increment;
     runAllItems();

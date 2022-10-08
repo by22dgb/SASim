@@ -6,11 +6,15 @@ Get information about the simulation, start and stop it.
 import { u2Mutations } from "../data/mutations.js";
 import { autoBattle } from "../data/object.js";
 import { convertMilliSecondsToTime, round } from "../utility.js";
-import { updateLiveResults, updateTimeSpent } from "../view/simulationView.js";
+import {
+    uiUpdateLiveResults,
+    updateTimeSpent,
+} from "../view/simulationView.js";
 import { getOneTimersSA } from "./bonusesController.js";
 import { updateBuildCost } from "./buildController.js";
 import { conConfig, gameController } from "./gameController.js";
 import { updateResistances } from "./resistanceController.js";
+import { setSimResultsDps } from "./resultsController.js";
 import { getRemainingEnemies } from "./saveController.js";
 
 export interface IResults {
@@ -78,7 +82,8 @@ export function stopSimulation() {
 
 function liveUpdate() {
     const results = getResults();
-    updateLiveResults(results);
+    uiUpdateLiveResults(results);
+    setSimResultsDps(getDustPs());
 }
 
 function liveInterrupt() {
@@ -91,7 +96,6 @@ function runSimulation() {
 }
 
 export function startSimulationFromButton() {
-    printAllInfo();
     conConfig.incRuntime();
     if (!gameController.modified) {
         if (!gameController.isRunning()) {
@@ -202,7 +206,6 @@ export function getClearingTime() {
 
 export function getResults(): IResults {
     const enemyLevel = autoBattle.enemyLevel;
-    const toKill = enemyCount(enemyLevel);
 
     // Standards
     const assumeTomeLevel = 43;
@@ -218,16 +221,19 @@ export function getResults(): IResults {
 
     // Remove multipliers
     baseDust = autoBattle.scruffyLvl21 ? baseDust / 5 : baseDust;
-    if (enemyLevel < assumeDustierLevel) {
-        baseDust = u2Mutations.tree.Dust.purchased
-            ? baseDust / (1.25 + (u2Mutations.tree.Dust2.purchased ? 0.25 : 0))
-            : baseDust;
+    if (u2Mutations.tree.Dust.purchased) {
+        baseDust /= 1.25 + (u2Mutations.tree.Dust2.purchased ? 0.25 : 0);
+    }
+    if (autoBattle.oneTimers.Dusty_Tome.owned) {
+        baseDust /= 1 + 0.05 * (autoBattle.maxEnemyLevel - 1);
+    }
 
-        if (enemyLevel < assumeTomeLevel) {
-            baseDust = autoBattle.oneTimers.Dusty_Tome.owned
-                ? baseDust / (1 + 0.05 * (autoBattle.maxEnemyLevel - 1))
-                : baseDust;
-        }
+    // Add multipliers
+    if (enemyLevel >= assumeTomeLevel) {
+        baseDust *= 1 + 0.05 * enemyLevel; // Level not max level.
+    }
+    if (enemyLevel >= assumeDustierLevel) {
+        baseDust *= 1.5;
     }
 
     // Times

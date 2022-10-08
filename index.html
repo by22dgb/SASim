@@ -183,11 +183,38 @@
                                             class="uncheckedButton text generalButton"
                                             id="timeAffordBtn"
                                         >
-                                            Time to afford!</button
-                                        ><select
+                                            Time to afford!
+                                        </button>
+                                        <input
+                                            id="timeAffordLevels"
+                                            type="number"
+                                            class="generalInput text"
+                                            min="1"
+                                            value="1"
+                                        />
+                                        <select
                                             class="text dustColour"
                                             id="timeAffordSelect"
                                         ></select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="timeAffordTime">
+                                        <div>
+                                            You can afford this
+                                            <span
+                                                id="timeAffordFromSave"
+                                            ></span>
+                                        </div>
+                                        <div>
+                                            You can afford this from 0
+                                            dust/shards in:
+                                            <span
+                                                id="timeAffordFromScratch"
+                                            ></span>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

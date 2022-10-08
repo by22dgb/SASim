@@ -1,4 +1,5 @@
 import { IABTypes } from "../data/buildTypes.js";
+import { autoBattle } from "../data/object.js";
 import { saveData } from "../data/saveData.js";
 
 export function getSaveData() {
@@ -11,4 +12,12 @@ export function setSaveData(data: IABTypes) {
 
 export function getRemainingEnemies() {
     return saveData.remainingEnemies as number;
+}
+
+export function getTotalDust() {
+    return saveData.dust as number;
+}
+
+export function getTotalShards() {
+    return saveData.shards as number;
 }

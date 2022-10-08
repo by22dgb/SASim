@@ -2,7 +2,6 @@
 Controls equipping and leveling items.
 Sends calls both to frontend and backend.
 */
-import { Currency } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
 import { updateItem } from "../view/itemsView.js";
 import { updateInput } from "../utility.js";
@@ -66,16 +65,7 @@ export function clearItems() {
         updateInput(name, 1);
     }
 }
-export function getCurrency(name) {
-    const item = getItem(name);
-    if ("dustType" in item && item.dustType === "shards") {
-        return Currency.shards;
-    }
-    else {
-        return Currency.dust;
-    }
-}
-export function getPrice(name, increment) {
+export function getItemPrice(name, increment) {
     const item = getItem(name);
     const startPrice = "startPrice" in item ? item.startPrice : 5;
     const priceMod = "priceMod" in item ? item.priceMod : 3;

@@ -4,11 +4,8 @@ This file should not interact directly with the data layer.
 */
 
 import { getOneTimersSA, getUnlocks } from "../controller/bonusesController.js";
-import {
-    getCurrency,
-    getItem,
-    getItemsInOrder,
-} from "../controller/itemsController.js";
+import { getCurrency } from "../controller/general.js";
+import { getItem, getItemsInOrder } from "../controller/itemsController.js";
 import {
     checkMaxLevel,
     getActiveEffects,
@@ -16,10 +13,13 @@ import {
     setEnemyLevel,
     setMaxEnemyLevel,
 } from "../controller/levelsController.js";
-import { Currency, IABTypes } from "../data/buildTypes.js";
+import { timeToAfford } from "../controller/moreInfoController.js";
+import { BuyableObjects, Currency, IABTypes } from "../data/buildTypes.js";
 import { IEnemy, IHuffy, IShank } from "../data/resistanceData.js";
 import {
     capitaliseFirstLetter,
+    clickingAnimation,
+    convertSecondsToTime,
     getHTMLElement,
     prettyNumber,
     round,
@@ -296,6 +296,28 @@ function setupTimeAfford() {
 
 function setupTimeAffordBtn() {
     const btn = getHTMLElement("#timeAffordBtn");
+    const input = getHTMLElement("#timeAffordLevels") as HTMLInputElement;
+    const select = getHTMLElement("#timeAffordSelect") as HTMLSelectElement;
+    const timeDiv = getHTMLElement("#timeAffordTime");
+    const fromSaveSpan = getHTMLElement("#timeAffordFromSave");
+    const fromScratchSpan = getHTMLElement("#timeAffordFromScratch");
+
+    btn.addEventListener("click", () => {
+        const item = select.selectedOptions[0].value;
+        const levels = +input.value;
+        const time = timeToAfford(item as BuyableObjects, levels);
+
+        timeDiv.style.display = "flex";
+        if (time.fromSave < 0) {
+            fromSaveSpan.innerHTML = "now!";
+        } else {
+            fromSaveSpan.innerHTML =
+                "in: " + convertSecondsToTime(time.fromSave);
+        }
+        fromScratchSpan.innerHTML = convertSecondsToTime(time.fromScratch);
+    });
+
+    clickingAnimation(btn);
 }
 
 function setupTimeAffordSelect() {

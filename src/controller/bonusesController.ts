@@ -6,7 +6,7 @@ Sends calls both to frontend and backend.
 import { autoBattle } from "../data/object.js";
 import { pick, updateButton, updateInput } from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
-import { IRing, IABTypes } from "../data/buildTypes.js";
+import { IRing, IABTypes, BuyableObjects } from "../data/buildTypes.js";
 import {
     modifiedAutoBattle,
     modifiedAutoBattleWithBuild,
@@ -195,4 +195,22 @@ export function getRingPrice(increment?: number) {
         cost += Math.ceil(15 * Math.pow(2, level) - 30);
     }
     return cost;
+}
+
+export function getOneTimerPrice(oneTimer: keyof IABTypes["oneTimers"]) {
+    return autoBattle.oneTimerPrice(oneTimer);
+}
+
+export function getBonusPrice(bonus: keyof typeof autoBattle.bonuses) {
+    console.log(bonus);
+    console.log(autoBattle.getBonusCost(bonus));
+    console.log(autoBattle.bonuses);
+    return autoBattle.getBonusCost(bonus);
+}
+
+export function setBonuses(bonuses: { [key: string]: number }) {
+    for (const [bonus, level] of Object.entries(bonuses)) {
+        autoBattle.bonuses[bonus as keyof typeof autoBattle.bonuses].level =
+            level;
+    }
 }
