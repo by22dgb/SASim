@@ -255,7 +255,7 @@ Stylesheet
     justify-content: center;
     padding: 0.5em 1em;
     margin-bottom: 2em;
-    min-width: 25em;
+    min-width: 30em;
 }
 
 #saveImportInp {
@@ -275,6 +275,14 @@ Stylesheet
 
 #resultsPanel {
     display: flex;
+    justify-content: center;
+    padding: 0.3em 1em;
+    margin-bottom: 2em;
+}
+
+/* Calc panel */
+#calcPanel {
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -292,13 +300,17 @@ Stylesheet
     align-content: stretch;
 }
 
-.columnFlexBox {
+#bestGradesResults div {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     align-items: flex-start;
-    justify-content: start;
+    justify-content: space-between;
     align-content: stretch;
+}
+
+#bestGradesResults span {
+    height: 1.3em;
 }
 
 /* Colours */

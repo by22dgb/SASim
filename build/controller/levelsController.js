@@ -1,18 +1,11 @@
 /*
 Controller for the levels, effects and resistance divs.
 */
-
 import { builderData } from "../data/buildData.js";
-import { IABTypes } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
 import { updateInput } from "../utility.js";
 import { updateEffects, updateLimbs } from "../view/levelsView.js";
-import {
-    getEnemyLevel,
-    modifiedAutoBattle,
-    modifiedAutoBattleWithBuild,
-} from "./autoBattleController.js";
-
+import { getEnemyLevel, modifiedAutoBattle, modifiedAutoBattleWithBuild, } from "./autoBattleController.js";
 export function getActiveEffects() {
     const level = getEnemyLevel();
     const effects = autoBattle.getEffects(level);
@@ -21,43 +14,34 @@ export function getActiveEffects() {
     }
     return effects;
 }
-
-export function changeLimbs(item: IABTypes["items"][keyof IABTypes["items"]]) {
+export function changeLimbs(item) {
     const increment = item.equipped ? 1 : -1;
     builderData.limbs += increment;
     updateLimbs();
 }
-
 export function getLimbs() {
     return builderData.limbs;
 }
-
-export function setEnemyLevel(level: number, frontendCall?: boolean) {
+export function setEnemyLevel(level, frontendCall) {
     // Backend
     autoBattle.enemyLevel = level;
-
     // Frontend
     if (!frontendCall) {
         updateInput("currentEnemyLevel", level);
         updateEffects();
     }
-
     modifiedAutoBattleWithBuild();
 }
-
-export function setMaxEnemyLevel(level: number, frontendCall?: boolean) {
+export function setMaxEnemyLevel(level, frontendCall) {
     // Backend
     autoBattle.maxEnemyLevel = level;
-
     // Frontend
     if (!frontendCall) {
         updateInput("maxEnemyLevel", level);
     }
-
     modifiedAutoBattle();
 }
-
-export function checkMaxLevel(level: number) {
+export function checkMaxLevel(level) {
     const maxLevel = autoBattle.maxEnemyLevel;
     if (level > maxLevel) {
         setMaxEnemyLevel(level);

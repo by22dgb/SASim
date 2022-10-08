@@ -1,55 +1,45 @@
-import { Build, IRing, IABTypes } from "../data/buildTypes.js";
+import { Build } from "../data/buildTypes.js";
 import { LZString } from "./lz-string.js";
-import {
-    buildFromSave,
-    buildItems,
-    clearBuilderData,
-    setPresets,
-} from "./buildController.js";
+import { buildFromSave, buildItems, clearBuilderData, setPresets, } from "./buildController.js";
 import { clearItems, getItems } from "./itemsController.js";
 import { clearBonuses } from "./bonusesController.js";
-import {
-    enemyCount,
-    modifiedAutoBattleWithBuild,
-} from "./autoBattleController.js";
+import { enemyCount, modifiedAutoBattleWithBuild, } from "./autoBattleController.js";
 import { setSaveData } from "./saveController.js";
-
-export function stringPaste(paste: string) {
+export function stringPaste(paste) {
     clear();
     let savegame;
     try {
         // Wtf do you think the try catch is for you stupid linter
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        savegame = JSON.parse(LZString.decompressFromBase64(paste)!);
-    } catch (error) {
+        savegame = JSON.parse(LZString.decompressFromBase64(paste));
+    }
+    catch (error) {
         // Do nothing
     }
     if (savegame) {
         //  Import save
         if (savegame.global) {
             importSave(savegame);
-        } else {
+        }
+        else {
             alert("https://nsheetz.github.io/perks/");
         }
-    } else if (paste.includes("\t")) {
+    }
+    else if (paste.includes("\t")) {
         // Import spreadsheet line
         importSpreadsheet(paste);
     }
 }
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function importSave(savegame: any) {
+function importSave(savegame) {
     modifiedAutoBattleWithBuild();
-
-    const saveString = {} as IABTypes;
+    const saveString = {};
     const abData = savegame.global.autoBattleData;
-
     saveString.items = abData.items;
-    const ring: IRing = {
+    const ring = {
         mods: abData.rings.mods,
         level: abData.rings.level,
     };
-
     if (!("The_Ring" in abData.oneTimers)) {
         // Set ring to unowned through 0 if it isn't owned
         ring.level = 0;
@@ -67,16 +57,12 @@ function importSave(savegame: any) {
     saveString.remainingEnemies = remainingEnemies;
     setSaveData(saveString);
     buildFromSave();
-
     const presets = savegame.global.autoBattleData.presets;
     setPresets(presets);
 }
-
-function importSpreadsheet(row: string) {
+function importSpreadsheet(row) {
     modifiedAutoBattleWithBuild();
-
     const items = JSON.parse(JSON.stringify(getItems()));
-
     const itemLevels = row.split("\t");
     itemLevels.forEach((itemLevel, index) => {
         if (itemLevel !== "") {
@@ -87,7 +73,6 @@ function importSpreadsheet(row: string) {
     });
     buildItems(items);
 }
-
 export function clear() {
     clearItems();
     clearBonuses();

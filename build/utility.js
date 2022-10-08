@@ -1,51 +1,41 @@
 import { prettify } from "./data/object.js";
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function pick(obj: any, ...keys: any) {
-    return Object.fromEntries(
-        keys.filter((key: any) => key in obj).map((key: any) => [key, obj[key]])
-    );
+export function pick(obj, ...keys) {
+    return Object.fromEntries(keys.filter((key) => key in obj).map((key) => [key, obj[key]]));
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
-
-export function capitaliseFirstLetter(string: string) {
+export function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
-export function updateButton(
-    button: HTMLButtonElement | string,
-    setUnselected?: boolean
-) {
+export function updateButton(button, setUnselected) {
     let classList;
     if (typeof button === "string") {
         classList = getHTMLElement("#" + button + "_Button").classList;
-    } else {
+    }
+    else {
         classList = button.classList;
     }
     if (setUnselected || classList.contains("checkedButton")) {
         classList.remove("checkedButton");
         classList.add("uncheckedButton");
-    } else {
+    }
+    else {
         classList.remove("uncheckedButton");
         classList.add("checkedButton");
     }
 }
-
-export function updateInput(
-    name: HTMLInputElement | string,
-    level: number | string
-) {
+export function updateInput(name, level) {
     let input;
     if (typeof name === "string") {
         name = "#" + name + "_Input";
-        input = getHTMLElement(name) as HTMLInputElement;
-    } else {
+        input = getHTMLElement(name);
+    }
+    else {
         input = name;
     }
     input.value = level.toString();
 }
-
-export function clickingAnimation(button: HTMLElement) {
+export function clickingAnimation(button) {
     button.addEventListener("click", () => {
         button.classList.remove("uncheckedButton");
         button.classList.add("checkedButton");
@@ -55,16 +45,14 @@ export function clickingAnimation(button: HTMLElement) {
         }, 269);
     });
 }
-
-export function getHTMLElement(name: string): HTMLElement {
+export function getHTMLElement(name) {
     const element = document.querySelector(name);
     if (!element) {
         throw new Error("Element not found: " + name);
     }
-    return element as HTMLElement;
+    return element;
 }
-
-export function addHover(hoverDiv: HTMLElement, displayDiv: HTMLDivElement) {
+export function addHover(hoverDiv, displayDiv) {
     hoverDiv.addEventListener("mouseover", () => {
         showHover(displayDiv);
     });
@@ -72,22 +60,18 @@ export function addHover(hoverDiv: HTMLElement, displayDiv: HTMLDivElement) {
         hideHover(displayDiv);
     });
 }
-
-function showHover(element: HTMLElement) {
+function showHover(element) {
     element.style.display = "block";
 }
-
-function hideHover(element: HTMLElement) {
+function hideHover(element) {
     element.style.display = "none";
 }
-
-export function prettyNumber(number: number) {
+export function prettyNumber(number) {
     return prettify(number);
 }
-
-export function convertSecondsToTime(seconds: number) {
-    if (!isFinite(seconds)) return "♾️";
-
+export function convertSecondsToTime(seconds) {
+    if (!isFinite(seconds))
+        return "♾️";
     // Seconds, minutes, hours, days and years
     const s = round(seconds % 60);
     const m = Math.floor(seconds / 60) % 60;
@@ -95,32 +79,32 @@ export function convertSecondsToTime(seconds: number) {
     const d = Math.floor(seconds / 86400) % 365;
     const y = Math.floor(seconds / 31536000);
     // Return the time
-    if (y > 0) return `${y}y` + (d > 0 ? ` ${d}d` : "");
-    if (d > 0) return `${d}d` + (h > 0 ? ` ${h}h` : "");
-    if (h > 0) return `${h}h` + (m > 0 ? ` ${m}m` : "");
-    if (m > 0) return `${m}m` + (s > 0 ? ` ${s}s` : "");
+    if (y > 0)
+        return `${y}y` + (d > 0 ? ` ${d}d` : "");
+    if (d > 0)
+        return `${d}d` + (h > 0 ? ` ${h}h` : "");
+    if (h > 0)
+        return `${h}h` + (m > 0 ? ` ${m}m` : "");
+    if (m > 0)
+        return `${m}m` + (s > 0 ? ` ${s}s` : "");
     return `${s}s`;
 }
-
-export function convertMilliSecondsToTime(ms: number) {
+export function convertMilliSecondsToTime(ms) {
     return convertSecondsToTime(ms / 1000);
 }
-
-export function round(number: number, precision?: number) {
+export function round(number, precision) {
     if (precision === undefined) {
         return Math.round(number);
     }
     const factor = Math.pow(10, precision);
     return Math.round((number + Number.EPSILON) * factor) / factor;
 }
-
-export function clearHTMLChilds(parent: HTMLElement) {
+export function clearHTMLChilds(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
 }
-
-export function average(list: number[]) {
+export function average(list) {
     if (list.length) {
         return list.reduce((a, b) => a + b) / list.length;
     }

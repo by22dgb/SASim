@@ -2,49 +2,27 @@
 Simulation view panel, used for importing saves and starting the simulation.
 This file should not interact directly with the data layer.
 */
-
 import { buildFromSave, loadPreset } from "../controller/buildController.js";
 import { clear, stringPaste } from "../controller/importController.js";
-import {
-    average,
-    clickingAnimation,
-    convertMilliSecondsToTime,
-    getHTMLElement,
-    prettyNumber,
-    round,
-    updateButton,
-} from "../utility.js";
-import {
-    getEnemyLevel,
-    getResults,
-    IResults,
-    setRuntime,
-    startSimulationFromButton,
-    stopSimulation,
-    updateAutoRun,
-} from "../controller/autoBattleController.js";
-
+import { clickingAnimation, convertMilliSecondsToTime, getHTMLElement, prettyNumber, round, updateButton, } from "../utility.js";
+import { getEnemyLevel, setRuntime, startSimulationFromButton, stopSimulation, updateAutoRun, } from "../controller/autoBattleController.js";
 export function simulationViews() {
     setupImportBtns();
     setupPresetBtns();
     setupRunBtns();
     setupRuntimeInp();
 }
-
 function setupImportBtns() {
-    const importInp = getHTMLElement("#saveImportInp") as HTMLInputElement;
+    const importInp = getHTMLElement("#saveImportInp");
     addImportAction(importInp);
-
-    const resetBtn = getHTMLElement("#saveResetBtn") as HTMLButtonElement;
+    const resetBtn = getHTMLElement("#saveResetBtn");
     clickingAnimation(resetBtn);
-
     resetBtn.addEventListener("click", () => {
         clear();
         buildFromSave();
     });
 }
-
-function addImportAction(field: HTMLInputElement) {
+function addImportAction(field) {
     field.addEventListener("paste", (event) => {
         const paste = event.clipboardData?.getData("text");
         if (paste) {
@@ -53,64 +31,50 @@ function addImportAction(field: HTMLInputElement) {
         field.blur();
     });
 }
-
 function setupPresetBtns() {
     for (let i = 1; i < 4; i++) {
-        const presetButton = getHTMLElement(
-            "#Preset" + CSS.escape(i.toString()) + "_Button"
-        ) as HTMLButtonElement;
+        const presetButton = getHTMLElement("#Preset" + CSS.escape(i.toString()) + "_Button");
         clickingAnimation(presetButton);
         addPresetAction(presetButton);
     }
 }
-
-function addPresetAction(button: HTMLButtonElement) {
+function addPresetAction(button) {
     button.addEventListener("click", () => {
         loadPreset(button.id);
     });
 }
-
-export function updatePresetButton(name: string, index: number) {
-    const button = getHTMLElement(
-        "#Preset" + CSS.escape(index.toString()) + "_Button"
-    ) as HTMLButtonElement;
+export function updatePresetButton(name, index) {
+    const button = getHTMLElement("#Preset" + CSS.escape(index.toString()) + "_Button");
     button.innerText = name;
     button.hidden = false;
 }
-
 function setupRunBtns() {
-    const startBtn = getHTMLElement("#start_Button") as HTMLButtonElement;
+    const startBtn = getHTMLElement("#start_Button");
     clickingAnimation(startBtn);
     setupStartBtn(startBtn);
-
-    const stopBtn = getHTMLElement("#stop_Button") as HTMLButtonElement;
+    const stopBtn = getHTMLElement("#stop_Button");
     clickingAnimation(stopBtn);
     setupStopBtn(stopBtn);
-
-    const autoRunBtn = getHTMLElement("#autoRun_Button") as HTMLButtonElement;
+    const autoRunBtn = getHTMLElement("#autoRun_Button");
     addChangeForAutoRun(autoRunBtn);
 }
-
-function addChangeForAutoRun(button: HTMLButtonElement) {
+function addChangeForAutoRun(button) {
     button.addEventListener("click", () => {
         updateButton(button);
         updateAutoRun();
     });
 }
-
-function setupStartBtn(button: HTMLButtonElement) {
+function setupStartBtn(button) {
     button.addEventListener("click", () => {
         startSimulationFromButton();
     });
 }
-
-function setupStopBtn(button: HTMLButtonElement) {
+function setupStopBtn(button) {
     button.addEventListener("click", () => {
         stopSimulation();
     });
 }
-
-export function updateLiveResults(results: IResults) {
+export function updateLiveResults(results) {
     updateTimeSpent(results.isRunning, results.timeUsed, results.runtime);
     updateKills(results.enemiesKilled, results.trimpsKilled);
     updateDustGains(results.gameDust, results.baseDust);
@@ -119,89 +83,67 @@ export function updateLiveResults(results: IResults) {
     updateHealth(results.enemyHealth, results.enemyHealthLoss);
     updateBestFight(results.bestFight);
 }
-
-export function updateTimeSpent(
-    isRunning: boolean,
-    timeUsed: number,
-    runtime: number
-) {
+export function updateTimeSpent(isRunning, timeUsed, runtime) {
     const timeProcessedSpan = getHTMLElement("#timeProcessed");
     const finalTimeSpan = getHTMLElement("#finalTime");
     const isRunningSpan = getHTMLElement("#isRunning");
-
     if (isRunning) {
         timeProcessedSpan.innerHTML = convertMilliSecondsToTime(timeUsed);
         finalTimeSpan.innerHTML = convertMilliSecondsToTime(runtime);
         isRunningSpan.innerHTML = "/";
-    } else {
+    }
+    else {
         timeProcessedSpan.innerText = "";
         finalTimeSpan.innerHTML = "";
         isRunningSpan.innerHTML =
             "&#9208; / " + convertMilliSecondsToTime(runtime);
     }
 }
-
-function updateKills(enemiesKilled: number, trimpsKilled: number) {
+function updateKills(enemiesKilled, trimpsKilled) {
     const enemiesKilledSpan = getHTMLElement("#enemiesKilled");
     const trimpsKilledSpan = getHTMLElement("#trimpsKilled");
     const winRateSpan = getHTMLElement("#winRate");
-
     enemiesKilledSpan.innerHTML = prettyNumber(enemiesKilled);
     trimpsKilledSpan.innerHTML = prettyNumber(trimpsKilled);
-    winRateSpan.innerHTML = round(
-        (enemiesKilled / (enemiesKilled + trimpsKilled)) * 100,
-        2
-    ).toString();
+    winRateSpan.innerHTML = round((enemiesKilled / (enemiesKilled + trimpsKilled)) * 100, 2).toString();
 }
-
-function updateDustGains(gameDust: number, baseDust: number) {
+function updateDustGains(gameDust, baseDust) {
     // Dust gains
     const gameDustSpan = getHTMLElement("#gameDust");
     const baseDustSpan = getHTMLElement("#baseDust");
-
     gameDustSpan.innerHTML = prettyNumber(gameDust);
     baseDustSpan.innerHTML = prettyNumber(baseDust);
-
     // Shards gains
     const shardsDustSpan = getHTMLElement("#shardsDust");
     const baseShardsSpan = getHTMLElement("#baseShards");
-
     const shards = getEnemyLevel() >= 51;
     shardsDustSpan.innerHTML = shards ? prettyNumber(gameDust / 1e9) : "0";
     baseShardsSpan.innerHTML = shards ? prettyNumber(baseDust / 1e9) : "0";
 }
-
-function updateClearingTimes(clearingTime: number, remainingTime: number) {
+function updateClearingTimes(clearingTime, remainingTime) {
     const clearingTimeSpan = getHTMLElement("#clearingTime");
     const remainingTimeSpan = getHTMLElement("#remainingTime");
-
     clearingTimeSpan.innerHTML = convertMilliSecondsToTime(clearingTime);
     remainingTimeSpan.innerHTML = convertMilliSecondsToTime(remainingTime);
 }
-
-function updateHealth(enemyHealth: number, enemyHealthLoss: number) {
+function updateHealth(enemyHealth, enemyHealthLoss) {
     const enemyHealthSpan = getHTMLElement("#enemyHealth");
     const enemyHealthLossSpan = getHTMLElement("#enemyHealthLoss");
-
     enemyHealthSpan.innerHTML = prettyNumber(enemyHealth);
     enemyHealthLossSpan.innerHTML = prettyNumber(enemyHealthLoss);
 }
-
-function updateBestFight(bestFight: string) {
+function updateBestFight(bestFight) {
     const bestFightSpan = getHTMLElement("#bestFight");
     bestFightSpan.innerHTML = bestFight;
 }
-
-function updateFightingTimes(fightTime: number, killTime: number) {
+function updateFightingTimes(fightTime, killTime) {
     const fightTimeSpan = getHTMLElement("#fightTime");
     const killTimeSpan = getHTMLElement("#killTime");
-
     fightTimeSpan.innerHTML = convertMilliSecondsToTime(fightTime);
     killTimeSpan.innerHTML = convertMilliSecondsToTime(killTime);
 }
-
 function setupRuntimeInp() {
-    const runtimeInput = getHTMLElement("#runtimeInput") as HTMLInputElement;
+    const runtimeInput = getHTMLElement("#runtimeInput");
     runtimeInput.addEventListener("input", () => {
         const runtime = parseInt(runtimeInput.value);
         setRuntime(runtime);

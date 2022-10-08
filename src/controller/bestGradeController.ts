@@ -2,7 +2,8 @@
 Functions for calculating the best upgrade and best downgrade items.
 */
 
-import { IABTypes } from "../data/buildTypes.js";
+import { Currency, IABTypes } from "../data/buildTypes.js";
+import { prettyNumber } from "../utility.js";
 import { uiSetGradesItems, uiUpdateGradeItem } from "../view/bestGradesView.js";
 import {
     modifiedAutoBattle,
@@ -10,12 +11,12 @@ import {
     getDustPs,
     getClearingTime,
 } from "./autoBattleController.js";
-import { getRing } from "./bonusesController.js";
+import { getRing, getRingPrice, incrementRing } from "./bonusesController.js";
 import {
+    getCurrency,
     getItemsInOrder,
     getPrice,
     incrementItem,
-    incrementRing,
 } from "./itemsController.js";
 
 export function findBestGrade(increment: number) {
@@ -29,6 +30,8 @@ const storage = {
     baseDustPs: 0,
     baseClearingTime: 0,
     currentItem: "",
+    reducedTime: 0,
+    timeUntilProfit: 0,
 };
 
 function updateItemsToRun() {
@@ -46,9 +49,9 @@ function updateItemsToRun() {
 }
 
 function runAllItems() {
-    modifiedAutoBattle();
     updateItemsToRun();
     if (storage.itemsToRun.length > 0) {
+        modifiedAutoBattle();
         uiSetGradesItems(storage.itemsToRun);
         startSimulation(undefined, baseOnComplete);
     }
@@ -56,20 +59,47 @@ function runAllItems() {
 
 function onUpdate() {
     const reducedTime = storage.baseClearingTime - getClearingTime();
-    const increaseDust = getDustPs() - storage.baseDustPs;
+    storage.reducedTime = reducedTime;
 
     let totalCost = 0;
+    let currency = Currency.dust;
     if (storage.increment > 0) {
-        totalCost = getPrice(
-            storage.currentItem as keyof IABTypes["items"],
-            storage.increment
-        );
+        if (storage.currentItem === "Ring") {
+            totalCost = getRingPrice();
+            currency = Currency.shards;
+        } else {
+            totalCost = getPrice(
+                storage.currentItem as keyof IABTypes["items"],
+                storage.increment
+            );
+            currency = getCurrency(
+                storage.currentItem as keyof IABTypes["items"]
+            );
+        }
     }
+
+    const increaseDust =
+        (getDustPs() - storage.baseDustPs) /
+        (currency === Currency.shards ? 1e9 : 1);
     const timeUntilProfit = totalCost / increaseDust;
-    uiUpdateGradeItem(storage.currentItem, reducedTime, timeUntilProfit);
+    storage.timeUntilProfit = timeUntilProfit;
+
+    uiUpdateGradeItem(
+        storage.currentItem,
+        storage.reducedTime,
+        storage.timeUntilProfit
+    );
 }
 
 function onComplete() {
+    storage.reducedTime = 0;
+    storage.timeUntilProfit = 0;
+    if (storage.currentItem === "Ring") incrementRing(-storage.increment);
+    else
+        incrementItem(
+            storage.currentItem as keyof IABTypes["items"],
+            -storage.increment
+        );
     const item = storage.itemsToRun.shift();
     if (item !== undefined) {
         storage.currentItem = item;
@@ -78,18 +108,16 @@ function onComplete() {
 }
 
 function simulateNextItem() {
-    modifiedAutoBattle();
     if (storage.currentItem === "Ring") {
         incrementRing(storage.increment);
-        startSimulation(onUpdate, onComplete);
-        incrementRing(-storage.increment);
     } else {
         incrementItem(
             storage.currentItem as keyof IABTypes["items"],
             storage.increment
         );
-        startSimulation(onUpdate, onComplete);
     }
+    modifiedAutoBattle();
+    startSimulation(onUpdate, onComplete);
 }
 
 function baseOnComplete() {

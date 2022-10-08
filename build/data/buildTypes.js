@@ -1,27 +1,8 @@
-import { autoBattle } from "./object";
-import { u2Mutations } from "./mutations.js";
-
-export interface IABTypes {
-    items: typeof autoBattle.items;
-    ring: IRing;
-    oneTimers: typeof autoBattle.oneTimers;
-    mutations: typeof u2Mutations.tree;
-    scruffy: number;
-    currentLevel: number;
-    maxEnemyLevel: number;
-    remainingEnemies: number;
-}
-
-export interface IRing {
-    mods: typeof autoBattle.ringStats;
-    level: number;
-}
-
-export enum Currency {
-    dust,
-    shards,
-}
-
+export var Currency;
+(function (Currency) {
+    Currency[Currency["dust"] = 0] = "dust";
+    Currency[Currency["shards"] = 1] = "shards";
+})(Currency || (Currency = {}));
 export const Build = {
     items: {
         Menacing_Mask: "AA",
@@ -79,7 +60,6 @@ export const Build = {
         Handful_of_Mold: "CA",
         Haunted_Harpoon: "CB",
     },
-
     ringMods: {
         attack: "A",
         health: "B",
@@ -87,13 +67,11 @@ export const Build = {
         lifesteal: "D",
         dustMult: "E",
     },
-
     oneTimers: {
         Master_of_Arms: "A",
         Dusty_Tome: "B",
         Whirlwind_of_Arms: "C",
     },
-
     mutations: {
         Dust: "A",
         Dust2: "B",
