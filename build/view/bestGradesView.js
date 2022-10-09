@@ -42,14 +42,14 @@ export function uiSetGradesItems(items) {
         profitSpan.id = `gradesProfit${item}`;
         const currency = getCurrency(item);
         if (currency === Currency.dust) {
-            gradesItemsDust.appendChild(nameSpan);
-            gradesClearingDust.appendChild(clearingSpan);
-            gradesProfitDust.appendChild(profitSpan);
+            gradesItemsDust.append(nameSpan);
+            gradesClearingDust.append(clearingSpan);
+            gradesProfitDust.append(profitSpan);
         }
         else if (currency === Currency.shards) {
-            gradesItemsShards.appendChild(nameSpan);
-            gradesClearingShards.appendChild(clearingSpan);
-            gradesProfitShards.appendChild(profitSpan);
+            gradesItemsShards.append(nameSpan);
+            gradesClearingShards.append(clearingSpan);
+            gradesProfitShards.append(profitSpan);
         }
     }
 }
@@ -72,5 +72,10 @@ export function uiUpdateGradeItem(item, reducedTime, timeUntilProfit) {
 }
 function clearGradesResults() {
     bestGradesPanel.style.display = "none";
-    clearHTMLChilds(bestGradesPanel);
+    clearHTMLChilds(gradesItemsDust);
+    clearHTMLChilds(gradesItemsShards);
+    clearHTMLChilds(gradesClearingDust);
+    clearHTMLChilds(gradesClearingShards);
+    clearHTMLChilds(gradesProfitDust);
+    clearHTMLChilds(gradesProfitShards);
 }
