@@ -13,7 +13,7 @@ export const conConfig = {
     onUpdate: null as CallbackFunction | null,
     baseRuntime: 8 * 60 * 60 * 1000, // 8 hours
     runtime: 0,
-    updateInterval: 8 * 60 * 60 * 1000,
+    updateInterval: 1000, // 1 second
 
     incRuntime() {
         this.runtime += this.baseRuntime;
@@ -54,7 +54,7 @@ export const gameController = {
     resultBest: { enemy: 1, time: 0, win: false },
     resultCounter: { fights: 0, healthSum: 0, losses: 0 },
     modified: true,
-    lastUpdate: 0,
+    lastUpdate: Date.now(),
 
     getProgress() {
         const progress = autoBattle.lootAvg.counter / conConfig.runtime;
@@ -108,11 +108,12 @@ export const gameController = {
             gameController.interval = null;
         }
 
-        const newUpdate = Math.floor(
-            autoBattle.lootAvg.counter / conConfig.updateInterval
-        );
+        const newUpdate = Date.now();
 
-        if (gameController.halt || newUpdate > gameController.lastUpdate) {
+        if (
+            gameController.halt ||
+            newUpdate - conConfig.updateInterval > gameController.lastUpdate
+        ) {
             gameController.lastUpdate = newUpdate;
             if (conConfig.onUpdate) {
                 conConfig.onUpdate();

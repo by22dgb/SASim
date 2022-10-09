@@ -126,7 +126,7 @@ export function modifiedAutoBattle() {
     resetAutoBattle();
 }
 export function resetAutoBattle() {
-    gameController.lastUpdate = 0;
+    gameController.lastUpdate = Date.now();
     conConfig.resetRuntime();
     conConfig.resetFunctions();
 }
