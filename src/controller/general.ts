@@ -47,13 +47,11 @@ export function getCurrency(name: BuyableObjects) {
     if (oneTimerKeys.includes(name)) {
         return Currency.dust;
     }
-    if (
-        name === "Extra_Limbs" ||
-        name === "Radon" ||
-        name === "Stats" ||
-        name === "Scaffolding"
-    ) {
+    if (name === "Extra_Limbs" || name === "Radon" || name === "Stats") {
         return Currency.dust;
+    }
+    if (name === "Scaffolding") {
+        return Currency.shards;
     }
     throw new Error("Object not implemented: " + name);
 }

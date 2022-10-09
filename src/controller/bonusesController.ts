@@ -202,9 +202,6 @@ export function getOneTimerPrice(oneTimer: keyof IABTypes["oneTimers"]) {
 }
 
 export function getBonusPrice(bonus: keyof typeof autoBattle.bonuses) {
-    console.log(bonus);
-    console.log(autoBattle.getBonusCost(bonus));
-    console.log(autoBattle.bonuses);
     return autoBattle.getBonusCost(bonus);
 }
 
