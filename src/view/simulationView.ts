@@ -201,7 +201,6 @@ function updateFightingTimes(fightTime: number, killTime: number) {
 function setupRuntimeInp() {
     const runtimeInput = getHTMLElement("#runtimeInput") as HTMLInputElement;
     runtimeInput.addEventListener("input", () => {
-        const runtime = parseInt(runtimeInput.value);
-        setRuntime(runtime);
+        setRuntime(+runtimeInput.value);
     });
 }
