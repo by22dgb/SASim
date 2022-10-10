@@ -212,7 +212,6 @@ export function getResults(): IResults {
     const enemyLevel = autoBattle.enemyLevel;
 
     // Standards
-    const assumeTomeLevel = 43;
     const assumeDustierLevel = 85;
 
     // Kills
@@ -224,18 +223,22 @@ export function getResults(): IResults {
     const gameDust = baseDust;
 
     // Remove multipliers
+    // Dust and dustier
     baseDust = autoBattle.scruffyLvl21 ? baseDust / 5 : baseDust;
     if (u2Mutations.tree.Dust.purchased) {
         baseDust /= 1.25 + (u2Mutations.tree.Dust2.purchased ? 0.25 : 0);
     }
+
+    // Dusty tome
     if (autoBattle.oneTimers.Dusty_Tome.owned) {
         baseDust /= 1 + 0.05 * (autoBattle.maxEnemyLevel - 1);
     }
 
-    // Add multipliers
-    if (enemyLevel >= assumeTomeLevel) {
-        baseDust *= 1 + 0.05 * enemyLevel; // Level not max level.
-    }
+    // Add multipliers again in correct order.
+    // Dusty tome
+    baseDust *= 1 + 0.05 * enemyLevel; // Level not max level.
+
+    // Dustier mutations
     if (enemyLevel >= assumeDustierLevel) {
         baseDust *= 1.5;
     }

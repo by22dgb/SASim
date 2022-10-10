@@ -103,5 +103,7 @@
   "include": [
     "src/**/*"
   ],
-  "exclude": [],
+  "exclude": [
+    "manual_testing/**/*",
+  ],
 }

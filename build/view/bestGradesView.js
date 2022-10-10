@@ -55,13 +55,12 @@ export function uiSetGradesItems(items) {
 }
 export function uiUpdateGradeItem(item, reducedTime, timeUntilProfit) {
     const clearingSpan = getHTMLElement(`#gradesClearing${item}`);
-    let reducedAverage = reducedTime;
-    if (reducedAverage < 0) {
-        reducedAverage = Math.abs(reducedAverage);
-        clearingSpan.innerHTML = `-${convertMilliSecondsToTime(reducedAverage)}`;
+    if (reducedTime < 0) {
+        reducedTime = Math.abs(reducedTime);
+        clearingSpan.innerHTML = `-${convertMilliSecondsToTime(reducedTime)}`;
     }
     else
-        clearingSpan.innerHTML = convertMilliSecondsToTime(reducedAverage);
+        clearingSpan.innerHTML = convertMilliSecondsToTime(reducedTime);
     const profitSpan = getHTMLElement(`#gradesProfit${item}`);
     const profitAverage = timeUntilProfit;
     if (profitAverage < 0) {

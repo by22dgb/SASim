@@ -7,13 +7,20 @@ import {
 } from "./bonusesController.js";
 import { getItem, getItemPrice } from "./itemsController.js";
 
-export function getPrice(name: BuyableObjects, level?: number) {
+export function getUpgradePrice(name: BuyableObjects, increment: number) {
+    // Send in a negative number to get the price of the current level.
+    const originalPrice = getPrice(name);
+    const newPrice = getPrice(name, increment);
+    return Math.abs(newPrice - originalPrice);
+}
+
+export function getPrice(name: BuyableObjects, increment?: number) {
     if (name === "The_Ring" || name === "Ring") {
-        return getRingPrice(level);
+        return getRingPrice(increment);
     }
     const itemKeys = Object.keys(autoBattle.items);
     if (itemKeys.includes(name)) {
-        return getItemPrice(name as keyof IABTypes["items"], level);
+        return getItemPrice(name as keyof IABTypes["items"], increment);
     }
     const oneTimerKeys = Object.keys(autoBattle.oneTimers);
     if (oneTimerKeys.includes(name)) {
