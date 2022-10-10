@@ -39,9 +39,8 @@ export function getCurrency(name: BuyableObjects) {
         const item = getItem(name as keyof IABTypes["items"]);
         if ("dustType" in item && item.dustType === "shards") {
             return Currency.shards;
-        } else {
-            return Currency.dust;
         }
+        return Currency.dust;
     }
     const oneTimerKeys = Object.keys(autoBattle.oneTimers);
     if (oneTimerKeys.includes(name)) {
