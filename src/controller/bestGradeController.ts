@@ -3,11 +3,6 @@ Functions for calculating the best upgrade and best downgrade items.
 */
 
 import { Currency, IABTypes } from "../data/buildTypes.js";
-import {
-    convertMilliSecondsToTime,
-    convertSecondsToTime,
-    prettyNumber,
-} from "../utility.js";
 import { uiSetGradesItems, uiUpdateGradeItem } from "../view/bestGradesView.js";
 import {
     modifiedAutoBattle,
@@ -15,8 +10,8 @@ import {
     getDustPs,
     getClearingTime,
 } from "./autoBattleController.js";
-import { getRing, getRingPrice, incrementRing } from "./bonusesController.js";
-import { getCurrency, getPrice, getUpgradePrice } from "./general.js";
+import { getRing, incrementRing } from "./bonusesController.js";
+import { getCurrency, getUpgradePrice } from "./general.js";
 import { getItemsInOrder, incrementItem } from "./itemsController.js";
 
 export function findBestGrade(increment: number) {

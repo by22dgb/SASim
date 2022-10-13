@@ -108,7 +108,7 @@ export function convertSecondsToTime(seconds: number) {
     if (d > 0) return `${d}d` + (h > 0 ? ` ${h}h` : "");
     if (h > 0) return `${h}h` + (m > 0 ? ` ${m}m` : "");
     if (m > 0) return `${m}m` + (s > 0 ? ` ${s}s` : "");
-    return `${s}s`;
+    return `${round(seconds % 60, 1)}s`;
 }
 
 export function convertMilliSecondsToTime(ms: number) {
