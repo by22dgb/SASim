@@ -11,7 +11,7 @@ export const conConfig = {
     onSimInterrupt: null as CallbackFunction | null,
     onSimComplete: null as CallbackFunction | null,
     onUpdate: null as CallbackFunction | null,
-    baseRuntime: 8 * 60 * 60 * 1000, // 8 hours
+    baseRuntime: 4 * 60 * 60 * 1000, // 4 hours
     runtime: 0,
     updateInterval: 1000, // 1 second
 
