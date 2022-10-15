@@ -2627,9 +2627,9 @@ export let autoBattle = {
             this.trimp.attackSpeed = 500;
         }
     },
-    damageCreature: function (creature, dmg, fromGoo, ignoreEth) {
+    damageCreature: function (creature, dmg, fromGoo) {
         dmg *= creature.damageTakenMult;
-        if (creature.isEthereal && !ignoreEth) creature.health += dmg;
+        if (creature.isEthereal) creature.health += dmg;
         else {
             if (
                 !fromGoo &&
