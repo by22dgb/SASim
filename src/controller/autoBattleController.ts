@@ -236,7 +236,9 @@ export function getResults(): IResults {
 
     // Add multipliers again in correct order.
     // Dusty tome
-    baseDust *= 1 + 0.05 * enemyLevel; // Level not max level.
+    if (autoBattle.oneTimers.Dusty_Tome.owned) {
+        baseDust *= 1 + 0.05 * enemyLevel; // Level not max level.
+    }
 
     // Dustier mutations
     if (enemyLevel >= assumeDustierLevel) {
