@@ -1,16 +1,10 @@
 import { u2Mutations } from "./mutations.js";
+
 export let autoBattle = {
     // Manually set thingys
     usingRealTimeOffline: false,
     scruffyLvl21: false,
-
-    // For set ethereal hits.
-    setEthChance: false,
-    ethRolls: [],
-    leftoverChance: 0,
-
-    total: 0,
-    eth: 0,
+    fluffyExp2: 0,
 
     // Controller stuff, it will change these to something meaningful on import
     onEnemyDied: function () {},
@@ -21,7 +15,7 @@ export let autoBattle = {
     speed: 1,
     enemyLevel: 1,
     maxEnemyLevel: 1,
-    autoLevel: false, // Changed from false
+    autoLevel: false, // Changed from true
     dust: 0,
     shards: 0,
     shardDust: 0,
@@ -31,6 +25,7 @@ export let autoBattle = {
     enemiesKilled: 0,
     sessionEnemiesKilled: 0,
     sessionTrimpsKilled: 0,
+    maxItems: 4,
     notes: "&nbsp;",
     popupMode: "items",
     battleTime: 0,
@@ -40,6 +35,12 @@ export let autoBattle = {
     lootAvg: {
         accumulator: 0,
         counter: 0,
+    },
+    presets: {
+        names: ["Preset 1", "Preset 2", "Preset 3"],
+        p1: [],
+        p2: [],
+        p3: [],
     },
     rings: {
         level: 1,
@@ -62,6 +63,7 @@ export let autoBattle = {
             bleedChance: 0,
             bleedMod: 0,
             bleedTime: 0,
+            hadBleed: false,
             poisonChance: 0,
             poisonTime: 0,
             poisonMod: 0,
@@ -1689,7 +1691,7 @@ export let autoBattle = {
             zone: 220,
             description: function () {
                 return (
-                    "If the Enemy dies while Poisoned and not Bleeding, it drops " +
+                    "If the Enemy dies while Poisoned after never Bleeding, it drops " +
                     this.dustMult() +
                     "x more Dust."
                 );
@@ -2253,6 +2255,7 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 190,
+            longText: true,
             description: function () {
                 return "Summon a Doppelganger which grants you 50% damage reduction, 2x Attack, and +1 Poison Stack Rate while it is alive. Your Doppelganger will explode after taking damage equal to your Max Health or if it would kill the Enemy, redealing all damage dealt so far this fight, and shredding 50% Enemy Defense.";
             },
@@ -2290,7 +2293,7 @@ export let autoBattle = {
             zone: 230,
             description: function () {
                 return (
-                    "Huffy isn't excited about holding this item but can't deny the results. Multiplies the damage dealt by Poison ticks by " +
+                    "Multiplies the damage dealt by Poison ticks by " +
                     this.poisonMult() +
                     "x."
                 );
@@ -2316,13 +2319,99 @@ export let autoBattle = {
             price: 100,
             priceMod: 100,
         },
+        Radon: {
+            description: function () {
+                return "Increase all Radon earned by +10% per level.<br/>";
+            },
+            getMult: function () {
+                return 1 + this.level * 0.1;
+            },
+            level: 0,
+            price: 30000,
+            priceMod: 3,
+        },
+        Stats: {
+            description: function () {
+                return "Increases Attack and Health in U2 by +10% per level.<br/>";
+            },
+            getMult: function () {
+                return 1 + this.level * 0.1;
+            },
+            level: 0,
+            price: 20000,
+            priceMod: 3,
+        },
+        Scaffolding: {
+            description: function () {
+                return "Each level adds +100% Housing and increases the bonus of all other Scaffolds by 10%.";
+            },
+            getMult: function () {
+                return 1 + this.level * Math.pow(1.1, this.level - 1);
+            },
+            level: 0,
+            price: 50,
+            useShards: true,
+            priceMod: 10,
+        },
     },
     oneTimers: {
+        Gathermate: {
+            get description() {
+                return "Gather 5% more Food, Wood, and Metal in U2 for each Spire Assault level cleared.";
+            },
+            owned: false,
+            getMult: function () {
+                return 1 + 0.05 * (autoBattle.maxEnemyLevel - 1);
+            },
+            requiredItems: 7,
+        },
+        Smithriffic: {
+            description: "Get an extra Smithy when completing Melting Point.",
+            owned: false,
+            requiredItems: 11,
+        },
+        Championism: {
+            description: "Unlock a new Perk!",
+            owned: false,
+            onPurchase: function () {
+                game.portal.Championism.radLocked = false;
+            },
+            requiredItems: 15,
+        },
         Master_of_Arms: {
             description:
                 "Huffy gains +200 Health, +10 Attack, and +2 Poison Damage.",
             owned: false,
             requiredItems: 19,
+        },
+        Artisan: {
+            get description() {
+                return (
+                    "All U2 Equipment costs 1% less for each SA level cleared. (Currently " +
+                    prettify((1 - this.getMult()) * 100) +
+                    "% cheaper)"
+                );
+            },
+            owned: false,
+            getMult: function () {
+                return Math.pow(0.99, autoBattle.maxEnemyLevel - 1);
+            },
+            requiredItems: 21,
+        },
+        Battlescruff: {
+            description:
+                "Increases all Scruffy XP gained by +2% for each Spire Assault level cleared.",
+            owned: false,
+            requiredItems: 23,
+        },
+        Collectology: {
+            description:
+                "Collectors add 2 Hubs each PLUS another extra Hub for every 30 Spire Assault levels cleared.",
+            owned: false,
+            requiredItems: 28,
+            getHubs: function () {
+                return 2 + Math.floor((autoBattle.maxEnemyLevel - 1) / 30);
+            },
         },
         Dusty_Tome: {
             description:
@@ -2335,6 +2424,24 @@ export let autoBattle = {
             owned: false,
             requiredItems: 34,
         },
+        Nullicious: {
+            description:
+                "Increase the base Nu value of U2 Heirlooms by 0.5% per Spire Assault level cleared.",
+            owned: false,
+            requiredItems: 36,
+            getMult: function () {
+                return 1 + (autoBattle.maxEnemyLevel - 1) * 0.005;
+            },
+        },
+        Suprism: {
+            description:
+                "Increases Prismatic Shield by 3% per Spire Assault level cleared.",
+            getMult: function () {
+                return (autoBattle.maxEnemyLevel - 1) * 0.03;
+            },
+            owned: false,
+            requiredItems: 39,
+        },
         The_Ring: {
             description: "Unlock The Ring.",
             owned: false,
@@ -2343,6 +2450,38 @@ export let autoBattle = {
             onPurchase: function () {
                 document.getElementById("autoBattleRingBtn").style.display =
                     "inline-block";
+            },
+        },
+        Mass_Hysteria: {
+            description: "Frenzy is always active.",
+            owned: false,
+            requiredItems: 45,
+            useShards: true,
+        },
+        Burstier: {
+            description: "Gamma Burst now triggers at 4 stacks.",
+            owned: false,
+            requiredItems: 48,
+            useShards: true,
+        },
+        Expanding_Tauntimp: {
+            description:
+                "Starting after your next Portal, U2 Tauntimps will increase all Trimps gained by " +
+                "prettify(game.badGuys.Tauntimp.expandingBase() * 100) " +
+                "% per run instead of adding flat housing.",
+            owned: false,
+            requiredItems: 51,
+            useShards: true,
+        },
+        More_Expansion: {
+            description:
+                "Unlock the Expansion Perk, further increasing the power of your Tauntimps",
+            owned: false,
+            requiredItems: 53,
+            owned: false,
+            useShards: true,
+            onPurchase: function () {
+                game.portal.Expansion.radLocked = false;
             },
         },
     },
@@ -2612,6 +2751,7 @@ export let autoBattle = {
                     defender.bleed.mod = 1 + attacker.bleedMod;
                 if (defender.bleed.time < attacker.bleedTime)
                     defender.bleed.time = attacker.bleedTime;
+                if (defender.bleed.time > 0) defender.hadBleed = true;
             }
         }
         var poisonChance = attacker.poisonChance - defender.poisonResist;
@@ -2660,29 +2800,9 @@ export let autoBattle = {
         }
         if (attacker.berserkMod != -1) attacker.berserkStack++;
         if (attacker.ethChance > 0) {
-            this.total += 1;
-            if (this.setEthChance) {
-                if (this.ethRolls.length === 0) {
-                    this.ethRolls = rollNewRolls(attacker.ethChance);
-                    // console.log(this.ethRolls);
-                }
-                let val = this.ethRolls.pop();
-                if (val) {
-                    // console.log(this.ethRolls);
-                    attacker.isEthereal = true;
-                    this.eth += 1;
-                } else attacker.isEthereal = false;
-            } else {
-                var ethRoll = Math.floor(Math.random() * 100);
-                // console.log(ethRoll);
-                // console.log(attacker.ethChance);
-                if (ethRoll < attacker.ethChance) {
-                    attacker.isEthereal = true;
-                    this.eth += 1;
-                } else attacker.isEthereal = false;
-            }
-            // if (this.total % 1000 === 0)
-            // console.log(this.eth/this.total);
+            var ethRoll = Math.floor(Math.random() * 100);
+            if (ethRoll < attacker.ethChance) attacker.isEthereal = true;
+            else attacker.isEthereal = false;
         }
     },
     getBleedDamage: function (attacker, defender) {
@@ -2953,13 +3073,11 @@ export let autoBattle = {
                 case "Ethereal":
                     var count = selectedEffectsCount[checkSelected];
                     if (count >= 3) effects.splice(effects.indexOf(effect), 1);
-                    // console.log("this is getting updated");
                     if (count == 1) {
                         this.enemy.ethChance = 10;
                     } else {
                         this.enemy.ethChance += 5;
                     }
-                    // console.log(this.enemy.ethChance);
                     effects.splice(effects.indexOf("Explosive"));
                     effects.splice(effects.indexOf("Berserking"));
                     break;
@@ -2980,7 +3098,6 @@ export let autoBattle = {
         this.lootAvg.counter += this.battleTime;
         this.onTrimpDied(); // notify controller
         this.resetCombat();
-        //this.notes += "Trimp Died. "
     },
     getDustMult: function () {
         var amt = 1;
@@ -3000,8 +3117,8 @@ export let autoBattle = {
         }
         if (
             this.items.Box_of_Spores.equipped &&
-            this.enemy.bleed.time <= 0 &&
-            this.enemy.poison.time >= 0
+            !this.enemy.hadBleed &&
+            this.enemy.poison.time > 0
         ) {
             amt *= this.items.Box_of_Spores.dustMult();
         }
@@ -3038,15 +3155,6 @@ export let autoBattle = {
         }
         this.lootAvg.accumulator += amt;
         this.lootAvg.counter += this.battleTime;
-        /*if (this.enemy.level == this.maxEnemyLevel && this.speed == 1) {
-			this.enemiesKilled++;
-			if (this.enemiesKilled >= this.nextLevelCount()) {
-				this.maxEnemyLevel++;
-				if (this.autoLevel) this.enemyLevel++;
-				this.enemiesKilled = 0;
-				this.resetStats();
-			}
-		}*/
         this.onEnemyDied(); // notify controller
         this.resetCombat();
     },
@@ -3086,7 +3194,6 @@ export let autoBattle = {
         var itemObj = this.items[item];
         if (!itemObj) return;
         itemObj.equipped = !itemObj.equipped;
-        // this.resetCombat(true);
     },
     countEquippedItems: function () {
         var count = 0;
@@ -3127,56 +3234,6 @@ export let autoBattle = {
         else this.dust -= cost;
 
         itemObj.level++;
-    },
-    levelDown: function () {
-        if (this.enemyLevel > 1) {
-            this.enemyLevel--;
-            this.autoLevel = false;
-            this.resetCombat(true);
-        }
-        this.updatePopupBtns();
-    },
-    levelUp: function () {
-        if (this.enemyLevel < this.maxEnemyLevel) {
-            this.enemyLevel++;
-            this.resetCombat(true);
-        }
-        this.updatePopupBtns();
-    },
-    toggleAutoLevel: function () {
-        this.autoLevel = !this.autoLevel;
-        if (this.autoLevel && this.enemyLevel != this.maxEnemyLevel) {
-            this.enemyLevel = this.maxEnemyLevel;
-            this.resetCombat(true);
-        }
-    },
-    hide: function (itemName) {
-        this.items[itemName].hidden = true;
-        if (this.items[itemName].equipped)
-            this.items[itemName].equipped = false;
-    },
-    restore: function (itemName) {
-        this.items[itemName].hidden = false;
-    },
-    renamePresetTooltip: function (which) {
-        var text =
-            "Rename Preset " +
-            which +
-            "<br/><input style='width: 75%; margin-left: 12.5%' id='abPresetNameInput' value='" +
-            this.presets.names[which - 1] +
-            "'/>";
-        return text;
-    },
-    cleanName: function (name) {
-        return name.split("__").join("-").split("_").join(" ");
-    },
-    savePresetName: function (which) {
-        var input = document.getElementById("abPresetNameInput");
-        if (!input) return;
-        var value = input.value;
-        if (value.length < 1) return;
-        value = htmlEncode(value.substring(0, 25));
-        this.presets.names[which - 1] = value;
     },
     getFreshRings: function () {
         return {
@@ -3317,9 +3374,8 @@ export let autoBattle = {
             : "dust";
         return curName.charAt(0).toUpperCase() + curName.slice(1);
     },
-
+    hideMode: false,
     getEffects: function (level) {
-        let profile = "";
         if (level == 1) return;
         let seed = this.seed;
 
@@ -3460,13 +3516,10 @@ export let autoBattle = {
                     break;
             }
         }
+        const profile = new Map();
         for (let x = 0; x < selectedEffects.length; x++) {
-            profile += selectedEffects[x];
-            if (selectedEffectsCount[x] > 1)
-                profile += "<i></i>x" + selectedEffectsCount[x] + "";
-            profile += "<i></i>，<i></i>";
+            profile.set(selectedEffects[x], selectedEffectsCount[x]);
         }
-        profile = profile.substring(0, profile.length - 8);
         return profile;
     },
 
@@ -3594,7 +3647,7 @@ export let autoBattle = {
     },
 };
 
-// Functions from other trimps scripts.
+/*
 const prettify = (num) => {
     return num.toLocaleString("en-US", {
         maximumSignificantDigits: 4,
@@ -3602,6 +3655,9 @@ const prettify = (num) => {
         compactDisplay: "short",
     });
 };
+*/
+
+// Functions from other trimps scripts.
 
 const seededRandom = (seed) => {
     let x = Math.sin(seed++) * 10000;
@@ -3614,15 +3670,33 @@ const getRandomIntSeeded = (seed, minIncl, maxExcl) => {
     return toReturn === maxExcl ? minIncl : toReturn;
 };
 
-// Custom functions.
-const rollNewRolls = (chance) => {
-    chance += autoBattle.leftoverChance;
-    let accurate = 100 / chance;
-    let rounded = Math.floor(accurate);
-    autoBattle.leftoverChance = accurate - rounded;
+export function prettify(number) {
+    var numberTmp = number;
+    if (!isFinite(number)) return "♾️";
+    if (number >= 1000 && number < 10000) return Math.floor(number);
+    if (number == 0) return prettifySub(0);
+    if (number < 0) return "-" + prettify(-number);
+    if (number < 0.005) return (+number).toExponential(2);
 
-    let roll = Math.floor(Math.random() * rounded);
-    let rolls = new Array(rounded).fill(0);
-    rolls[roll] = 1;
-    return rolls;
-};
+    var base = Math.floor(Math.log(number) / Math.log(1000));
+    if (base <= 0) return prettifySub(number);
+
+    var exponent = parseFloat(numberTmp).toExponential(2);
+    exponent = exponent.replace("+", "");
+    return exponent;
+}
+
+function prettifySub(number) {
+    number = parseFloat(number);
+    var floor = Math.floor(number);
+    if (number === floor)
+        // number is an integer, just show it as-is
+        return number;
+    var precision = 3 - floor.toString().length; // use the right number of digits
+    return number.toFixed(precision);
+}
+
+function needAnS(number) {
+    //this will save so many lines if I don't forget about it
+    return number == 1 ? "" : "s";
+}
