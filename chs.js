@@ -111,6 +111,9 @@ var cnItems = {
     'Shock chance': '触发震荡的概率',
     'Shock chance:': '触发震荡的概率：',
     'Shank reduces': '祭祀之腿的效果',
+    'Poison': '中毒',
+    'Bleed': '流血',
+    'Shock': '震荡',
     'Enemy': '敌人',
     'Poison resist': '中毒抗性',
     'Poison resist:': '中毒抗性：',
@@ -170,10 +173,13 @@ var cnItems = {
     'Ring': '灵戒',
     //#endregion 主界面
     //#region 保持原样
+    '，': '，',
     '[': '[',
+    '/': '/',
     '%': '%',
     '%]': '%]',
     '⏸': '⏸',
+    '♾️': '♾️',
     //#endregion
 }
 
@@ -241,6 +247,7 @@ var cnExcludeWhole = [
     /^x?\d+(\.\d+)?(e[+\-]?\d+)?\s*\-?$/, //12.34e+4
     /^\s*$/, //纯空格
     /^(.*)[\u4E00-\u9FFF]+(.*)$/, //不抓取中文
+    /^x\d+，$/, //不抓取内容
 ];
 
 var cnExcludePostfix = [
