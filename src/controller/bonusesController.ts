@@ -113,7 +113,7 @@ export function equipRingMods(ringMods: string[]) {
             if (index === -1) {
                 ring.stats.mods.push(mod);
             } else {
-                ring.stats.mods.splice(index);
+                ring.stats.mods.splice(index, 1);
             }
 
             // Frontend

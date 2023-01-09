@@ -82,7 +82,7 @@ export function equipRingMods(ringMods) {
                 ring.stats.mods.push(mod);
             }
             else {
-                ring.stats.mods.splice(index);
+                ring.stats.mods.splice(index, 1);
             }
             // Frontend
             updateButton(mod);

@@ -5,13 +5,14 @@ This file should not interact directly with the data layer.
 import { buildFromSave, loadPreset } from "../controller/buildController.js";
 import { clear, stringPaste } from "../controller/importController.js";
 import { clickingAnimation, convertMilliSecondsToTime, getHTMLElement, prettyNumber, round, updateButton, } from "../utility.js";
-import { getEnemyLevel, setRuntime, startSimulationFromButton, stopSimulation, updateAutoRun, } from "../controller/autoBattleController.js";
+import { getEnemyLevel, printAllInfo, setRuntime, startSimulationFromButton, stopSimulation, updateAutoRun, } from "../controller/autoBattleController.js";
 export function simulationViews() {
     setupImportBtns();
     setupPresetBtns();
     setupRunBtns();
     setupRuntimeInp();
 }
+const testingEnabled = true; // Set true to enable testing.
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp");
     addImportAction(importInp);
@@ -62,6 +63,9 @@ function addChangeForAutoRun(button) {
     button.addEventListener("click", () => {
         updateButton(button);
         updateAutoRun();
+        if (testingEnabled) {
+            printAllInfo();
+        }
     });
 }
 function setupStartBtn(button) {

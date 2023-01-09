@@ -16,6 +16,7 @@ import {
 import {
     getEnemyLevel,
     IResults,
+    printAllInfo,
     setRuntime,
     startSimulationFromButton,
     stopSimulation,
@@ -28,6 +29,8 @@ export function simulationViews() {
     setupRunBtns();
     setupRuntimeInp();
 }
+
+const testingEnabled = true; // Set true to enable testing.
 
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp") as HTMLInputElement;
@@ -93,6 +96,10 @@ function addChangeForAutoRun(button: HTMLButtonElement) {
     button.addEventListener("click", () => {
         updateButton(button);
         updateAutoRun();
+
+        if (testingEnabled) {
+            printAllInfo();
+        }
     });
 }
 
