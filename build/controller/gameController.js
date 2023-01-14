@@ -68,6 +68,7 @@ export const gameController = {
             autoBattle.sessionEnemiesKilled + autoBattle.sessionTrimpsKilled;
         this.complete = false;
         this.halt = false;
+        gameController.lastUpdate = Date.now();
         this.interval = setInterval(this.loop, 0);
     },
     stop() {
@@ -85,10 +86,7 @@ export const gameController = {
             clearInterval(gameController.interval);
             gameController.interval = null;
         }
-        const newUpdate = Date.now();
-        if (gameController.halt ||
-            newUpdate - conConfig.updateInterval > gameController.lastUpdate) {
-            gameController.lastUpdate = newUpdate;
+        if (gameController.shouldUpdate()) {
             if (conConfig.onUpdate) {
                 conConfig.onUpdate();
             }
@@ -101,6 +99,16 @@ export const gameController = {
                 }
             }
         }
+    },
+    shouldUpdate() {
+        if (gameController.halt)
+            return true;
+        const newUpdate = Date.now();
+        if (newUpdate - conConfig.updateInterval > gameController.lastUpdate) {
+            gameController.lastUpdate = newUpdate;
+            return true;
+        }
+        return false;
     },
     battleSuccess() {
         ++this.resultCounter.fights;

@@ -32,6 +32,9 @@ export function startSimulation(onUpdate, onComplete, onInterrupt) {
     if (onComplete) {
         conConfig.setOnComplete(onComplete);
     }
+    else {
+        conConfig.setOnComplete(() => { });
+    }
     if (onInterrupt) {
         conConfig.setOnInterrupt(onInterrupt);
     }
@@ -60,11 +63,10 @@ function runSimulation() {
 }
 export function startSimulationFromButton() {
     conConfig.incRuntime();
-    if (!gameController.modified) {
-        if (!gameController.isRunning()) {
-            conConfig.setOnUpdate(liveUpdate);
-            runSimulation();
-        }
+    conConfig.setOnComplete(() => { });
+    if (!gameController.modified && !gameController.isRunning()) {
+        conConfig.setOnUpdate(liveUpdate);
+        runSimulation();
     }
     else {
         startSimulation();
