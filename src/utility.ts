@@ -3,7 +3,9 @@ import { prettify } from "./data/object.js";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function pick(obj: any, ...keys: any) {
     return Object.fromEntries(
-        keys.filter((key: any) => key in obj).map((key: any) => [key, obj[key]])
+        keys
+            .filter((key: any) => key in obj)
+            .map((key: any) => [key, obj[key]]),
     );
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
@@ -14,7 +16,7 @@ export function capitaliseFirstLetter(string: string) {
 
 export function updateButton(
     button: HTMLButtonElement | string,
-    setUnselected?: boolean
+    setUnselected?: boolean,
 ) {
     let classList;
     if (typeof button === "string") {
@@ -33,7 +35,7 @@ export function updateButton(
 
 export function updateInput(
     name: HTMLInputElement | string,
-    level: number | string
+    level: number | string,
 ) {
     let input;
     if (typeof name === "string") {
@@ -61,7 +63,7 @@ export function getHTMLElement(name: string): HTMLElement {
     if (!element) {
         if (!name.startsWith("#") && !name.startsWith(".")) {
             throw new Error(
-                "Invalid selector. Please use a valid CSS selector."
+                "Invalid selector. Please use a valid CSS selector.",
             );
         }
         throw new Error("Element not found: " + name);
@@ -73,7 +75,13 @@ export function addHover(hoverDiv: HTMLElement, displayDiv: HTMLDivElement) {
     hoverDiv.addEventListener("mouseover", () => {
         showHover(displayDiv);
     });
+    hoverDiv.addEventListener("focus", () => {
+        showHover(displayDiv);
+    });
     hoverDiv.addEventListener("mouseout", () => {
+        hideHover(displayDiv);
+    });
+    hoverDiv.addEventListener("blur", () => {
         hideHover(displayDiv);
     });
 }

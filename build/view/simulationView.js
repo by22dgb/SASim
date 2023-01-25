@@ -12,7 +12,7 @@ export function simulationViews() {
     setupRunBtns();
     setupRuntimeInp();
 }
-const testingEnabled = true; // Set true to enable testing.
+const testingEnabled = false; // Set true to enable testing.
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp");
     addImportAction(importInp);

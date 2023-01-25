@@ -8,7 +8,7 @@ import { convertMilliSecondsToTime, round, } from "../utility.js";
 import { uiUpdateLiveResults, updateTimeSpent, } from "../view/simulationView.js";
 import { getOneTimersSA } from "./bonusesController.js";
 import { updateBuildCost } from "./buildController.js";
-import { conConfig, gameController } from "./gameController.js";
+import { conConfig, gameController } from "./gameController.js"; // eslint-disable-line no-restricted-imports -- this is allowed here
 import { updateResistances } from "./resistanceController.js";
 import { setSimResultsDps } from "./resultsController.js";
 import { getRemainingEnemies } from "./saveController.js";
@@ -33,7 +33,7 @@ export function startSimulation(onUpdate, onComplete, onInterrupt) {
         conConfig.setOnComplete(onComplete);
     }
     else {
-        conConfig.setOnComplete(() => { });
+        conConfig.setOnComplete(() => { } /* eslint-disable-line @typescript-eslint/no-empty-function -- setting onComplete to empty function */);
     }
     if (onInterrupt) {
         conConfig.setOnInterrupt(onInterrupt);
@@ -63,7 +63,7 @@ function runSimulation() {
 }
 export function startSimulationFromButton() {
     conConfig.incRuntime();
-    conConfig.setOnComplete(() => { });
+    conConfig.setOnComplete(() => { } /* eslint-disable-line @typescript-eslint/no-empty-function -- setting onComplete to empty function */);
     if (!gameController.modified && !gameController.isRunning()) {
         conConfig.setOnUpdate(liveUpdate);
         runSimulation();

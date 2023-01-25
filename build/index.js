@@ -3,7 +3,7 @@ Entry point for the application, any code that needs to be executed on startup s
 This file should not contain any logic, only calls to other files.
 This file should not interact with the data layer.
 */
-import { setupController } from "./controller/gameController.js";
+import { setupController } from "./controller/gameController.js"; // eslint-disable-line no-restricted-imports -- this is allowed here
 import { bonusesView } from "./view/bonusesView.js";
 import { extrasView } from "./view/extrasView.js";
 import { itemsView } from "./view/itemsView.js";

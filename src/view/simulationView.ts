@@ -30,7 +30,7 @@ export function simulationViews() {
     setupRuntimeInp();
 }
 
-const testingEnabled = true; // Set true to enable testing.
+const testingEnabled = false; // Set true to enable testing.
 
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp") as HTMLInputElement;
@@ -58,7 +58,7 @@ function addImportAction(field: HTMLInputElement) {
 function setupPresetBtns() {
     for (let i = 1; i < 4; i++) {
         const presetButton = getHTMLElement(
-            "#Preset" + CSS.escape(i.toString()) + "_Button"
+            "#Preset" + CSS.escape(i.toString()) + "_Button",
         ) as HTMLButtonElement;
         clickingAnimation(presetButton);
         addPresetAction(presetButton);
@@ -73,7 +73,7 @@ function addPresetAction(button: HTMLButtonElement) {
 
 export function updatePresetButton(name: string, index: number) {
     const button = getHTMLElement(
-        "#Preset" + CSS.escape(index.toString()) + "_Button"
+        "#Preset" + CSS.escape(index.toString()) + "_Button",
     ) as HTMLButtonElement;
     button.innerText = name;
     button.hidden = false;
@@ -128,7 +128,7 @@ export function uiUpdateLiveResults(results: IResults) {
 export function updateTimeSpent(
     isRunning: boolean,
     timeUsed: number,
-    runtime: number
+    runtime: number,
 ) {
     const timeProcessedSpan = getHTMLElement("#timeProcessed");
     const finalTimeSpan = getHTMLElement("#finalTime");
@@ -155,7 +155,7 @@ function updateKills(enemiesKilled: number, trimpsKilled: number) {
     trimpsKilledSpan.innerHTML = prettyNumber(trimpsKilled);
     winRateSpan.innerHTML = round(
         (enemiesKilled / (enemiesKilled + trimpsKilled)) * 100,
-        2
+        2,
     ).toString();
 }
 

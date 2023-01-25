@@ -1,9 +1,11 @@
 import { CallbackFunction, getHTMLElement } from "../utility.js";
 import { setupGrades } from "./bestGradesView.js";
+import { setupBestMods } from "./bestRingModsView.js";
 
 export function extrasView() {
     setWidth();
     setupGrades();
+    setupBestMods();
 }
 
 export const currentExtraResults = {
