@@ -42,6 +42,7 @@ Stylesheet
     background-color: rgb(39, 117, 124);
     position: absolute;
     z-index: 1000;
+    pointer-events: none;
 }
 
 .itemHover {
