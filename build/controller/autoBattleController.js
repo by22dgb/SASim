@@ -156,7 +156,7 @@ export function getResults() {
     const enemyLevel = autoBattle.enemyLevel;
     // Standards
     const assumeDustierLevel = 85;
-    const assumeS21 = 134;
+    const assumeS21 = 122;
     // Kills
     const enemiesKilled = autoBattle.sessionEnemiesKilled;
     const trimpsKilled = autoBattle.sessionTrimpsKilled;

@@ -218,7 +218,7 @@ export function getResults(): IResults {
 
     // Standards
     const assumeDustierLevel = 85;
-    const assumeS21 = 134;
+    const assumeS21 = 122;
 
     // Kills
     const enemiesKilled = autoBattle.sessionEnemiesKilled;
