@@ -156,6 +156,7 @@ export function getResults() {
     const enemyLevel = autoBattle.enemyLevel;
     // Standards
     const assumeDustierLevel = 85;
+    const assumeS21 = 134;
     // Kills
     const enemiesKilled = autoBattle.sessionEnemiesKilled;
     const trimpsKilled = autoBattle.sessionTrimpsKilled;
@@ -177,9 +178,13 @@ export function getResults() {
     if (autoBattle.oneTimers.Dusty_Tome.owned) {
         baseDust *= 1 + 0.05 * enemyLevel; // Level not max level.
     }
-    // Dustier mutations
+    // Dustier mutations multiplier
     if (enemyLevel >= assumeDustierLevel) {
         baseDust *= 1.5;
+    }
+    // Scruffy 21 multiplier
+    if (enemyLevel >= assumeS21) {
+        baseDust *= 5;
     }
     // Times
     const timeUsed = autoBattle.lootAvg.counter;

@@ -67,7 +67,7 @@ export function addHover(hoverDiv, displayDiv) {
     hoverDiv.addEventListener("mouseout", () => {
         hideHover(displayDiv);
     });
-    hoverDiv.addEventListener("blur", () => {
+    hoverDiv.addEventListener("focusout", () => {
         hideHover(displayDiv);
     });
 }

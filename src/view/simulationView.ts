@@ -6,6 +6,7 @@ This file should not interact directly with the data layer.
 import { buildFromSave, loadPreset } from "../controller/buildController.js";
 import { clear, stringPaste } from "../controller/importController.js";
 import {
+    addHover,
     clickingAnimation,
     convertMilliSecondsToTime,
     getHTMLElement,
@@ -28,6 +29,7 @@ export function simulationViews() {
     setupPresetBtns();
     setupRunBtns();
     setupRuntimeInp();
+    setupHover();
 }
 
 const testingEnabled = false; // Set true to enable testing.
@@ -210,4 +212,22 @@ function setupRuntimeInp() {
     runtimeInput.addEventListener("input", () => {
         setRuntime(+runtimeInput.value);
     });
+}
+
+function setupHover() {
+    baseHover();
+}
+
+function baseHover() {
+    const baseDustHovered = getHTMLElement("#baseDustHovered");
+    const baseDustHovering = getHTMLElement(
+        "#baseDustHovering",
+    ) as HTMLDivElement;
+    addHover(baseDustHovered, baseDustHovering);
+
+    const shardsHovered = getHTMLElement("#baseShardsHovered");
+    const shardsHovering = getHTMLElement(
+        "#baseShardsHovering",
+    ) as HTMLDivElement;
+    addHover(shardsHovered, shardsHovering);
 }
