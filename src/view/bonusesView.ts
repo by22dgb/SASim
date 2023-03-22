@@ -88,7 +88,7 @@ function setupRingBtns() {
         modButton.addEventListener("mouseover", () => {
             const stat = prettyNumber(getRingStatAmt(ringMod)).toString();
             const description =
-                "+ " +
+                "+" +
                 stat +
                 (key === "lifesteal" || key === "dustMult" ? "%" : "");
             descriptionDiv.innerHTML = description;

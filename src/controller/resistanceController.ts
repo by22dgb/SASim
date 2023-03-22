@@ -230,11 +230,11 @@ function calculateShank() {
                 const reduction = 0.25 * max;
                 shankInfo.reductionMin = Math.min(
                     shankInfo.reductionMin,
-                    reduction
+                    reduction,
                 );
                 shankInfo.reductionMax = Math.max(
                     reduction,
-                    shankInfo.reductionMax
+                    shankInfo.reductionMax,
                 );
                 if (poison >= bleed && poison >= shock) {
                     shankedPoison = true;

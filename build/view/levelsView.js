@@ -114,6 +114,12 @@ export function uiUpdateChances(huffy, enemy, shankInfo) {
     const enPoisonChanceSpan = getHTMLElement("#enemyPoisonChance");
     const enBleedChanceSpan = getHTMLElement("#enemyBleedChance");
     const enShockChanceSpan = getHTMLElement("#enemyShockChance");
+    // Correct values when Stormbringer is equipped, want to do somewhere else optimally.
+    if (getItem("Stormbringer").equipped) {
+        const res = enemy.resistShock;
+        enemy.resistShock = 0;
+        enemy.resistBleed += res;
+    }
     const shank = getItem("Sacrificial_Shank");
     if (shank.equipped) {
         const resistAllMax = huffy.resistAll +

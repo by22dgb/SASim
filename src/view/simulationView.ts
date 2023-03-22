@@ -6,6 +6,7 @@ This file should not interact directly with the data layer.
 import { buildFromSave, loadPreset } from "../controller/buildController.js";
 import { clear, stringPaste } from "../controller/importController.js";
 import {
+    addHover,
     clickingAnimation,
     convertMilliSecondsToTime,
     getHTMLElement,
@@ -16,6 +17,7 @@ import {
 import {
     getEnemyLevel,
     IResults,
+    printAllInfo,
     setRuntime,
     startSimulationFromButton,
     stopSimulation,
@@ -27,7 +29,10 @@ export function simulationViews() {
     setupPresetBtns();
     setupRunBtns();
     setupRuntimeInp();
+    setupHover();
 }
+
+const testingEnabled = false; // Set true to enable testing.
 
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp") as HTMLInputElement;
@@ -55,7 +60,7 @@ function addImportAction(field: HTMLInputElement) {
 function setupPresetBtns() {
     for (let i = 1; i < 4; i++) {
         const presetButton = getHTMLElement(
-            "#Preset" + CSS.escape(i.toString()) + "_Button"
+            "#Preset" + CSS.escape(i.toString()) + "_Button",
         ) as HTMLButtonElement;
         clickingAnimation(presetButton);
         addPresetAction(presetButton);
@@ -70,7 +75,7 @@ function addPresetAction(button: HTMLButtonElement) {
 
 export function updatePresetButton(name: string, index: number) {
     const button = getHTMLElement(
-        "#Preset" + CSS.escape(index.toString()) + "_Button"
+        "#Preset" + CSS.escape(index.toString()) + "_Button",
     ) as HTMLButtonElement;
     button.innerText = name;
     button.hidden = false;
@@ -93,6 +98,10 @@ function addChangeForAutoRun(button: HTMLButtonElement) {
     button.addEventListener("click", () => {
         updateButton(button);
         updateAutoRun();
+
+        if (testingEnabled) {
+            printAllInfo();
+        }
     });
 }
 
@@ -121,7 +130,7 @@ export function uiUpdateLiveResults(results: IResults) {
 export function updateTimeSpent(
     isRunning: boolean,
     timeUsed: number,
-    runtime: number
+    runtime: number,
 ) {
     const timeProcessedSpan = getHTMLElement("#timeProcessed");
     const finalTimeSpan = getHTMLElement("#finalTime");
@@ -148,7 +157,7 @@ function updateKills(enemiesKilled: number, trimpsKilled: number) {
     trimpsKilledSpan.innerHTML = prettyNumber(trimpsKilled);
     winRateSpan.innerHTML = round(
         (enemiesKilled / (enemiesKilled + trimpsKilled)) * 100,
-        2
+        2,
     ).toString();
 }
 
@@ -203,4 +212,22 @@ function setupRuntimeInp() {
     runtimeInput.addEventListener("input", () => {
         setRuntime(+runtimeInput.value);
     });
+}
+
+function setupHover() {
+    baseHover();
+}
+
+function baseHover() {
+    const baseDustHovered = getHTMLElement("#baseDustHovered");
+    const baseDustHovering = getHTMLElement(
+        "#baseDustHovering",
+    ) as HTMLDivElement;
+    addHover(baseDustHovered, baseDustHovering);
+
+    const shardsHovered = getHTMLElement("#baseShardsHovered");
+    const shardsHovering = getHTMLElement(
+        "#baseShardsHovering",
+    ) as HTMLDivElement;
+    addHover(shardsHovered, shardsHovering);
 }

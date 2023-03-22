@@ -25,7 +25,7 @@ export function getOneTimersSA(saveString?: any): IABTypes["oneTimers"] {
         oneTimers,
         "Master_of_Arms",
         "Dusty_Tome",
-        "Whirlwind_of_Arms"
+        "Whirlwind_of_Arms",
     ) as typeof oneTimers;
 }
 
@@ -91,7 +91,7 @@ export function clearBonuses() {
 
 export function equipOneTimer(
     oneTimer: keyof IABTypes["oneTimers"],
-    setUnselected?: boolean
+    setUnselected?: boolean,
 ) {
     // Backend
     autoBattle.oneTimers[oneTimer].owned =
@@ -113,7 +113,7 @@ export function equipRingMods(ringMods: string[]) {
             if (index === -1) {
                 ring.stats.mods.push(mod);
             } else {
-                ring.stats.mods.splice(index);
+                ring.stats.mods.splice(index, 1);
             }
 
             // Frontend
@@ -153,7 +153,7 @@ export function setRingLevel(level: number, frontendCall?: boolean) {
 
 export function equipMutation(
     mutation: keyof IABTypes["mutations"],
-    setUnselected?: boolean
+    setUnselected?: boolean,
 ) {
     // Backend
     const mutations = getMutations();

@@ -1,7 +1,9 @@
 import { prettify } from "./data/object.js";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function pick(obj, ...keys) {
-    return Object.fromEntries(keys.filter((key) => key in obj).map((key) => [key, obj[key]]));
+    return Object.fromEntries(keys
+        .filter((key) => key in obj)
+        .map((key) => [key, obj[key]]));
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
 export function capitaliseFirstLetter(string) {
@@ -59,7 +61,13 @@ export function addHover(hoverDiv, displayDiv) {
     hoverDiv.addEventListener("mouseover", () => {
         showHover(displayDiv);
     });
+    hoverDiv.addEventListener("focus", () => {
+        showHover(displayDiv);
+    });
     hoverDiv.addEventListener("mouseout", () => {
+        hideHover(displayDiv);
+    });
+    hoverDiv.addEventListener("focusout", () => {
         hideHover(displayDiv);
     });
 }

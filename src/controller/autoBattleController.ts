@@ -16,7 +16,7 @@ import {
 } from "../view/simulationView.js";
 import { getOneTimersSA } from "./bonusesController.js";
 import { updateBuildCost } from "./buildController.js";
-import { conConfig, gameController } from "./gameController.js";
+import { conConfig, gameController } from "./gameController.js"; // eslint-disable-line no-restricted-imports -- this is allowed here
 import { updateResistances } from "./resistanceController.js";
 import { setSimResultsDps } from "./resultsController.js";
 import { getRemainingEnemies } from "./saveController.js";
@@ -51,7 +51,7 @@ export function updateAutoRun() {
 export function startSimulation(
     onUpdate?: CallbackFunction,
     onComplete?: CallbackFunction,
-    onInterrupt?: CallbackFunction
+    onInterrupt?: CallbackFunction,
 ) {
     if (gameController.isRunning()) {
         return;
@@ -65,6 +65,10 @@ export function startSimulation(
 
     if (onComplete) {
         conConfig.setOnComplete(onComplete);
+    } else {
+        conConfig.setOnComplete(
+            () => {} /* eslint-disable-line @typescript-eslint/no-empty-function -- setting onComplete to empty function */,
+        );
     }
 
     if (onInterrupt) {
@@ -101,11 +105,12 @@ function runSimulation() {
 
 export function startSimulationFromButton() {
     conConfig.incRuntime();
-    if (!gameController.modified) {
-        if (!gameController.isRunning()) {
-            conConfig.setOnUpdate(liveUpdate);
-            runSimulation();
-        }
+    conConfig.setOnComplete(
+        () => {} /* eslint-disable-line @typescript-eslint/no-empty-function -- setting onComplete to empty function */,
+    );
+    if (!gameController.modified && !gameController.isRunning()) {
+        conConfig.setOnUpdate(liveUpdate);
+        runSimulation();
     } else {
         startSimulation();
     }
@@ -213,6 +218,7 @@ export function getResults(): IResults {
 
     // Standards
     const assumeDustierLevel = 85;
+    const assumeS21 = 122;
 
     // Kills
     const enemiesKilled = autoBattle.sessionEnemiesKilled;
@@ -240,9 +246,14 @@ export function getResults(): IResults {
         baseDust *= 1 + 0.05 * enemyLevel; // Level not max level.
     }
 
-    // Dustier mutations
+    // Dustier mutations multiplier
     if (enemyLevel >= assumeDustierLevel) {
         baseDust *= 1.5;
+    }
+
+    // Scruffy 21 multiplier
+    if (enemyLevel >= assumeS21) {
+        baseDust *= 5;
     }
 
     // Times
@@ -257,11 +268,11 @@ export function getResults(): IResults {
     const resultCounter = gameController.resultCounter;
     const enemyHealth = round(
         (resultCounter.healthSum / resultCounter.fights) * 100,
-        2
+        2,
     );
     const enemyHealthLoss = round(
         (resultCounter.healthSum / resultCounter.losses) * 100,
-        2
+        2,
     );
 
     // Best fight

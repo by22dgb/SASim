@@ -6,19 +6,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script src="build/index.js" type="module" async></script>
         <link
-            href="https://fonts.googleapis.com/css?family=Lato:300,400,700"
+            href="Lato.css"
             rel="stylesheet"
             type="text/css"
         />
+        <!-- https://fonts.googleapis.com/css?family=Lato:300,400,700 -->
         <link rel="stylesheet" href="src/view/index.css" />
         <link rel="stylesheet" href="src/view/foreground.css" />
         <link rel="stylesheet" href="src/view/stars.css" />
-        <title>尖塔突击模拟器 (5.8.0)</title>
+        <title>尖塔突击模拟器 (5.8.1)</title>
     </head>
 
     <body>
-        <script src="chs.js?20220805"></script>
-        <script src="core.js?20220805"></script>
+        <script src="chs.js?20230322"></script>
+        <script src="core.js?20230322"></script>
         <div id="wrapper">
             <div id="foreground">
                 <div id="itemsPanel" class="dark-light text"></div>
@@ -344,12 +345,38 @@
                                         <div>
                                             Dust:
                                             <span id="gameDust">0</span> D/s
-                                            [<span id="baseDust">0</span> D/s]
+                                            <span id="baseDustHovered"
+                                                >[<span id="baseDust">0 </span>
+                                                D/s]
+                                                <div
+                                                    id="baseDustHovering"
+                                                    class="hover"
+                                                >
+                                                    <span
+                                                        >该结果为归一化后的数值
+                                                        。84层以上包含突变，121层
+                                                        以上包含污污21级技能。</span
+                                                    >
+                                                </div>
+                                            </span>
                                         </div>
                                         <div>
                                             Shards:
                                             <span id="shardsDust">0</span> S/s
-                                            [<span id="baseShards">0</span> S/s]
+                                            <span id="baseShardsHovered"
+                                                >[<span id="baseShards">0</span>
+                                                S/s]
+                                                <div
+                                                    id="baseShardsHovering"
+                                                    class="hover"
+                                                >
+                                                    <span
+                                                        >该结果为归一化后的数值
+                                                        。84层以上包含突变，121层
+                                                        以上包含污污21级技能。</span
+                                                    >
+                                                </div>
+                                            </span>
                                         </div>
                                     </div>
                                 </td>

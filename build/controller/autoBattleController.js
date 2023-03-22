@@ -8,7 +8,7 @@ import { convertMilliSecondsToTime, round, } from "../utility.js";
 import { uiUpdateLiveResults, updateTimeSpent, } from "../view/simulationView.js";
 import { getOneTimersSA } from "./bonusesController.js";
 import { updateBuildCost } from "./buildController.js";
-import { conConfig, gameController } from "./gameController.js";
+import { conConfig, gameController } from "./gameController.js"; // eslint-disable-line no-restricted-imports -- this is allowed here
 import { updateResistances } from "./resistanceController.js";
 import { setSimResultsDps } from "./resultsController.js";
 import { getRemainingEnemies } from "./saveController.js";
@@ -31,6 +31,9 @@ export function startSimulation(onUpdate, onComplete, onInterrupt) {
     }
     if (onComplete) {
         conConfig.setOnComplete(onComplete);
+    }
+    else {
+        conConfig.setOnComplete(() => { } /* eslint-disable-line @typescript-eslint/no-empty-function -- setting onComplete to empty function */);
     }
     if (onInterrupt) {
         conConfig.setOnInterrupt(onInterrupt);
@@ -60,11 +63,10 @@ function runSimulation() {
 }
 export function startSimulationFromButton() {
     conConfig.incRuntime();
-    if (!gameController.modified) {
-        if (!gameController.isRunning()) {
-            conConfig.setOnUpdate(liveUpdate);
-            runSimulation();
-        }
+    conConfig.setOnComplete(() => { } /* eslint-disable-line @typescript-eslint/no-empty-function -- setting onComplete to empty function */);
+    if (!gameController.modified && !gameController.isRunning()) {
+        conConfig.setOnUpdate(liveUpdate);
+        runSimulation();
     }
     else {
         startSimulation();
@@ -154,6 +156,7 @@ export function getResults() {
     const enemyLevel = autoBattle.enemyLevel;
     // Standards
     const assumeDustierLevel = 85;
+    const assumeS21 = 122;
     // Kills
     const enemiesKilled = autoBattle.sessionEnemiesKilled;
     const trimpsKilled = autoBattle.sessionTrimpsKilled;
@@ -175,9 +178,13 @@ export function getResults() {
     if (autoBattle.oneTimers.Dusty_Tome.owned) {
         baseDust *= 1 + 0.05 * enemyLevel; // Level not max level.
     }
-    // Dustier mutations
+    // Dustier mutations multiplier
     if (enemyLevel >= assumeDustierLevel) {
         baseDust *= 1.5;
+    }
+    // Scruffy 21 multiplier
+    if (enemyLevel >= assumeS21) {
+        baseDust *= 5;
     }
     // Times
     const timeUsed = autoBattle.lootAvg.counter;

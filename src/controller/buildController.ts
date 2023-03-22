@@ -95,14 +95,14 @@ export function loadPreset(buttonName: string) {
     preset.forEach((row) => {
         if (typeof row === "object") {
             switch (row[0]) {
-                case "level":
-                    // TODO
-                    break;
-                case "ring": {
-                    const ringMods = row.slice(1);
-                    unequipRingMods();
-                    equipRingMods(ringMods);
-                }
+            case "level":
+                // TODO
+                break;
+            case "ring": {
+                const ringMods = row.slice(1);
+                unequipRingMods();
+                equipRingMods(ringMods);
+            }
             }
         } else {
             // Item
