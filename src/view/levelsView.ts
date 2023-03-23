@@ -134,9 +134,9 @@ export function uiUpdateChances(
     shankInfo: IShank,
 ) {
     // Huffy chances
-    const hfPoisonChance: number[] = [];
-    const hfBleedChance: number[] = [];
-    const hfShockChance: number[] = [];
+    let hfPoisonChance: number[] = [];
+    let hfBleedChance: number[] = [];
+    let hfShockChance: number[] = [];
 
     // Enemy chances
     let enPoisonChance: number[] = [];
@@ -267,6 +267,9 @@ export function uiUpdateChances(
         }
     }
 
+    hfPoisonChance = hfPoisonChance.map((x) => round(x));
+    hfBleedChance = hfBleedChance.map((x) => round(x));
+    hfShockChance = hfShockChance.map((x) => round(x));
     hfPoisonChanceSpan.innerHTML = hfPoisonChance.join("% to ");
     hfBleedChanceSpan.innerHTML = hfBleedChance.join("% to ");
     hfShockChanceSpan.innerHTML = hfShockChance.join("% to ");

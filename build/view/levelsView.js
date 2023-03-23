@@ -101,9 +101,9 @@ export function uiUpdateResistances(enemy) {
 }
 export function uiUpdateChances(huffy, enemy, shankInfo) {
     // Huffy chances
-    const hfPoisonChance = [];
-    const hfBleedChance = [];
-    const hfShockChance = [];
+    let hfPoisonChance = [];
+    let hfBleedChance = [];
+    let hfShockChance = [];
     // Enemy chances
     let enPoisonChance = [];
     let enBleedChance = [];
@@ -200,6 +200,9 @@ export function uiUpdateChances(huffy, enemy, shankInfo) {
             hfShockChance.push(huffy.shockMax - enemy.resistShock);
         }
     }
+    hfPoisonChance = hfPoisonChance.map((x) => round(x));
+    hfBleedChance = hfBleedChance.map((x) => round(x));
+    hfShockChance = hfShockChance.map((x) => round(x));
     hfPoisonChanceSpan.innerHTML = hfPoisonChance.join("% to ");
     hfBleedChanceSpan.innerHTML = hfBleedChance.join("% to ");
     hfShockChanceSpan.innerHTML = hfShockChance.join("% to ");
