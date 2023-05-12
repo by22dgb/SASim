@@ -69,9 +69,8 @@ function partItemsDiv(parts: number, ind: number) {
             upgradeDescDiv.innerHTML = upgradeDescription;
             div.appendChild(upgradeDescDiv);
             addHover(input, upgradeDescDiv);
-
-            div.appendChild(input);
         }
+        div.appendChild(input);
 
         const descriptionDiv = document.createElement("div");
         descriptionDiv.id = itemName + "_Description";
