@@ -53,16 +53,16 @@ function partItemsDiv(parts: number, ind: number) {
         div.appendChild(button);
         addChangeForItemButton(button, itemName);
 
-        if (!("noUpgrade" in item)) {
-            const input = document.createElement("input");
-            input.type = "number";
-            input.min = "1";
-            input.value = "1";
-            input.classList.add("equipInput", "generalInput", "small-text");
-            input.id = itemName + "_Input";
-            addChangeForLevel(input, itemName);
+        const input = document.createElement("input");
+        input.type = "number";
+        input.min = "1";
+        input.value = "1";
+        input.classList.add("equipInput", "generalInput", "small-text");
+        input.id = itemName + "_Input";
+        addChangeForLevel(input, itemName);
 
-            // Add upgrade description hover to input
+        // Add upgrade description hover to input
+        if (!("noUpgrade" in item)) {
             const upgradeDescDiv = document.createElement("div");
             upgradeDescDiv.classList.add("hover", "itemHover");
             const upgradeDescription = item.upgrade;
