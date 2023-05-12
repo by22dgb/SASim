@@ -26,6 +26,7 @@ function partItemsDiv(parts, ind) {
     table.classList.add("partTable");
     for (let i = start; i < end; i++) {
         const itemName = itemNames[i];
+        const item = items[itemName];
         const div = document.createElement("div");
         div.classList.add("equipInpDiv");
         table.insertRow(-1).insertCell(-1).appendChild(div);
@@ -36,21 +37,27 @@ function partItemsDiv(parts, ind) {
         button.classList.add("uncheckedButton", "small-text", "itemsButton", "generalButton");
         div.appendChild(button);
         addChangeForItemButton(button, itemName);
-        const input = document.createElement("input");
-        input.type = "number";
-        input.min = "1";
-        input.value = "1";
-        input.classList.add("equipInput", "generalInput", "small-text");
-        input.id = itemName + "_Input";
-        addChangeForLevel(input, itemName);
-        div.appendChild(input);
-        const descriptionDiv = document.createElement("div");
-        descriptionDiv.classList.add("hover", "itemHover");
-        const item = items[itemName];
-        let description = item.description();
-        if ("zone" in item) {
-            description += " Contract at zone " + item.zone.toString() + ".";
+        if (!("noUpgrade" in item)) {
+            const input = document.createElement("input");
+            input.type = "number";
+            input.min = "1";
+            input.value = "1";
+            input.classList.add("equipInput", "generalInput", "small-text");
+            input.id = itemName + "_Input";
+            addChangeForLevel(input, itemName);
+            // Add upgrade description hover to input
+            const upgradeDescDiv = document.createElement("div");
+            upgradeDescDiv.classList.add("hover", "itemHover");
+            const upgradeDescription = item.upgrade;
+            upgradeDescDiv.innerHTML = upgradeDescription;
+            div.appendChild(upgradeDescDiv);
+            addHover(input, upgradeDescDiv);
+            div.appendChild(input);
         }
+        const descriptionDiv = document.createElement("div");
+        descriptionDiv.id = itemName + "_Description";
+        descriptionDiv.classList.add("hover", "itemHover");
+        const description = getDescription(itemName);
         descriptionDiv.innerHTML = description;
         div.appendChild(descriptionDiv);
         addHover(button, descriptionDiv);
@@ -70,8 +77,22 @@ function addChangeForLevel(input, item) {
     input.addEventListener("input", () => {
         const value = parseInt(input.value);
         levelItem(item, value, true);
+        updateDescription(item);
     });
 }
 export function updateItem(item, setUnselected) {
     updateButton(item, setUnselected);
+}
+function updateDescription(itemName) {
+    const descriptionDiv = getHTMLElement("#" + itemName + "_Description");
+    descriptionDiv.innerHTML = getDescription(itemName);
+}
+function getDescription(itemName) {
+    const items = getItemsInOrder();
+    const item = items[itemName];
+    let description = item.description();
+    if ("zone" in item) {
+        description += " Contract at zone " + item.zone.toString() + ".";
+    }
+    return description;
 }
