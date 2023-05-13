@@ -104,7 +104,6 @@ function addChangeForLevel(
     input.addEventListener("input", () => {
         const value = parseInt(input.value);
         levelItem(item, value, true);
-        updateDescription(item);
     });
 }
 
@@ -115,7 +114,7 @@ export function updateItem(
     updateButton(item, setUnselected);
 }
 
-function updateDescription(itemName: keyof IABTypes["items"]) {
+export function updateDescription(itemName: keyof IABTypes["items"]) {
     const descriptionDiv = getHTMLElement(
         "#" + itemName + "_Description",
     ) as HTMLDivElement;

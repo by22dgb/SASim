@@ -3,7 +3,7 @@ Controls equipping and leveling items.
 Sends calls both to frontend and backend.
 */
 import { autoBattle } from "../data/object.js";
-import { updateItem } from "../view/itemsView.js";
+import { updateDescription, updateItem } from "../view/itemsView.js";
 import { updateInput } from "../utility.js";
 import { changeLimbs } from "./levelsController.js";
 import { modifiedAutoBattleWithBuild } from "./autoBattleController.js";
@@ -27,6 +27,7 @@ export function levelItem(item, level, frontendCall) {
     const items = getItems();
     items[item].level = level;
     // Frontend
+    updateDescription(item);
     if (!frontendCall) {
         updateInput(item, level);
     }

@@ -77,13 +77,12 @@ function addChangeForLevel(input, item) {
     input.addEventListener("input", () => {
         const value = parseInt(input.value);
         levelItem(item, value, true);
-        updateDescription(item);
     });
 }
 export function updateItem(item, setUnselected) {
     updateButton(item, setUnselected);
 }
-function updateDescription(itemName) {
+export function updateDescription(itemName) {
     const descriptionDiv = getHTMLElement("#" + itemName + "_Description");
     descriptionDiv.innerHTML = getDescription(itemName);
 }

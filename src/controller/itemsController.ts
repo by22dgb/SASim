@@ -5,7 +5,7 @@ Sends calls both to frontend and backend.
 
 import { IABTypes } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
-import { updateItem } from "../view/itemsView.js";
+import { updateDescription, updateItem } from "../view/itemsView.js";
 import { updateInput } from "../utility.js";
 import { changeLimbs } from "./levelsController.js";
 import { modifiedAutoBattleWithBuild } from "./autoBattleController.js";
@@ -13,7 +13,7 @@ import { modifiedAutoBattleWithBuild } from "./autoBattleController.js";
 export function equipItem(
     itemName: keyof IABTypes["items"],
     level?: number,
-    frontendCall?: boolean
+    frontendCall?: boolean,
 ) {
     // Backend
     autoBattle.equip(itemName);
@@ -35,13 +35,14 @@ export function equipItem(
 export function levelItem(
     item: keyof IABTypes["items"],
     level: number,
-    frontendCall?: boolean
+    frontendCall?: boolean,
 ) {
     // Backend
     const items = getItems();
     items[item].level = level;
 
     // Frontend
+    updateDescription(item);
     if (!frontendCall) {
         updateInput(item, level);
     }
@@ -51,7 +52,7 @@ export function levelItem(
 
 export function incrementItem(
     item: keyof IABTypes["items"],
-    increment: number
+    increment: number,
 ) {
     const items = getItems();
     items[item].level += increment;
@@ -76,7 +77,7 @@ export function getItems(): IABTypes["items"] {
 }
 
 export function getItem(
-    item: keyof IABTypes["items"]
+    item: keyof IABTypes["items"],
 ): IABTypes["items"][keyof IABTypes["items"]] {
     return autoBattle.items[item];
 }
@@ -94,7 +95,7 @@ export function clearItems() {
 
 export function getItemPrice(
     name: keyof IABTypes["items"],
-    increment?: number
+    increment?: number,
 ) {
     const item = getItem(name);
     const startPrice = "startPrice" in item ? item.startPrice : 5;
