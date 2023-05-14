@@ -14,12 +14,7 @@ import { getRing, incrementRing } from "./bonusesController.js";
 import { getCurrency, getUpgradePrice } from "./general.js";
 import { getItemsInOrder, incrementItem } from "./itemsController.js";
 
-export function findBestGrade(increment: number) {
-    storage.increment = increment;
-    runAllItems();
-}
-
-const storage = {
+const STORAGE = {
     increment: 0,
     itemsToRun: [] as string[],
     baseDustPs: 0,
@@ -27,77 +22,82 @@ const storage = {
     currentItem: "",
 };
 
+export function findBestGrade(increment: number) {
+    STORAGE.increment = increment;
+    runAllItems();
+}
+
 function updateItemsToRun() {
     const items = getItemsInOrder();
     for (const [name, item] of Object.entries(items)) {
         if (item.equipped) {
             if (name === "Doppelganger_Signet") continue;
-            storage.itemsToRun.push(name);
+            STORAGE.itemsToRun.push(name);
         }
     }
     const ring = getRing();
     if (ring.bonus.owned) {
-        storage.itemsToRun.push("Ring");
+        STORAGE.itemsToRun.push("Ring");
     }
 }
 
 function runAllItems() {
     updateItemsToRun();
-    if (storage.itemsToRun.length > 0) {
+    if (STORAGE.itemsToRun.length > 0) {
         modifiedAutoBattle();
-        uiSetGradesItems(storage.itemsToRun);
+        uiSetGradesItems(STORAGE.itemsToRun);
         startSimulation(undefined, baseOnComplete);
     }
 }
 
 function onUpdate() {
-    const reducedTime = storage.baseClearingTime - getClearingTime();
+    const reducedTime = STORAGE.baseClearingTime - getClearingTime();
 
     let upgradeCost = 0;
     let currency = Currency.dust;
-    if (storage.increment > 0) {
-        if (storage.currentItem === "Ring") {
+    if (STORAGE.increment > 0) {
+        if (STORAGE.currentItem === "Ring") {
             upgradeCost = getUpgradePrice(
-                storage.currentItem,
-                -storage.increment
+                STORAGE.currentItem,
+                -STORAGE.increment,
             );
             currency = Currency.shards;
         } else {
-            const item = storage.currentItem as keyof IABTypes["items"];
-            upgradeCost = getUpgradePrice(item, -storage.increment);
+            const item = STORAGE.currentItem as keyof IABTypes["items"];
+            upgradeCost = getUpgradePrice(item, -STORAGE.increment);
             currency = getCurrency(item);
         }
     }
 
     const increaseDust =
-        (getDustPs() - storage.baseDustPs) /
+        (getDustPs() - STORAGE.baseDustPs) /
         (currency === Currency.shards ? 1e9 : 1);
     const timeUntilProfit = upgradeCost / increaseDust;
 
-    uiUpdateGradeItem(storage.currentItem, reducedTime, timeUntilProfit);
+    uiUpdateGradeItem(STORAGE.currentItem, reducedTime, timeUntilProfit);
 }
 
 function onComplete() {
-    if (storage.currentItem === "Ring") incrementRing(-storage.increment);
+    if (STORAGE.currentItem === "Ring") incrementRing(-STORAGE.increment);
     else
         incrementItem(
-            storage.currentItem as keyof IABTypes["items"],
-            -storage.increment
+            STORAGE.currentItem as keyof IABTypes["items"],
+            -STORAGE.increment,
         );
-    const item = storage.itemsToRun.shift();
+    const item = STORAGE.itemsToRun.shift();
     if (item !== undefined) {
-        storage.currentItem = item;
+        STORAGE.currentItem = item;
         simulateNextItem();
     }
 }
 
 function simulateNextItem() {
-    if (storage.currentItem === "Ring") {
-        incrementRing(storage.increment);
+    if (STORAGE.currentItem === "Ring") {
+        incrementRing(STORAGE.increment);
     } else {
         incrementItem(
-            storage.currentItem as keyof IABTypes["items"],
-            storage.increment
+            STORAGE.currentItem as keyof IABTypes["items"],
+            STORAGE.increment,
         );
     }
     modifiedAutoBattle();
@@ -105,8 +105,8 @@ function simulateNextItem() {
 }
 
 function baseOnComplete() {
-    storage.baseDustPs = getDustPs();
-    storage.baseClearingTime = getClearingTime();
-    storage.currentItem = storage.itemsToRun.shift() as string;
+    STORAGE.baseDustPs = getDustPs();
+    STORAGE.baseClearingTime = getClearingTime();
+    STORAGE.currentItem = STORAGE.itemsToRun.shift() as string;
     simulateNextItem();
 }

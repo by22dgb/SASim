@@ -4,13 +4,13 @@ import { getCurrency } from "../controller/general.js";
 import { Currency } from "../data/buildTypes.js";
 import { clearHTMLChilds, clickingAnimation, convertMilliSecondsToTime, convertSecondsToTime, getHTMLElement, } from "../utility.js";
 import { currentExtraResults } from "./extrasView.js";
-const bestGradesPanel = getHTMLElement("#bestGradesResults");
-const gradesItemsDust = getHTMLElement("#gradesItemsDust");
-const gradesItemsShards = getHTMLElement("#gradesItemsShards");
-const gradesClearingDust = getHTMLElement("#gradesClearingDust");
-const gradesClearingShards = getHTMLElement("#gradesClearingShards");
-const gradesProfitDust = getHTMLElement("#gradesProfitDust");
-const gradesProfitShards = getHTMLElement("#gradesProfitShards");
+const BESTGRADESPANEL = getHTMLElement("#bestGradesResults");
+const GRADESITEMSDUST = getHTMLElement("#gradesItemsDust");
+const GRADESITEMSSHARDS = getHTMLElement("#gradesItemsShards");
+const GRADESCLEARINGDUST = getHTMLElement("#gradesClearingDust");
+const GRADESCLEARINGSHARDS = getHTMLElement("#gradesClearingShards");
+const GRADESPROFITDUST = getHTMLElement("#gradesProfitDust");
+const GRADESPROFITSHARDS = getHTMLElement("#gradesProfitShards");
 export function setupGrades() {
     setupGradeBtns();
 }
@@ -29,7 +29,7 @@ export function uiSetGradesItems(items) {
     currentExtraResults.clear();
     currentExtraResults.add(clearGradesResults);
     // Make the UI visible
-    bestGradesPanel.style.display = "flex";
+    BESTGRADESPANEL.style.display = "flex";
     // Add all items to the UI
     for (const item of items) {
         const nameSpan = document.createElement("span");
@@ -42,14 +42,14 @@ export function uiSetGradesItems(items) {
         profitSpan.id = `gradesProfit${item}`;
         const currency = getCurrency(item);
         if (currency === Currency.dust) {
-            gradesItemsDust.append(nameSpan);
-            gradesClearingDust.append(clearingSpan);
-            gradesProfitDust.append(profitSpan);
+            GRADESITEMSDUST.append(nameSpan);
+            GRADESCLEARINGDUST.append(clearingSpan);
+            GRADESPROFITDUST.append(profitSpan);
         }
         else if (currency === Currency.shards) {
-            gradesItemsShards.append(nameSpan);
-            gradesClearingShards.append(clearingSpan);
-            gradesProfitShards.append(profitSpan);
+            GRADESITEMSSHARDS.append(nameSpan);
+            GRADESCLEARINGSHARDS.append(clearingSpan);
+            GRADESPROFITSHARDS.append(profitSpan);
         }
     }
 }
@@ -62,19 +62,17 @@ export function uiUpdateGradeItem(item, reducedTime, timeUntilProfit) {
     else
         clearingSpan.innerHTML = convertMilliSecondsToTime(reducedTime);
     const profitSpan = getHTMLElement(`#gradesProfit${item}`);
-    const profitAverage = timeUntilProfit;
-    if (profitAverage < 0) {
+    if (timeUntilProfit < 0)
         profitSpan.innerHTML = convertMilliSecondsToTime(Infinity);
-    }
     else
-        profitSpan.innerHTML = convertSecondsToTime(profitAverage);
+        profitSpan.innerHTML = convertSecondsToTime(timeUntilProfit);
 }
 function clearGradesResults() {
-    bestGradesPanel.style.display = "none";
-    clearHTMLChilds(gradesItemsDust);
-    clearHTMLChilds(gradesItemsShards);
-    clearHTMLChilds(gradesClearingDust);
-    clearHTMLChilds(gradesClearingShards);
-    clearHTMLChilds(gradesProfitDust);
-    clearHTMLChilds(gradesProfitShards);
+    BESTGRADESPANEL.style.display = "none";
+    clearHTMLChilds(GRADESITEMSDUST);
+    clearHTMLChilds(GRADESITEMSSHARDS);
+    clearHTMLChilds(GRADESCLEARINGDUST);
+    clearHTMLChilds(GRADESCLEARINGSHARDS);
+    clearHTMLChilds(GRADESPROFITDUST);
+    clearHTMLChilds(GRADESPROFITSHARDS);
 }

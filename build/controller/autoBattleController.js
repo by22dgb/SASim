@@ -152,6 +152,11 @@ export function getClearingTime() {
     const toKill = enemyCount(enemyLevel);
     return ((toKill / autoBattle.sessionEnemiesKilled) * autoBattle.lootAvg.counter);
 }
+export function getKillTime() {
+    const timeUsed = autoBattle.lootAvg.counter;
+    const enemiesKilled = autoBattle.sessionEnemiesKilled;
+    return timeUsed / enemiesKilled;
+}
 export function getResults() {
     const enemyLevel = autoBattle.enemyLevel;
     // Standards

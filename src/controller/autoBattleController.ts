@@ -213,6 +213,12 @@ export function getClearingTime() {
     );
 }
 
+export function getKillTime() {
+    const timeUsed = autoBattle.lootAvg.counter;
+    const enemiesKilled = autoBattle.sessionEnemiesKilled;
+    return timeUsed / enemiesKilled;
+}
+
 export function getResults(): IResults {
     const enemyLevel = autoBattle.enemyLevel;
 

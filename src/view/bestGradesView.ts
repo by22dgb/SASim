@@ -11,13 +11,13 @@ import {
 } from "../utility.js";
 import { currentExtraResults } from "./extrasView.js";
 
-const bestGradesPanel = getHTMLElement("#bestGradesResults");
-const gradesItemsDust = getHTMLElement("#gradesItemsDust");
-const gradesItemsShards = getHTMLElement("#gradesItemsShards");
-const gradesClearingDust = getHTMLElement("#gradesClearingDust");
-const gradesClearingShards = getHTMLElement("#gradesClearingShards");
-const gradesProfitDust = getHTMLElement("#gradesProfitDust");
-const gradesProfitShards = getHTMLElement("#gradesProfitShards");
+const BESTGRADESPANEL = getHTMLElement("#bestGradesResults");
+const GRADESITEMSDUST = getHTMLElement("#gradesItemsDust");
+const GRADESITEMSSHARDS = getHTMLElement("#gradesItemsShards");
+const GRADESCLEARINGDUST = getHTMLElement("#gradesClearingDust");
+const GRADESCLEARINGSHARDS = getHTMLElement("#gradesClearingShards");
+const GRADESPROFITDUST = getHTMLElement("#gradesProfitDust");
+const GRADESPROFITSHARDS = getHTMLElement("#gradesProfitShards");
 
 export function setupGrades() {
     setupGradeBtns();
@@ -29,7 +29,7 @@ function setupGradeBtns() {
     upgradeBtn.addEventListener("click", () => {
         if (!simIsRunning()) {
             const input = getHTMLElement(
-                "#bestGradesInput"
+                "#bestGradesInput",
             ) as HTMLInputElement;
             const increment = +input.value;
             findBestGrade(increment);
@@ -41,7 +41,7 @@ export function uiSetGradesItems(items: string[]) {
     currentExtraResults.clear();
     currentExtraResults.add(clearGradesResults);
     // Make the UI visible
-    bestGradesPanel.style.display = "flex";
+    BESTGRADESPANEL.style.display = "flex";
 
     // Add all items to the UI
     for (const item of items) {
@@ -56,13 +56,13 @@ export function uiSetGradesItems(items: string[]) {
 
         const currency = getCurrency(item as keyof IABTypes["items"]);
         if (currency === Currency.dust) {
-            gradesItemsDust.append(nameSpan);
-            gradesClearingDust.append(clearingSpan);
-            gradesProfitDust.append(profitSpan);
+            GRADESITEMSDUST.append(nameSpan);
+            GRADESCLEARINGDUST.append(clearingSpan);
+            GRADESPROFITDUST.append(profitSpan);
         } else if (currency === Currency.shards) {
-            gradesItemsShards.append(nameSpan);
-            gradesClearingShards.append(clearingSpan);
-            gradesProfitShards.append(profitSpan);
+            GRADESITEMSSHARDS.append(nameSpan);
+            GRADESCLEARINGSHARDS.append(clearingSpan);
+            GRADESPROFITSHARDS.append(profitSpan);
         }
     }
 }
@@ -70,7 +70,7 @@ export function uiSetGradesItems(items: string[]) {
 export function uiUpdateGradeItem(
     item: string,
     reducedTime: number,
-    timeUntilProfit: number
+    timeUntilProfit: number,
 ) {
     const clearingSpan = getHTMLElement(`#gradesClearing${item}`);
     if (reducedTime < 0) {
@@ -79,18 +79,17 @@ export function uiUpdateGradeItem(
     } else clearingSpan.innerHTML = convertMilliSecondsToTime(reducedTime);
 
     const profitSpan = getHTMLElement(`#gradesProfit${item}`);
-    const profitAverage = timeUntilProfit;
-    if (profitAverage < 0) {
+    if (timeUntilProfit < 0)
         profitSpan.innerHTML = convertMilliSecondsToTime(Infinity);
-    } else profitSpan.innerHTML = convertSecondsToTime(profitAverage);
+    else profitSpan.innerHTML = convertSecondsToTime(timeUntilProfit);
 }
 
 function clearGradesResults() {
-    bestGradesPanel.style.display = "none";
-    clearHTMLChilds(gradesItemsDust);
-    clearHTMLChilds(gradesItemsShards);
-    clearHTMLChilds(gradesClearingDust);
-    clearHTMLChilds(gradesClearingShards);
-    clearHTMLChilds(gradesProfitDust);
-    clearHTMLChilds(gradesProfitShards);
+    BESTGRADESPANEL.style.display = "none";
+    clearHTMLChilds(GRADESITEMSDUST);
+    clearHTMLChilds(GRADESITEMSSHARDS);
+    clearHTMLChilds(GRADESCLEARINGDUST);
+    clearHTMLChilds(GRADESCLEARINGSHARDS);
+    clearHTMLChilds(GRADESPROFITDUST);
+    clearHTMLChilds(GRADESPROFITSHARDS);
 }

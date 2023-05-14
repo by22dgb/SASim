@@ -324,6 +324,28 @@ Stylesheet
     height: 1.3em;
 }
 
+#bestModsResults {
+    display: none;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    align-content: stretch;
+}
+
+#bestModsResults div {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    align-content: stretch;
+}
+
+#bestModsResults span {
+    height: 1.3em;
+}
+
 /* Colours */
 
 .dark {

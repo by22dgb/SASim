@@ -7,83 +7,83 @@ import { modifiedAutoBattle, startSimulation, getDustPs, getClearingTime, } from
 import { getRing, incrementRing } from "./bonusesController.js";
 import { getCurrency, getUpgradePrice } from "./general.js";
 import { getItemsInOrder, incrementItem } from "./itemsController.js";
-export function findBestGrade(increment) {
-    storage.increment = increment;
-    runAllItems();
-}
-const storage = {
+const STORAGE = {
     increment: 0,
     itemsToRun: [],
     baseDustPs: 0,
     baseClearingTime: 0,
     currentItem: "",
 };
+export function findBestGrade(increment) {
+    STORAGE.increment = increment;
+    runAllItems();
+}
 function updateItemsToRun() {
     const items = getItemsInOrder();
     for (const [name, item] of Object.entries(items)) {
         if (item.equipped) {
             if (name === "Doppelganger_Signet")
                 continue;
-            storage.itemsToRun.push(name);
+            STORAGE.itemsToRun.push(name);
         }
     }
     const ring = getRing();
     if (ring.bonus.owned) {
-        storage.itemsToRun.push("Ring");
+        STORAGE.itemsToRun.push("Ring");
     }
 }
 function runAllItems() {
     updateItemsToRun();
-    if (storage.itemsToRun.length > 0) {
+    if (STORAGE.itemsToRun.length > 0) {
         modifiedAutoBattle();
-        uiSetGradesItems(storage.itemsToRun);
+        uiSetGradesItems(STORAGE.itemsToRun);
         startSimulation(undefined, baseOnComplete);
     }
 }
 function onUpdate() {
-    const reducedTime = storage.baseClearingTime - getClearingTime();
+    const reducedTime = STORAGE.baseClearingTime - getClearingTime();
     let upgradeCost = 0;
     let currency = Currency.dust;
-    if (storage.increment > 0) {
-        if (storage.currentItem === "Ring") {
-            upgradeCost = getUpgradePrice(storage.currentItem, -storage.increment);
+    if (STORAGE.increment > 0) {
+        if (STORAGE.currentItem === "Ring") {
+            upgradeCost = getUpgradePrice(STORAGE.currentItem, -STORAGE.increment);
             currency = Currency.shards;
         }
         else {
-            const item = storage.currentItem;
-            upgradeCost = getUpgradePrice(item, -storage.increment);
+            const item = STORAGE.currentItem;
+            upgradeCost = getUpgradePrice(item, -STORAGE.increment);
             currency = getCurrency(item);
         }
     }
-    const increaseDust = (getDustPs() - storage.baseDustPs) /
+    const increaseDust = (getDustPs() - STORAGE.baseDustPs) /
         (currency === Currency.shards ? 1e9 : 1);
     const timeUntilProfit = upgradeCost / increaseDust;
-    uiUpdateGradeItem(storage.currentItem, reducedTime, timeUntilProfit);
+    uiUpdateGradeItem(STORAGE.currentItem, reducedTime, timeUntilProfit);
 }
 function onComplete() {
-    if (storage.currentItem === "Ring")
-        incrementRing(-storage.increment);
+    if (STORAGE.currentItem === "Ring")
+        incrementRing(-STORAGE.increment);
     else
-        incrementItem(storage.currentItem, -storage.increment);
-    const item = storage.itemsToRun.shift();
+        incrementItem(STORAGE.currentItem, -STORAGE.increment);
+    const item = STORAGE.itemsToRun.shift();
     if (item !== undefined) {
-        storage.currentItem = item;
+        STORAGE.currentItem = item;
         simulateNextItem();
     }
 }
 function simulateNextItem() {
-    if (storage.currentItem === "Ring") {
-        incrementRing(storage.increment);
+    if (STORAGE.currentItem === "Ring") {
+        incrementRing(STORAGE.increment);
     }
     else {
-        incrementItem(storage.currentItem, storage.increment);
+        incrementItem(STORAGE.currentItem, STORAGE.increment);
     }
     modifiedAutoBattle();
     startSimulation(onUpdate, onComplete);
 }
 function baseOnComplete() {
-    storage.baseDustPs = getDustPs();
-    storage.baseClearingTime = getClearingTime();
-    storage.currentItem = storage.itemsToRun.shift();
+    STORAGE.baseDustPs = getDustPs();
+    STORAGE.baseClearingTime = getClearingTime();
+    STORAGE.currentItem = STORAGE.itemsToRun.shift();
     simulateNextItem();
 }
