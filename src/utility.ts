@@ -24,8 +24,29 @@ export function updateButton(
     } else {
         classList = button.classList;
     }
+
     if (setUnselected || classList.contains("checkedButton")) {
         classList.remove("checkedButton");
+        classList.add("uncheckedButton");
+    } else {
+        classList.remove("uncheckedButton");
+        classList.add("checkedButton");
+    }
+}
+
+export function updateTrinaryButton(button: HTMLButtonElement | string) {
+    let classList;
+    if (typeof button === "string") {
+        classList = getHTMLElement("#" + button + "_Button").classList;
+    } else {
+        classList = button.classList;
+    }
+
+    if (classList.contains("checkedButton")) {
+        classList.remove("checkedButton");
+        classList.add("butButton");
+    } else if (classList.contains("butButton")) {
+        classList.remove("butButton");
         classList.add("uncheckedButton");
     } else {
         classList.remove("uncheckedButton");
@@ -145,3 +166,31 @@ export function average(list: number[]) {
 }
 
 export type CallbackFunction = () => void;
+
+export enum Trinary {
+    Yes = "yes",
+    No = "no",
+    But = "but",
+}
+
+export function cycleTrinary(trinary: Trinary) {
+    switch (trinary) {
+        case Trinary.Yes:
+            return Trinary.But;
+        case Trinary.But:
+            return Trinary.No;
+        case Trinary.No:
+            return Trinary.Yes;
+    }
+}
+
+export function cycleTrinaryBool(trinary: Trinary) {
+    switch (trinary) {
+        case Trinary.Yes:
+            return Trinary.No;
+        case Trinary.But:
+            return Trinary.No;
+        case Trinary.No:
+            return Trinary.Yes;
+    }
+}

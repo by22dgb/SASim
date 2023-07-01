@@ -1,5 +1,5 @@
 import { simIsRunning } from "../controller/autoBattleController.js";
-import { findBestGrade } from "../controller/bestGradeController.js";
+import { findBestGrade } from "../controller/special/bestGradeController.js";
 import { getCurrency } from "../controller/general.js";
 import { Currency, IABTypes } from "../data/buildTypes.js";
 import {

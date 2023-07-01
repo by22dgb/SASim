@@ -2,20 +2,20 @@
 Functions for calculating best ring mods.
 */
 
-import { IRing } from "../data/buildTypes";
-import { uiSetMods, uiUpdateMod } from "../view/bestRingModsView.js";
+import { IRing } from "../../data/buildTypes";
+import { uiSetMods, uiUpdateMod } from "../../view/bestRingModsView.js";
 import {
     getKillTime,
     getDustPs,
     modifiedAutoBattle,
     startSimulation,
-} from "./autoBattleController.js";
+} from "../autoBattleController.js";
 import {
     equipRingMods,
     getPossibleRingMods,
     getRing,
     unequipRingMods,
-} from "./bonusesController.js";
+} from "../bonusesController.js";
 
 let MODSTORUN: (string | string[])[] = [];
 let CURRENTMODS: string | string[];

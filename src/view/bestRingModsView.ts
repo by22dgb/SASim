@@ -3,7 +3,7 @@ Handles UI display of best ring mods calculations.
 */
 
 import { simIsRunning } from "../controller/autoBattleController.js";
-import { findBestMod } from "../controller/bestRingModsController.js";
+import { findBestMod } from "../controller/special/bestRingModsController.js";
 import {
     capitaliseFirstLetter,
     clearHTMLChilds,

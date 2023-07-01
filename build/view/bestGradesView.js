@@ -1,5 +1,5 @@
 import { simIsRunning } from "../controller/autoBattleController.js";
-import { findBestGrade } from "../controller/bestGradeController.js";
+import { findBestGrade } from "../controller/special/bestGradeController.js";
 import { getCurrency } from "../controller/general.js";
 import { Currency } from "../data/buildTypes.js";
 import { clearHTMLChilds, clickingAnimation, convertMilliSecondsToTime, convertSecondsToTime, getHTMLElement, } from "../utility.js";

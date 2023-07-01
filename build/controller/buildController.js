@@ -1,7 +1,7 @@
 import { Currency } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
 import { equipMutation, equipOneTimer, equipRingMods, equipScruffy, getOneTimersSA, getRingPrice, setRingLevel, unequipRingMods, } from "./bonusesController.js";
-import { equipItem, getItems, levelItem } from "./itemsController.js";
+import { equipItem, levelItem } from "./itemEquipController.js";
 import { u2Mutations } from "../data/mutations.js";
 import { updatePresetButton } from "../view/simulationView.js";
 import { getLimbs, setEnemyLevel, setMaxEnemyLevel, } from "./levelsController.js";
@@ -9,11 +9,12 @@ import { uiUpdateBuildCost, updateLimbs } from "../view/levelsView.js";
 import { builderData } from "../data/buildData.js";
 import { getSaveData } from "./saveController.js";
 import { getCurrency, getPrice } from "./general.js";
+import { Items } from "../data/items.js";
 export function buildItems(items) {
     for (const [key, value] of Object.entries(items)) {
         const name = key;
         if (value.equipped) {
-            equipItem(name, value.level);
+            equipItem(name, false, value.level);
         }
         else {
             levelItem(name, value.level);
@@ -86,11 +87,9 @@ export function loadPreset(buttonName) {
             newItems.push(row);
         }
     });
-    const items = Object.entries(getItems());
-    for (const [key, item] of Object.values(items)) {
-        if (newItems.includes(key) !== item.equipped) {
-            const itemName = key;
-            equipItem(itemName);
+    for (const item of Items) {
+        if (newItems.includes(item.name) !== item.equipped) {
+            equipItem(item.name, false);
         }
     }
 }
@@ -102,11 +101,10 @@ function calcBuildCost() {
     let dustCost = 0;
     let shardCost = 0;
     // Price for items.
-    const items = getItems();
-    for (const [name, item] of Object.entries(items)) {
+    for (const item of Items) {
         if (item.equipped) {
-            const cost = getPrice(name);
-            const currency = getCurrency(name);
+            const cost = getPrice(item.name);
+            const currency = getCurrency(item.name);
             if (currency === Currency.shards) {
                 shardCost += cost;
             }

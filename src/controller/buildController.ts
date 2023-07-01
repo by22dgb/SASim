@@ -10,7 +10,7 @@ import {
     setRingLevel,
     unequipRingMods,
 } from "./bonusesController.js";
-import { equipItem, getItems, levelItem } from "./itemsController.js";
+import { equipItem, levelItem } from "./itemEquipController.js";
 import { u2Mutations } from "../data/mutations.js";
 import { updatePresetButton } from "../view/simulationView.js";
 import {
@@ -22,12 +22,13 @@ import { uiUpdateBuildCost, updateLimbs } from "../view/levelsView.js";
 import { builderData } from "../data/buildData.js";
 import { getSaveData } from "./saveController.js";
 import { getCurrency, getPrice } from "./general.js";
+import { Items } from "../data/items.js";
 
 export function buildItems(items: IABTypes["items"]) {
     for (const [key, value] of Object.entries(items)) {
         const name = key as keyof IABTypes["items"];
         if (value.equipped) {
-            equipItem(name, value.level);
+            equipItem(name, false, value.level);
         } else {
             levelItem(name, value.level);
         }
@@ -95,14 +96,14 @@ export function loadPreset(buttonName: string) {
     preset.forEach((row) => {
         if (typeof row === "object") {
             switch (row[0]) {
-            case "level":
-                // TODO
-                break;
-            case "ring": {
-                const ringMods = row.slice(1);
-                unequipRingMods();
-                equipRingMods(ringMods);
-            }
+                case "level":
+                    // TODO
+                    break;
+                case "ring": {
+                    const ringMods = row.slice(1);
+                    unequipRingMods();
+                    equipRingMods(ringMods);
+                }
             }
         } else {
             // Item
@@ -110,11 +111,9 @@ export function loadPreset(buttonName: string) {
         }
     });
 
-    const items = Object.entries(getItems());
-    for (const [key, item] of Object.values(items)) {
-        if (newItems.includes(key) !== item.equipped) {
-            const itemName = key as keyof IABTypes["items"];
-            equipItem(itemName);
+    for (const item of Items) {
+        if (newItems.includes(item.name) !== item.equipped) {
+            equipItem(item.name, false);
         }
     }
 }
@@ -129,11 +128,10 @@ function calcBuildCost() {
     let shardCost = 0;
 
     // Price for items.
-    const items = getItems();
-    for (const [name, item] of Object.entries(items)) {
+    for (const item of Items) {
         if (item.equipped) {
-            const cost = getPrice(name as keyof IABTypes["items"]);
-            const currency = getCurrency(name as keyof IABTypes["items"]);
+            const cost = getPrice(item.name);
+            const currency = getCurrency(item.name);
             if (currency === Currency.shards) {
                 shardCost += cost;
             } else if (currency === Currency.dust) {

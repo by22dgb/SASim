@@ -2,17 +2,22 @@
 Functions for calculating the best upgrade and best downgrade items.
 */
 
-import { Currency, IABTypes } from "../data/buildTypes.js";
-import { uiSetGradesItems, uiUpdateGradeItem } from "../view/bestGradesView.js";
+import { Currency, IABTypes } from "../../data/buildTypes.js";
+import { Trinary } from "../../utility.js";
+import {
+    uiSetGradesItems,
+    uiUpdateGradeItem,
+} from "../../view/bestGradesView.js";
 import {
     modifiedAutoBattle,
     startSimulation,
     getDustPs,
     getClearingTime,
-} from "./autoBattleController.js";
-import { getRing, incrementRing } from "./bonusesController.js";
-import { getCurrency, getUpgradePrice } from "./general.js";
-import { getItemsInOrder, incrementItem } from "./itemsController.js";
+} from "../autoBattleController.js";
+import { getRing, incrementRing } from "../bonusesController.js";
+import { getCurrency, getUpgradePrice } from "../general.js";
+import { getItemsInOrder, incrementItem } from "../itemEquipController.js";
+import { getItem } from "../itemsController.js";
 
 const STORAGE = {
     increment: 0,
@@ -28,9 +33,10 @@ export function findBestGrade(increment: number) {
 }
 
 function updateItemsToRun() {
-    const items = getItemsInOrder();
-    for (const [name, item] of Object.entries(items)) {
-        if (item.equipped) {
+    const names = getItemsInOrder();
+    for (const name of names) {
+        const item = getItem(name);
+        if (item.state === Trinary.Yes) {
             if (name === "Doppelganger_Signet") continue;
             STORAGE.itemsToRun.push(name);
         }

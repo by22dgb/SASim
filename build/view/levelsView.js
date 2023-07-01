@@ -4,7 +4,8 @@ This file should not interact directly with the data layer.
 */
 import { getOneTimersSA, getUnlocks } from "../controller/bonusesController.js";
 import { getCurrency } from "../controller/general.js";
-import { getItem, getItemsInOrder } from "../controller/itemsController.js";
+import { getItemsInOrder } from "../controller/itemEquipController.js";
+import { getItem } from "../controller/itemsController.js";
 import { checkMaxLevel, getActiveEffects, getLimbs, setEnemyLevel, setMaxEnemyLevel, } from "../controller/levelsController.js";
 import { timeToAfford } from "../controller/moreInfoController.js";
 import { Currency } from "../data/buildTypes.js";
@@ -264,9 +265,9 @@ function setupTimeAffordSelect() {
         select.classList.add(colour[0]);
     });
     // Add items options
-    const items = getItemsInOrder();
+    const names = getItemsInOrder();
     let option;
-    for (const name of Object.keys(items)) {
+    for (const name of names) {
         if (name === "Doppelganger_Signet") {
             continue;
         }

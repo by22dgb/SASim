@@ -1,10 +1,11 @@
 import { Build } from "../data/buildTypes.js";
 import { LZString } from "./lz-string.js";
 import { buildFromSave, buildItems, clearBuilderData, setPresets, } from "./buildController.js";
-import { clearItems, getItems } from "./itemsController.js";
+import { clearItems } from "./itemEquipController.js";
 import { clearBonuses, setBonuses } from "./bonusesController.js";
 import { enemyCount, modifiedAutoBattleWithBuild, } from "./autoBattleController.js";
 import { setSaveData } from "./saveController.js";
+import { getItems } from "./itemsController.js";
 export function stringPaste(paste) {
     clear();
     let savegame;

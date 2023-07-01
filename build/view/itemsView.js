@@ -2,8 +2,9 @@
 Items view panel, used for equipping and leveling items.
 This file should not interact directly with the data layer.
 */
-import { equipItem, getItemsInOrder, levelItem, } from "../controller/itemsController.js";
-import { addHover, getHTMLElement, round, updateButton } from "../utility.js";
+import { equipItem, getItemsInOrder, levelItem, } from "../controller/itemEquipController.js";
+import { addHover, getHTMLElement, round, updateButton, updateTrinaryButton, } from "../utility.js";
+import { getItem } from "../controller/itemsController.js";
 export function itemsView() {
     setupItemBtns();
 }
@@ -15,8 +16,7 @@ function setupItemBtns() {
     }
 }
 function partItemsDiv(parts, ind) {
-    const items = getItemsInOrder();
-    const itemNames = Object.keys(items);
+    const itemNames = getItemsInOrder();
     const length = itemNames.length;
     const size = round(length / parts);
     const start = size * ind;
@@ -26,7 +26,7 @@ function partItemsDiv(parts, ind) {
     table.classList.add("partTable");
     for (let i = start; i < end; i++) {
         const itemName = itemNames[i];
-        const item = items[itemName];
+        const item = getItem(itemName);
         const div = document.createElement("div");
         div.classList.add("equipInpDiv");
         table.insertRow(-1).insertCell(-1).appendChild(div);
@@ -45,11 +45,10 @@ function partItemsDiv(parts, ind) {
         input.id = itemName + "_Input";
         addChangeForLevel(input, itemName);
         // Add upgrade description hover to input
-        if (!("noUpgrade" in item)) {
+        const upgradeDescription = item.upgradeText;
+        if (upgradeDescription) {
             const upgradeDescDiv = document.createElement("div");
             upgradeDescDiv.classList.add("hover", "itemHover");
-            const upgradeDescription = item.upgrade;
-            upgradeDescDiv.innerHTML = upgradeDescription;
             div.appendChild(upgradeDescDiv);
             addHover(input, upgradeDescDiv);
         }
@@ -70,7 +69,7 @@ function partItemsDiv(parts, ind) {
 }
 function addChangeForItemButton(button, item) {
     button.addEventListener("click", () => {
-        equipItem(item);
+        equipItem(item, true);
     });
 }
 function addChangeForLevel(input, item) {
@@ -79,19 +78,21 @@ function addChangeForLevel(input, item) {
         levelItem(item, value, true);
     });
 }
-export function updateItem(item, setUnselected) {
-    updateButton(item, setUnselected);
+export function updateItem(itemName, setUnselected) {
+    updateButton(itemName, setUnselected);
+}
+export function updateFrontendItem(itemName, state) {
+    updateTrinaryButton(itemName);
 }
 export function updateDescription(itemName) {
     const descriptionDiv = getHTMLElement("#" + itemName + "_Description");
     descriptionDiv.innerHTML = getDescription(itemName);
 }
 function getDescription(itemName) {
-    const items = getItemsInOrder();
-    const item = items[itemName];
-    let description = item.description();
-    if ("zone" in item) {
-        description += " Contract at zone " + item.zone.toString() + ".";
+    const item = getItem(itemName);
+    let desc = item.description;
+    if (item.zone > 0) {
+        desc += " Contract at zone " + item.zone.toString() + ".";
     }
-    return description;
+    return desc;
 }

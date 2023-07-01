@@ -7,9 +7,17 @@ import {
     equipItem,
     getItemsInOrder,
     levelItem,
-} from "../controller/itemsController.js";
-import { addHover, getHTMLElement, round, updateButton } from "../utility.js";
+} from "../controller/itemEquipController.js";
+import {
+    Trinary,
+    addHover,
+    getHTMLElement,
+    round,
+    updateButton,
+    updateTrinaryButton,
+} from "../utility.js";
 import { IABTypes } from "../data/buildTypes.js";
+import { getItem } from "../controller/itemsController.js";
 
 export function itemsView() {
     setupItemBtns();
@@ -24,8 +32,7 @@ function setupItemBtns() {
 }
 
 function partItemsDiv(parts: number, ind: number) {
-    const items = getItemsInOrder();
-    const itemNames = Object.keys(items);
+    const itemNames = getItemsInOrder();
     const length = itemNames.length;
     const size = round(length / parts);
     const start = size * ind;
@@ -34,8 +41,8 @@ function partItemsDiv(parts: number, ind: number) {
     const table = document.createElement("table");
     table.classList.add("partTable");
     for (let i = start; i < end; i++) {
-        const itemName = itemNames[i] as keyof IABTypes["items"];
-        const item = items[itemName];
+        const itemName = itemNames[i];
+        const item = getItem(itemName);
         const div = document.createElement("div");
         div.classList.add("equipInpDiv");
         table.insertRow(-1).insertCell(-1).appendChild(div);
@@ -62,11 +69,10 @@ function partItemsDiv(parts: number, ind: number) {
         addChangeForLevel(input, itemName);
 
         // Add upgrade description hover to input
-        if (!("noUpgrade" in item)) {
+        const upgradeDescription = item.upgradeText;
+        if (upgradeDescription) {
             const upgradeDescDiv = document.createElement("div");
             upgradeDescDiv.classList.add("hover", "itemHover");
-            const upgradeDescription = item.upgrade;
-            upgradeDescDiv.innerHTML = upgradeDescription;
             div.appendChild(upgradeDescDiv);
             addHover(input, upgradeDescDiv);
         }
@@ -93,7 +99,7 @@ function addChangeForItemButton(
     item: keyof IABTypes["items"],
 ) {
     button.addEventListener("click", () => {
-        equipItem(item);
+        equipItem(item, true);
     });
 }
 
@@ -107,11 +113,12 @@ function addChangeForLevel(
     });
 }
 
-export function updateItem(
-    item: keyof IABTypes["items"],
-    setUnselected?: boolean,
-) {
-    updateButton(item, setUnselected);
+export function updateItem(itemName: string, setUnselected?: boolean) {
+    updateButton(itemName, setUnselected);
+}
+
+export function updateFrontendItem(itemName: string, state: Trinary) {
+    updateTrinaryButton(itemName);
 }
 
 export function updateDescription(itemName: keyof IABTypes["items"]) {
@@ -122,11 +129,10 @@ export function updateDescription(itemName: keyof IABTypes["items"]) {
 }
 
 function getDescription(itemName: keyof IABTypes["items"]) {
-    const items = getItemsInOrder();
-    const item = items[itemName];
-    let description = item.description();
-    if ("zone" in item) {
-        description += " Contract at zone " + item.zone.toString() + ".";
+    const item = getItem(itemName);
+    let desc = item.description;
+    if (item.zone > 0) {
+        desc += " Contract at zone " + item.zone.toString() + ".";
     }
-    return description;
+    return desc;
 }

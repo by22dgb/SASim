@@ -3,7 +3,6 @@ Controller for the resitance and chance info.
 */
 
 import { getEnemyLevel } from "./autoBattleController.js";
-import { getItem, getItems } from "./itemsController.js";
 import { enemy, huffy, shankInfo } from "../data/resistanceData.js";
 import { getRing } from "./bonusesController.js";
 import { getActiveEffects } from "./levelsController.js";
@@ -12,6 +11,7 @@ import {
     uiUpdateResistances,
     updateShank,
 } from "../view/levelsView.js";
+import { getItem, getItems } from "./itemsController.js";
 
 const modifierFunctions = {
     items: getItems(),
