@@ -4,7 +4,12 @@ Sends calls both to frontend and backend.
 */
 
 import { autoBattle } from "../data/object.js";
-import { pick, updateButton, updateInput } from "../utility.js";
+import {
+    lowerFirstLetter,
+    pick,
+    updateButton,
+    updateInput,
+} from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
 import { IRing, IABTypes } from "../data/buildTypes.js";
 import {
@@ -129,12 +134,14 @@ export function equipRingMods(ringMods: string[]) {
 export function equipRingMod(mod: string) {
     const ring = getRing();
 
-    mod = mod.toLowerCase();
+    mod = lowerFirstLetter(mod);
     if (mod === "dust") mod = "dustMult";
     else if (mod === "atk") mod = "attack";
     else if (mod === "hp") mod = "health";
     else if (mod === "ls") mod = "lifesteal";
     else if (mod === "def") mod = "defence";
+
+    console.log(mod);
 
     // Backend
     const index = ring.stats.mods.indexOf(mod);

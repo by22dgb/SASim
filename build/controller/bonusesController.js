@@ -3,7 +3,7 @@ Controls equipping and leveling bonuses.
 Sends calls both to frontend and backend.
 */
 import { autoBattle } from "../data/object.js";
-import { pick, updateButton, updateInput } from "../utility.js";
+import { lowerFirstLetter, pick, updateButton, updateInput, } from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
 import { modifiedAutoBattle, modifiedAutoBattleWithBuild, } from "./autoBattleController.js";
 export function getOneTimers() {
@@ -92,7 +92,7 @@ export function equipRingMods(ringMods) {
 }
 export function equipRingMod(mod) {
     const ring = getRing();
-    mod = mod.toLowerCase();
+    mod = lowerFirstLetter(mod);
     if (mod === "dust")
         mod = "dustMult";
     else if (mod === "atk")
@@ -103,6 +103,7 @@ export function equipRingMod(mod) {
         mod = "lifesteal";
     else if (mod === "def")
         mod = "defence";
+    console.log(mod);
     // Backend
     const index = ring.stats.mods.indexOf(mod);
     if (index === -1)

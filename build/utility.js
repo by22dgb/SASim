@@ -9,6 +9,9 @@ export function pick(obj, ...keys) {
 export function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+export function lowerFirstLetter(string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+}
 export function updateButton(button, setUnselected) {
     let classList;
     if (typeof button === "string") {

@@ -14,6 +14,10 @@ export function capitaliseFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+export function lowerFirstLetter(string: string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+}
+
 export function updateButton(
     button: HTMLButtonElement | string,
     setUnselected?: boolean,
