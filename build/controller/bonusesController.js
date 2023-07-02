@@ -103,7 +103,6 @@ export function equipRingMod(mod) {
         mod = "lifesteal";
     else if (mod === "def")
         mod = "defence";
-    console.log(mod);
     // Backend
     const index = ring.stats.mods.indexOf(mod);
     if (index === -1)
