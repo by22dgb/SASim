@@ -29,6 +29,18 @@ export function getOneTimersSA(saveString?: any): IABTypes["oneTimers"] {
     ) as typeof oneTimers;
 }
 
+export function getOneTimersSAName(): (keyof IABTypes["oneTimers"])[] {
+    const bonuses = Object.keys(getOneTimersSA());
+
+    const names: (keyof IABTypes["oneTimers"])[] = [];
+
+    for (const bonus of bonuses) {
+        const name = bonus as keyof IABTypes["oneTimers"];
+        names.push(name);
+    }
+    return names;
+}
+
 export function getRing() {
     const chances = autoBattle.getRingStatusChance();
     return {
@@ -108,20 +120,29 @@ export function equipRingMods(ringMods: string[]) {
 
     if (ring.bonus.owned) {
         for (const mod of ringMods) {
-            // Backend
-            const index = ring.stats.mods.indexOf(mod);
-            if (index === -1) {
-                ring.stats.mods.push(mod);
-            } else {
-                ring.stats.mods.splice(index, 1);
-            }
-
-            // Frontend
-            updateButton(mod);
+            equipRingMod(mod);
         }
-
         modifiedAutoBattle();
     }
+}
+
+export function equipRingMod(mod: string) {
+    const ring = getRing();
+
+    mod = mod.toLowerCase();
+    if (mod === "dust") mod = "dustMult";
+    else if (mod === "atk") mod = "attack";
+    else if (mod === "hp") mod = "health";
+    else if (mod === "ls") mod = "lifesteal";
+    else if (mod === "def") mod = "defence";
+
+    // Backend
+    const index = ring.stats.mods.indexOf(mod);
+    if (index === -1) ring.stats.mods.push(mod);
+    else ring.stats.mods.splice(index, 1);
+
+    // Frontend
+    updateButton(mod);
 }
 
 export function unequipRingMods() {
