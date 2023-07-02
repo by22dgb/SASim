@@ -45,7 +45,7 @@ function setupImportBtns() {
     clickingAnimation(resetBtn);
 
     resetBtn.addEventListener("click", () => {
-        clear();
+        clear(true);
         buildFromSave();
     });
 }

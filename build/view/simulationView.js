@@ -22,7 +22,7 @@ function setupImportBtns() {
     const resetBtn = getHTMLElement("#saveResetBtn");
     clickingAnimation(resetBtn);
     resetBtn.addEventListener("click", () => {
-        clear();
+        clear(true);
         buildFromSave();
     });
 }

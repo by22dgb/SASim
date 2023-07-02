@@ -2,12 +2,12 @@ import { Build } from "../data/buildTypes.js";
 import { LZString } from "./lz-string.js";
 import { buildFromSave, buildItems, clearBuilderData, setPresets, } from "./buildController.js";
 import { clearItems } from "./itemEquipController.js";
-import { clearBonuses, equipOneTimer, equipRingMod, getOneTimersSAName, setBonuses, setRingLevel, } from "./bonusesController.js";
+import { clearBonuses, clearExtras, equipOneTimer, equipRingMod, getOneTimersSAName, setBonuses, setRingLevel, } from "./bonusesController.js";
 import { enemyCount, modifiedAutoBattleWithBuild, startSimulationFromButton, } from "./autoBattleController.js";
 import { setSaveData } from "./saveController.js";
 import { getItems } from "./itemsController.js";
 export function stringPaste(paste) {
-    clear();
+    clear(false);
     let savegame;
     try {
         // Wtf do you think the try catch is for you stupid linter
@@ -149,8 +149,10 @@ function equipBonus(value, position) {
             equipRingMod(value);
     }
 }
-export function clear() {
+export function clear(extras) {
     clearItems();
     clearBonuses();
+    if (extras)
+        clearExtras();
     clearBuilderData();
 }

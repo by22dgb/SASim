@@ -9,6 +9,7 @@ import {
 import { clearItems } from "./itemEquipController.js";
 import {
     clearBonuses,
+    clearExtras,
     equipOneTimer,
     equipRingMod,
     equipRingMods,
@@ -26,7 +27,7 @@ import { setSaveData } from "./saveController.js";
 import { getItems } from "./itemsController.js";
 
 export function stringPaste(paste: string) {
-    clear();
+    clear(false);
     let savegame;
     try {
         // Wtf do you think the try catch is for you stupid linter
@@ -179,8 +180,9 @@ function equipBonus(value: string, position: number) {
     }
 }
 
-export function clear() {
+export function clear(extras: boolean) {
     clearItems();
     clearBonuses();
+    if (extras) clearExtras();
     clearBuilderData();
 }

@@ -92,7 +92,10 @@ export function clearBonuses() {
         const name = key as keyof IRing["mods"];
         updateButton(name, true);
     }
+    modifiedAutoBattleWithBuild();
+}
 
+export function clearExtras() {
     const mutations = getMutations();
     for (const key of Object.keys(mutations)) {
         const name = key as keyof IABTypes["mutations"];
@@ -102,7 +105,6 @@ export function clearBonuses() {
 
     autoBattle.scruffyLvl21 = false;
     updateButton("S21", true);
-
     modifiedAutoBattleWithBuild();
 }
 
@@ -134,7 +136,9 @@ export function equipRingMods(ringMods: string[]) {
 export function equipRingMod(mod: string) {
     const ring = getRing();
 
-    mod = lowerFirstLetter(mod);
+    if (mod !== "dustMult") {
+        mod = mod.toLowerCase();
+    }
     if (mod === "dust") mod = "dustMult";
     else if (mod === "atk") mod = "attack";
     else if (mod === "hp") mod = "health";

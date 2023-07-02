@@ -3,7 +3,7 @@ Controls equipping and leveling bonuses.
 Sends calls both to frontend and backend.
 */
 import { autoBattle } from "../data/object.js";
-import { lowerFirstLetter, pick, updateButton, updateInput, } from "../utility.js";
+import { pick, updateButton, updateInput, } from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
 import { modifiedAutoBattle, modifiedAutoBattleWithBuild, } from "./autoBattleController.js";
 export function getOneTimers() {
@@ -63,6 +63,9 @@ export function clearBonuses() {
         const name = key;
         updateButton(name, true);
     }
+    modifiedAutoBattleWithBuild();
+}
+export function clearExtras() {
     const mutations = getMutations();
     for (const key of Object.keys(mutations)) {
         const name = key;
@@ -92,7 +95,9 @@ export function equipRingMods(ringMods) {
 }
 export function equipRingMod(mod) {
     const ring = getRing();
-    mod = lowerFirstLetter(mod);
+    if (mod !== "dustMult") {
+        mod = mod.toLowerCase();
+    }
     if (mod === "dust")
         mod = "dustMult";
     else if (mod === "atk")
