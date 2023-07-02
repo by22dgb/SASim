@@ -36,6 +36,9 @@ const testingEnabled = false; // Set true to enable testing.
 
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp") as HTMLInputElement;
+    const hoverSpan = getHTMLElement("#importHover") as HTMLDivElement;
+    addHover(importInp, hoverSpan);
+
     addImportAction(importInp);
 
     const resetBtn = getHTMLElement("#saveResetBtn") as HTMLButtonElement;

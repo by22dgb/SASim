@@ -16,6 +16,8 @@ export function simulationViews() {
 const testingEnabled = false; // Set true to enable testing.
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp");
+    const hoverSpan = getHTMLElement("#importHover");
+    addHover(importInp, hoverSpan);
     addImportAction(importInp);
     const resetBtn = getHTMLElement("#saveResetBtn");
     clickingAnimation(resetBtn);
