@@ -1,3 +1,7 @@
+/*
+Controls buttons and fields for importing and exporting data.
+*/
+
 import { Build, IRing, IABTypes } from "../data/buildTypes.js";
 import { LZString } from "./lz-string.js";
 import {
@@ -12,8 +16,6 @@ import {
     clearExtras,
     equipOneTimer,
     equipRingMod,
-    equipRingMods,
-    getOneTimersSA,
     getOneTimersSAName,
     setBonuses,
     setRingLevel,

@@ -17,7 +17,7 @@ export function equipItem(itemName, frontendCall, level) {
         if (item.state !== Trinary.But) {
             equipBackend(item);
         }
-        updateFrontendItem(itemName, item.state);
+        updateFrontendItem(itemName);
     }
     else {
         // Backend
@@ -62,6 +62,7 @@ export function clearItems() {
     for (const item of Items) {
         item.equipped = false;
         item.level = 1;
+        item.state = Trinary.No;
         updateItem(item.name, true);
         updateInput(item.name, 1);
     }

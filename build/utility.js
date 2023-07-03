@@ -24,6 +24,10 @@ export function updateButton(button, setUnselected) {
         classList.remove("checkedButton");
         classList.add("uncheckedButton");
     }
+    else if (setUnselected && classList.contains("butButton")) {
+        classList.remove("butButton");
+        classList.add("uncheckedButton");
+    }
     else {
         classList.remove("uncheckedButton");
         classList.add("checkedButton");

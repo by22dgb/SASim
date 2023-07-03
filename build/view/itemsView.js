@@ -81,7 +81,7 @@ function addChangeForLevel(input, item) {
 export function updateItem(itemName, setUnselected) {
     updateButton(itemName, setUnselected);
 }
-export function updateFrontendItem(itemName, state) {
+export function updateFrontendItem(itemName) {
     updateTrinaryButton(itemName);
 }
 export function updateDescription(itemName) {

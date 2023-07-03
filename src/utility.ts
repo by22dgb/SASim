@@ -32,6 +32,9 @@ export function updateButton(
     if (setUnselected || classList.contains("checkedButton")) {
         classList.remove("checkedButton");
         classList.add("uncheckedButton");
+    } else if (setUnselected && classList.contains("butButton")) {
+        classList.remove("butButton");
+        classList.add("uncheckedButton");
     } else {
         classList.remove("uncheckedButton");
         classList.add("checkedButton");
@@ -45,7 +48,6 @@ export function updateTrinaryButton(button: HTMLButtonElement | string) {
     } else {
         classList = button.classList;
     }
-
     if (classList.contains("checkedButton")) {
         classList.remove("checkedButton");
         classList.add("butButton");

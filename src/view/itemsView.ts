@@ -117,7 +117,7 @@ export function updateItem(itemName: string, setUnselected?: boolean) {
     updateButton(itemName, setUnselected);
 }
 
-export function updateFrontendItem(itemName: string, state: Trinary) {
+export function updateFrontendItem(itemName: string) {
     updateTrinaryButton(itemName);
 }
 
