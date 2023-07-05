@@ -36,10 +36,8 @@ export function equipItem(
         updateFrontendItem(itemName);
     } else {
         // Backend
-        item.state = cycleTrinaryBool(item.state);
-        equipBackend(item);
+        equipItemBackendOnly(itemName, level);
         updateItem(itemName);
-        if (level) levelItem(itemName, level);
     }
 }
 
@@ -47,6 +45,16 @@ function equipBackend(item: Item) {
     autoBattle.equip(item.name);
     changeLimbs(item);
     modifiedAutoBattleWithBuild();
+}
+
+export function equipItemBackendOnly(
+    itemName: keyof IABTypes["items"],
+    level?: number,
+) {
+    const item = getItem(itemName);
+    item.state = cycleTrinaryBool(item.state);
+    equipBackend(item);
+    if (level) levelItem(itemName, level);
 }
 
 export function levelItem(

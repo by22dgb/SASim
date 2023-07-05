@@ -1,8 +1,8 @@
-import { simIsRunning } from "../controller/autoBattleController.js";
-import { findBestGrade } from "../controller/extra/bestGrade.js";
-import { getCurrency } from "../controller/general.js";
-import { Currency } from "../data/buildTypes.js";
-import { clearHTMLChilds, clickingAnimation, convertMilliSecondsToTime, convertSecondsToTime, getHTMLElement, } from "../utility.js";
+import { simIsRunning } from "../../controller/autoBattleController.js";
+import { findBestGrade } from "../../controller/extra/bestGrade.js";
+import { getCurrency } from "../../controller/general.js";
+import { Currency } from "../../data/buildTypes.js";
+import { clearHTMLChilds, clickingAnimation, convertMilliSecondsToTime, convertSecondsToTime, getHTMLElement, } from "../../utility.js";
 import { currentExtraResults } from "./extrasView.js";
 const BESTGRADESPANEL = getHTMLElement("#bestGradesResults");
 const GRADESITEMSDUST = getHTMLElement("#gradesItemsDust");

@@ -2,8 +2,8 @@
 Handles UI display of best ring mods calculations.
 */
 
-import { simIsRunning } from "../controller/autoBattleController.js";
-import { findBestMod } from "../controller/special/bestRingModsController.js";
+import { simIsRunning } from "../../controller/autoBattleController.js";
+import { findBestMod } from "../../controller/extra/bestRingMods.js";
 import {
     capitaliseFirstLetter,
     clearHTMLChilds,
@@ -11,7 +11,7 @@ import {
     convertMilliSecondsToTime,
     getHTMLElement,
     prettyNumber,
-} from "../utility.js";
+} from "../../utility.js";
 import { currentExtraResults } from "./extrasView.js";
 
 const BESTMODSPANEL = getHTMLElement("#bestModsResults");

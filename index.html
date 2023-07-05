@@ -440,31 +440,37 @@
                     </table>
                     <table id="calcPanel" class="dark-light text">
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div id="calcBtns">
-                                        <div>
-                                            <button
-                                                class="uncheckedButton text generalButton"
-                                                id="bestGradesBtn"
-                                            >
-                                                Best grades!
-                                            </button>
-                                            <input
-                                                type="number"
-                                                id="bestGradesInput"
-                                                class="generalInput text"
-                                                value="1"
-                                            />
-                                        </div>
-                                        <div>
-                                            <button
-                                                class="uncheckedButton text generalButton"
-                                                id="bestRingModsBtn"
-                                            >
-                                                Best ring mods!
-                                            </button>
-                                        </div>
+                            <tr id="calcBtns">
+                                <td id="calcBtns2">
+                                    <div>
+                                        <button
+                                            class="uncheckedButton text generalButton"
+                                            id="bestGradesBtn"
+                                        >
+                                            Best grades!
+                                        </button>
+                                        <input
+                                            type="number"
+                                            id="bestGradesInput"
+                                            class="generalInput text"
+                                            value="1"
+                                        />
+                                    </div>
+                                    <div>
+                                        <button
+                                            class="uncheckedButton text generalButton"
+                                            id="bestRingModsBtn"
+                                        >
+                                            Best ring mods!
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <button
+                                            class="uncheckedButton text generalButton"
+                                            id="bestItemDropBtn"
+                                        >
+                                            Drop item!
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -504,6 +510,7 @@
                                                 ></div>
                                             </div>
                                         </div>
+                                        <!-- ------------------- -->
                                         <div id="bestModsResults">
                                             <div>
                                                 <span>Mods</span>
@@ -516,6 +523,25 @@
                                             <div>
                                                 <span>Dust/s</span>
                                                 <div id="modsDustPs"></div>
+                                            </div>
+                                        </div>
+                                        <!-- ------------------- -->
+                                        <div id="bestDropResults">
+                                            <div id="bestDropItems">
+                                                <span>Items</span>
+                                                <div id="dropItems"></div>
+                                            </div>
+                                            <div id="bestDropWR">
+                                                <span>WR</span>
+                                                <div id="dropWR"></div>
+                                            </div>
+                                            <div id="bestDropClearing">
+                                                <span>Clearing time</span>
+                                                <div id="dropClearing"></div>
+                                            </div>
+                                            <div id="bestDropProfit">
+                                                <span>Income</span>
+                                                <div id="dropIncome"></div>
                                             </div>
                                         </div>
                                     </div>

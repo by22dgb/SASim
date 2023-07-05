@@ -21,17 +21,21 @@ export function equipItem(itemName, frontendCall, level) {
     }
     else {
         // Backend
-        item.state = cycleTrinaryBool(item.state);
-        equipBackend(item);
+        equipItemBackendOnly(itemName, level);
         updateItem(itemName);
-        if (level)
-            levelItem(itemName, level);
     }
 }
 function equipBackend(item) {
     autoBattle.equip(item.name);
     changeLimbs(item);
     modifiedAutoBattleWithBuild();
+}
+export function equipItemBackendOnly(itemName, level) {
+    const item = getItem(itemName);
+    item.state = cycleTrinaryBool(item.state);
+    equipBackend(item);
+    if (level)
+        levelItem(itemName, level);
 }
 export function levelItem(itemName, level, frontendCall) {
     // Backend

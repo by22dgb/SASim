@@ -2,8 +2,8 @@
 Functions for calculating best ring mods.
 */
 
-import { IRing } from "../../data/buildTypes";
-import { uiSetMods, uiUpdateMod } from "../../view/bestRingModsView.js";
+import { IRing } from "../../data/buildTypes.js";
+import { uiSetMods, uiUpdateMod } from "../../view/extra/bestRingModsView.js";
 import {
     getKillTime,
     getDustPs,
@@ -12,10 +12,10 @@ import {
 } from "../autoBattleController.js";
 import {
     equipRingMods,
-    getPossibleRingMods,
     getRing,
     unequipRingMods,
 } from "../bonusesController.js";
+import { getModsToRun } from "./get.js";
 
 let MODSTORUN: (string | string[])[] = [];
 let CURRENTMODS: string | string[];
@@ -27,23 +27,13 @@ export function findBestMod() {
     const lvl = ring.level;
     if (lvl < 5) return; // No mods
     if (lvl < 15) {
-        updateModsToRun(1);
+        MODSTORUN = getModsToRun(1);
     } else {
-        updateModsToRun(2);
+        MODSTORUN = getModsToRun(2);
     }
     uiSetMods(MODSTORUN);
     CURRENTMODS = MODSTORUN.shift() as string;
     simulateNextMod();
-}
-
-function updateModsToRun(count: number) {
-    const posMods = getPossibleRingMods();
-    for (const mod in posMods) MODSTORUN.push(mod);
-    if (count > 1) {
-        MODSTORUN = MODSTORUN.flatMap((v, i) =>
-            MODSTORUN.slice(i + 1).map((w) => [v, w] as string[]),
-        );
-    }
 }
 
 function simulateNextMod() {

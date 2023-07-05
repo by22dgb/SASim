@@ -3,21 +3,20 @@ Functions for calculating the best upgrade and best downgrade items.
 */
 
 import { Currency, IABTypes } from "../../data/buildTypes.js";
-import { Trinary } from "../../utility.js";
 import {
     uiSetGradesItems,
     uiUpdateGradeItem,
-} from "../../view/bestGradesView.js";
+} from "../../view/extra/bestGradesView.js";
 import {
     modifiedAutoBattle,
     startSimulation,
     getDustPs,
     getClearingTime,
 } from "../autoBattleController.js";
-import { getRing, incrementRing } from "../bonusesController.js";
+import { incrementRing } from "../bonusesController.js";
 import { getCurrency, getUpgradePrice } from "../general.js";
-import { getItemsInOrder, incrementItem } from "../itemEquipController.js";
-import { getItem } from "../itemsController.js";
+import { incrementItem } from "../itemEquipController.js";
+import { getItemsToRun } from "./get.js";
 
 const STORAGE = {
     increment: 0,
@@ -32,23 +31,8 @@ export function findBestGrade(increment: number) {
     runAllItems();
 }
 
-function updateItemsToRun() {
-    const names = getItemsInOrder();
-    for (const name of names) {
-        const item = getItem(name);
-        if (item.state === Trinary.Yes) {
-            if (name === "Doppelganger_Signet") continue;
-            STORAGE.itemsToRun.push(name);
-        }
-    }
-    const ring = getRing();
-    if (ring.bonus.owned) {
-        STORAGE.itemsToRun.push("Ring");
-    }
-}
-
 function runAllItems() {
-    updateItemsToRun();
+    STORAGE.itemsToRun = getItemsToRun(true);
     if (STORAGE.itemsToRun.length > 0) {
         modifiedAutoBattle();
         uiSetGradesItems(STORAGE.itemsToRun);
