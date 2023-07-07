@@ -84,5 +84,6 @@ function clearDropItemsResults() {
     BESTDROPRESULTS.style.display = "none";
     clearHTMLChilds(ITEMS);
     clearHTMLChilds(CLEARING);
+    clearHTMLChilds(WR);
     clearHTMLChilds(INCOME);
 }

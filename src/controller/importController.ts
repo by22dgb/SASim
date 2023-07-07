@@ -54,6 +54,7 @@ export function stringPaste(paste: string) {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function importSave(savegame: any) {
+    clear(true);
     modifiedAutoBattleWithBuild();
 
     const saveString = {} as IABTypes;

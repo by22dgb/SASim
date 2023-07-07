@@ -37,6 +37,7 @@ export function stringPaste(paste) {
 }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function importSave(savegame) {
+    clear(true);
     modifiedAutoBattleWithBuild();
     const saveString = {};
     const abData = savegame.global.autoBattleData;
