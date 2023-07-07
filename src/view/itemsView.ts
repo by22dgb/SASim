@@ -72,6 +72,7 @@ function partItemsDiv(parts: number, ind: number) {
         const upgradeDescription = item.upgradeText;
         if (upgradeDescription) {
             const upgradeDescDiv = document.createElement("div");
+            upgradeDescDiv.innerHTML = upgradeDescription;
             upgradeDescDiv.classList.add("hover", "itemHover");
             div.appendChild(upgradeDescDiv);
             addHover(input, upgradeDescDiv);
