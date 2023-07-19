@@ -1,5 +1,6 @@
 import { getHTMLElement } from "../../utility.js";
 import { setupGrades } from "./bestGradesView.js";
+import { setupAddItem } from "./bestItemAddView.js";
 import { setupDropItem } from "./bestItemDropView.js";
 import { setupBestMods } from "./bestRingModsView.js";
 export function extrasView() {
@@ -7,6 +8,7 @@ export function extrasView() {
     setupGrades();
     setupBestMods();
     setupDropItem();
+    setupAddItem();
 }
 export const currentExtraResults = {
     functions: [],

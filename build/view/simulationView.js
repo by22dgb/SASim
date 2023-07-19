@@ -6,7 +6,7 @@ import { buildFromSave, loadPreset } from "../controller/buildController.js";
 import { clear, stringPaste } from "../controller/importController.js";
 import { addHover, clickingAnimation, convertMilliSecondsToTime, getHTMLElement, prettyNumber, round, updateButton, } from "../utility.js";
 import { getEnemyLevel, printAllInfo, setRuntime, startSimulationFromButton, stopSimulation, updateAutoRun, } from "../controller/autoBattleController.js";
-export function simulationViews() {
+export function simulationView() {
     setupImportBtns();
     setupPresetBtns();
     setupRunBtns();

@@ -9,7 +9,7 @@ import { bonusesView } from "./view/bonusesView.js";
 import { extrasView } from "./view/extra/extrasView.js";
 import { itemsView } from "./view/itemsView.js";
 import { levelsView } from "./view/levelsView.js";
-import { simulationViews } from "./view/simulationView.js";
+import { simulationView } from "./view/simulationView.js";
 // Autobattle
 setupController();
 // Items
@@ -18,6 +18,6 @@ itemsView();
 // Bonuses
 bonusesView();
 // Results
-simulationViews();
+simulationView();
 levelsView();
 extrasView();

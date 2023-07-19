@@ -24,7 +24,7 @@ import {
     updateAutoRun,
 } from "../controller/autoBattleController.js";
 
-export function simulationViews() {
+export function simulationView() {
     setupImportBtns();
     setupPresetBtns();
     setupRunBtns();
