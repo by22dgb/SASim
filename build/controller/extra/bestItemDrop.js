@@ -13,7 +13,7 @@ export function testDropItems() {
     runAllItems();
 }
 function runAllItems() {
-    STORAGE.itemsToRun = getItemsToRun(false);
+    STORAGE.itemsToRun = getItemsToRun(true, false);
     if (STORAGE.itemsToRun.length > 0) {
         modifiedAutoBattle();
         uiSetDropsItems(STORAGE.itemsToRun);

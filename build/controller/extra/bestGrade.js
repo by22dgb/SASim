@@ -20,7 +20,7 @@ export function findBestGrade(increment) {
     runAllItems();
 }
 function runAllItems() {
-    STORAGE.itemsToRun = getItemsToRun(true);
+    STORAGE.itemsToRun = getItemsToRun(false, true);
     if (STORAGE.itemsToRun.length > 0) {
         modifiedAutoBattle();
         uiSetGradesItems(STORAGE.itemsToRun);

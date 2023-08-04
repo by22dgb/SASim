@@ -5,13 +5,13 @@ import { Trinary } from "../../utility.js";
 import { getPossibleRingMods, getRing } from "../bonusesController.js";
 import { getItemsInOrder } from "../itemEquipController.js";
 import { getItem } from "../itemsController.js";
-export function getItemsToRun(withRing) {
+export function getItemsToRun(withDoppel, withRing) {
     let itemsToRun = [];
     const names = getItemsInOrder();
     for (const name of names) {
         const item = getItem(name);
         if (item.state === Trinary.Yes) {
-            if (name === "Doppelganger_Signet")
+            if (!withDoppel && name === "Doppelganger_Signet")
                 continue;
             itemsToRun.push(name);
         }
@@ -38,20 +38,9 @@ export function getModsToRun(count) {
     }
     return modsToRun;
 }
-export function getOpposites(items) {
-    if (!items)
-        items = getItemsToRun(false);
-    const allItems = getItemsInOrder();
-    const opposites = [];
-    for (const item of allItems) {
-        if (!items.includes(item))
-            opposites.push(item);
-    }
-    return opposites;
-}
 export function getOppositesLimit(items) {
     if (!items)
-        items = getItemsToRun(false);
+        items = getItemsToRun(true, false);
     const allItems = getItemsOwned();
     const opposites = [];
     for (const item of allItems) {

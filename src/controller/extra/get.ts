@@ -8,13 +8,13 @@ import { getPossibleRingMods, getRing } from "../bonusesController.js";
 import { getItemsInOrder } from "../itemEquipController.js";
 import { Item, getItem } from "../itemsController.js";
 
-export function getItemsToRun(withRing: boolean) {
+export function getItemsToRun(withDoppel: boolean, withRing: boolean) {
     let itemsToRun = [] as (keyof IABTypes["items"])[];
     const names = getItemsInOrder();
     for (const name of names) {
         const item = getItem(name);
         if (item.state === Trinary.Yes) {
-            if (name === "Doppelganger_Signet") continue;
+            if (!withDoppel && name === "Doppelganger_Signet") continue;
             itemsToRun.push(name);
         }
     }
@@ -44,18 +44,9 @@ export function getModsToRun(count: number) {
     return modsToRun;
 }
 
-export function getOpposites(items?: (keyof IABTypes["items"])[]) {
-    if (!items) items = getItemsToRun(false) as (keyof IABTypes["items"])[];
-    const allItems = getItemsInOrder();
-    const opposites = [] as (keyof IABTypes["items"])[];
-    for (const item of allItems) {
-        if (!items.includes(item)) opposites.push(item);
-    }
-    return opposites;
-}
-
 export function getOppositesLimit(items?: (keyof IABTypes["items"])[]) {
-    if (!items) items = getItemsToRun(false) as (keyof IABTypes["items"])[];
+    if (!items)
+        items = getItemsToRun(true, false) as (keyof IABTypes["items"])[];
     const allItems = getItemsOwned();
     const opposites = [] as (keyof IABTypes["items"])[];
     for (const item of allItems) {
