@@ -3,7 +3,7 @@ Controls equipping and leveling bonuses.
 Sends calls both to frontend and backend.
 */
 import { autoBattle } from "../data/object.js";
-import { pick, updateButton, updateInput, } from "../utility.js";
+import { pick, updateButton, updateInput } from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
 import { modifiedAutoBattle, modifiedAutoBattleWithBuild, } from "./autoBattleController.js";
 export function getOneTimers() {

@@ -76,11 +76,7 @@ export const gameController = {
     },
     loop() {
         // Use gameController instead of "this" to reference the correct object.
-        for (
-            let frame = 0;
-            !gameController.halt && frame < conConfig.framesPerChunk;
-            ++frame
-        ) {
+        for (let frame = 0; !gameController.halt && frame < conConfig.framesPerChunk; ++frame) {
             autoBattle.update();
             gameController.complete =
                 autoBattle.lootAvg.counter >= conConfig.runtime;
@@ -97,14 +93,16 @@ export const gameController = {
             if (gameController.halt) {
                 if (gameController.complete && conConfig.onSimComplete) {
                     conConfig.onSimComplete();
-                } else if (conConfig.onSimInterrupt) {
+                }
+                else if (conConfig.onSimInterrupt) {
                     conConfig.onSimInterrupt();
                 }
             }
         }
     },
     shouldUpdate() {
-        if (gameController.halt) return true;
+        if (gameController.halt)
+            return true;
         const newUpdate = Date.now();
         if (newUpdate - conConfig.updateInterval > gameController.lastUpdate) {
             gameController.lastUpdate = newUpdate;
@@ -129,18 +127,14 @@ export const gameController = {
         ++this.resultCounter.losses;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const enemy = autoBattle.enemy;
-        const enemyHealthPercentage = Math.max(
-            0,
-            Math.min(enemy.health / enemy.maxHealth, 1),
-        );
+        const enemyHealthPercentage = Math.max(0, Math.min(enemy.health / enemy.maxHealth, 1));
         if (!this.resultBest.win) {
             if (enemyHealthPercentage < this.resultBest.enemy) {
                 this.resultBest.enemy = enemyHealthPercentage;
                 this.resultBest.time = autoBattle.battleTime;
-            } else if (
-                enemyHealthPercentage == this.resultBest.enemy &&
-                autoBattle.battleTime > this.resultBest.time
-            ) {
+            }
+            else if (enemyHealthPercentage == this.resultBest.enemy &&
+                autoBattle.battleTime > this.resultBest.time) {
                 this.resultBest.time = autoBattle.battleTime;
             }
         }

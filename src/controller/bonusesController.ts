@@ -4,12 +4,7 @@ Sends calls both to frontend and backend.
 */
 
 import { autoBattle } from "../data/object.js";
-import {
-    lowerFirstLetter,
-    pick,
-    updateButton,
-    updateInput,
-} from "../utility.js";
+import { pick, updateButton, updateInput } from "../utility.js";
 import { u2Mutations } from "../data/mutations.js";
 import { IRing, IABTypes } from "../data/buildTypes.js";
 import {

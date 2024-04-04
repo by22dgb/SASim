@@ -11,7 +11,7 @@ export const conConfig = {
     onSimInterrupt: null as CallbackFunction | null,
     onSimComplete: null as CallbackFunction | null,
     onUpdate: null as CallbackFunction | null,
-    baseRuntime: 4 * 60 * 60 * 1000, // 4 hours
+    baseRuntime: 1 * 60 * 60 * 1000, // 4 hours
     runtime: 0,
     updateInterval: 1000, // 1 second
 
@@ -153,7 +153,7 @@ export const gameController = {
         const enemy = autoBattle.enemy as any;
         const enemyHealthPercentage = Math.max(
             0,
-            Math.min(enemy.health / enemy.maxHealth, 1)
+            Math.min(enemy.health / enemy.maxHealth, 1),
         );
 
         if (!this.resultBest.win) {
