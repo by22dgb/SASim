@@ -12,6 +12,7 @@ import {
     modifiedAutoBattle,
     modifiedAutoBattleWithBuild,
 } from "./autoBattleController.js";
+import { Item } from "./itemsController.js";
 
 export function getActiveEffects() {
     const level = getEnemyLevel();
@@ -22,7 +23,7 @@ export function getActiveEffects() {
     return effects;
 }
 
-export function changeLimbs(item: IABTypes["items"][keyof IABTypes["items"]]) {
+export function changeLimbs(item: Item) {
     const increment = item.equipped ? 1 : -1;
     builderData.limbs += increment;
     updateLimbs();

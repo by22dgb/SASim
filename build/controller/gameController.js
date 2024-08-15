@@ -8,7 +8,7 @@ export const conConfig = {
     onSimInterrupt: null,
     onSimComplete: null,
     onUpdate: null,
-    baseRuntime: 4 * 60 * 60 * 1000,
+    baseRuntime: 1 * 60 * 60 * 1000,
     runtime: 0,
     updateInterval: 1000,
     incRuntime() {

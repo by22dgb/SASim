@@ -6,7 +6,7 @@ import { buildFromSave, loadPreset } from "../controller/buildController.js";
 import { clear, stringPaste } from "../controller/importController.js";
 import { addHover, clickingAnimation, convertMilliSecondsToTime, getHTMLElement, prettyNumber, round, updateButton, } from "../utility.js";
 import { getEnemyLevel, printAllInfo, setRuntime, startSimulationFromButton, stopSimulation, updateAutoRun, } from "../controller/autoBattleController.js";
-export function simulationViews() {
+export function simulationView() {
     setupImportBtns();
     setupPresetBtns();
     setupRunBtns();
@@ -16,11 +16,13 @@ export function simulationViews() {
 const testingEnabled = false; // Set true to enable testing.
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp");
+    const hoverSpan = getHTMLElement("#importHover");
+    addHover(importInp, hoverSpan);
     addImportAction(importInp);
     const resetBtn = getHTMLElement("#saveResetBtn");
     clickingAnimation(resetBtn);
     resetBtn.addEventListener("click", () => {
-        clear();
+        clear(true);
         buildFromSave();
     });
 }

@@ -1,3 +1,7 @@
+/*
+Controls buttons and fields for importing and exporting data.
+*/
+
 import { Build, IRing, IABTypes } from "../data/buildTypes.js";
 import { LZString } from "./lz-string.js";
 import {
@@ -6,16 +10,26 @@ import {
     clearBuilderData,
     setPresets,
 } from "./buildController.js";
-import { clearItems, getItems } from "./itemsController.js";
-import { clearBonuses, setBonuses } from "./bonusesController.js";
+import { clearItems } from "./itemEquipController.js";
+import {
+    clearBonuses,
+    clearExtras,
+    equipOneTimer,
+    equipRingMod,
+    getOneTimersSAName,
+    setBonuses,
+    setRingLevel,
+} from "./bonusesController.js";
 import {
     enemyCount,
     modifiedAutoBattleWithBuild,
+    startSimulationFromButton,
 } from "./autoBattleController.js";
 import { setSaveData } from "./saveController.js";
+import { getItems } from "./itemsController.js";
 
 export function stringPaste(paste: string) {
-    clear();
+    clear(false);
     let savegame;
     try {
         // Wtf do you think the try catch is for you stupid linter
@@ -35,10 +49,12 @@ export function stringPaste(paste: string) {
         // Import spreadsheet line
         importSpreadsheet(paste);
     }
+    startSimulationFromButton();
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function importSave(savegame: any) {
+    clear(true);
     modifiedAutoBattleWithBuild();
 
     const saveString = {} as IABTypes;
@@ -78,21 +94,98 @@ function importSave(savegame: any) {
 function importSpreadsheet(row: string) {
     modifiedAutoBattleWithBuild();
 
-    const items = JSON.parse(JSON.stringify(getItems()));
+    const ABItems = JSON.parse(JSON.stringify(getItems())); // Deep copy
 
-    const itemLevels = row.split("\t");
-    itemLevels.forEach((itemLevel, index) => {
-        if (itemLevel !== "") {
-            const itemName = Object.keys(Build.items)[index];
-            items[itemName].equipped = true;
-            items[itemName].level = parseInt(itemLevel);
-        }
-    });
-    buildItems(items);
+    const itemsList = cleanRow(row);
+
+    let split = findBonusesSplit(itemsList);
+    if (split === -1) {
+        split = Object.keys(ABItems).length;
+    }
+    const items = itemsList.slice(0, split);
+    const remaining = itemsList.slice(split);
+
+    equipRowItems(ABItems, items);
+
+    equipRowBonuses(remaining);
 }
 
-export function clear() {
+function cleanRow(row: string): string[] {
+    let rowSplit = row.split("\t");
+    rowSplit = removeStringFirst(rowSplit);
+    rowSplit = removeTrailing(rowSplit);
+    return rowSplit;
+}
+
+function removeStringFirst(row: string[]): string[] {
+    // If the first non-tab character is a string, aka name, remove everything before and including it.
+    for (let i = 0; i < row.length; i++) {
+        if (row[i] !== "") {
+            if (isNaN(parseInt(row[i]))) return row.slice(i + 1);
+            else return row;
+        }
+    }
+    return row;
+}
+
+function removeTrailing(row: string[]): string[] {
+    // Remove everything from the WR (which has percentage) and after.
+    for (let i = 0; i < row.length; i++) {
+        if (row[i].includes("%")) {
+            return row.slice(0, i);
+        }
+    }
+    return row;
+}
+
+function findBonusesSplit(row: string[]): number {
+    for (let i = 0; i < row.length; i++) {
+        if (row[i].includes("X")) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+function equipRowItems(ABItems: any, items: string[]) {
+    items.forEach((itemLevel, index) => {
+        if (itemLevel !== "") {
+            const itemName = Object.keys(Build.items)[index];
+            ABItems[itemName].equipped = true;
+            ABItems[itemName].level = parseInt(itemLevel);
+        }
+    });
+    buildItems(ABItems);
+}
+
+function equipRowBonuses(bonuses: string[]) {
+    if (!isNaN(parseInt(bonuses[0]))) {
+        // The first bonus is the ring so equip all oneTimers
+        equipOneTimer("Master_of_Arms");
+        equipOneTimer("Dusty_Tome");
+        equipOneTimer("Whirlwind_of_Arms");
+    }
+    bonuses.forEach((bonus, pos) => {
+        if (bonus !== "") {
+            equipBonus(bonus, pos);
+        }
+    });
+}
+
+function equipBonus(value: string, position: number) {
+    const oneTimers = getOneTimersSAName();
+    if (value === "X") equipOneTimer(oneTimers[position]);
+    else {
+        // Ring
+        const lvl = parseInt(value);
+        if (!isNaN(lvl)) setRingLevel(lvl);
+        else equipRingMod(value);
+    }
+}
+
+export function clear(extras: boolean) {
     clearItems();
     clearBonuses();
+    if (extras) clearExtras();
     clearBuilderData();
 }

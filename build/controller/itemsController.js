@@ -1,77 +1,90 @@
 /*
-Controls equipping and leveling items.
-Sends calls both to frontend and backend.
+Controls the existance of items.
+All functions accessing items from autobattle should go through this file.
 */
+import { Trinary } from "../utility.js";
+import { Currency } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
-import { updateItem } from "../view/itemsView.js";
-import { updateInput } from "../utility.js";
-import { changeLimbs } from "./levelsController.js";
-import { modifiedAutoBattleWithBuild } from "./autoBattleController.js";
-export function equipItem(itemName, level, frontendCall) {
-    // Backend
-    autoBattle.equip(itemName);
-    const item = getItem(itemName);
-    changeLimbs(item);
-    if (level) {
-        item.level = level;
+import { Items } from "../data/items.js";
+export class Item {
+    name;
+    currentState = Trinary.No;
+    constructor(name) {
+        this.name = name;
     }
-    // Frontend
-    updateItem(itemName);
-    if (level && !frontendCall) {
-        levelItem(itemName, level, frontendCall);
+    get state() {
+        return this.currentState;
     }
-    modifiedAutoBattleWithBuild();
-}
-export function levelItem(item, level, frontendCall) {
-    // Backend
-    const items = getItems();
-    items[item].level = level;
-    // Frontend
-    if (!frontendCall) {
-        updateInput(item, level);
+    set state(state) {
+        this.currentState = state;
     }
-    modifiedAutoBattleWithBuild();
+    get equipped() {
+        return autoBattle.items[this.name].equipped;
+    }
+    set equipped(equipped) {
+        autoBattle.items[this.name].equipped = equipped;
+    }
+    get level() {
+        return autoBattle.items[this.name].level;
+    }
+    set level(level) {
+        autoBattle.items[this.name].level = level;
+    }
+    get startPrice() {
+        const item = autoBattle.items[this.name];
+        return "startPrice" in item ? item.startPrice : 5;
+    }
+    get priceMod() {
+        const item = autoBattle.items[this.name];
+        return "priceMod" in item ? item.priceMod : 3;
+    }
+    get price() {
+        return autoBattle.contractPrice(this.name);
+    }
+    get object() {
+        return autoBattle.items[this.name];
+    }
+    get description() {
+        return autoBattle.items[this.name].description();
+    }
+    get currency() {
+        const item = autoBattle.items[this.name];
+        if ("dustType" in item && item.dustType === "shards") {
+            return Currency.shards;
+        }
+        return Currency.dust;
+    }
+    get zone() {
+        const item = autoBattle.items[this.name];
+        if ("zone" in item) {
+            return item.zone;
+        }
+        return 0;
+    }
+    get upgradeText() {
+        const item = autoBattle.items[this.name];
+        if ("upgrade" in item) {
+            return item.upgrade;
+        }
+        return false;
+    }
 }
-export function incrementItem(item, increment) {
-    const items = getItems();
-    items[item].level += increment;
+export function initialiseItems() {
+    createItems();
 }
-export function getItemsInOrder() {
-    /* Warning this is a copy of the items object, not a reference to it */
-    const order = autoBattle.getItemOrder();
-    const items = getItems();
-    // Order items
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const orderedItems = {};
-    order.forEach((item) => {
-        const name = item.name;
-        orderedItems[name] = items[name];
-    });
-    return orderedItems;
+export function createItems() {
+    // For each of the items in autobattle, create an item object
+    const items = autoBattle.items;
+    for (const key of Object.keys(items)) {
+        const name = key;
+        const item = new Item(name);
+        Items.push(item);
+    }
+}
+export function getItem(item) {
+    // Find the item in the Items array which has the corresponding name
+    return Items.find((itemObject) => itemObject.name === item);
 }
 export function getItems() {
     return autoBattle.items;
-}
-export function getItem(item) {
-    return autoBattle.items[item];
-}
-export function clearItems() {
-    const items = getItems();
-    for (const [key, value] of Object.entries(items)) {
-        value.equipped = false;
-        value.level = 1;
-        const name = key;
-        updateItem(name, true);
-        updateInput(name, 1);
-    }
-}
-export function getItemPrice(name, increment) {
-    const item = getItem(name);
-    const startPrice = "startPrice" in item ? item.startPrice : 5;
-    const priceMod = "priceMod" in item ? item.priceMod : 3;
-    const contractPrice = autoBattle.contractPrice(name);
-    let cost = isNaN(contractPrice) ? 0 : contractPrice;
-    const level = increment ? item.level + increment : item.level;
-    cost += startPrice * ((1 - Math.pow(priceMod, level - 1)) / (1 - priceMod));
-    return cost;
 }

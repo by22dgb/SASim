@@ -24,7 +24,7 @@ import {
     updateAutoRun,
 } from "../controller/autoBattleController.js";
 
-export function simulationViews() {
+export function simulationView() {
     setupImportBtns();
     setupPresetBtns();
     setupRunBtns();
@@ -36,13 +36,16 @@ const testingEnabled = false; // Set true to enable testing.
 
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp") as HTMLInputElement;
+    const hoverSpan = getHTMLElement("#importHover") as HTMLDivElement;
+    addHover(importInp, hoverSpan);
+
     addImportAction(importInp);
 
     const resetBtn = getHTMLElement("#saveResetBtn") as HTMLButtonElement;
     clickingAnimation(resetBtn);
 
     resetBtn.addEventListener("click", () => {
-        clear();
+        clear(true);
         buildFromSave();
     });
 }

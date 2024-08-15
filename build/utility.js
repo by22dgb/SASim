@@ -9,6 +9,9 @@ export function pick(obj, ...keys) {
 export function capitaliseFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
+export function lowerFirstLetter(string) {
+    return string.charAt(0).toLowerCase() + string.slice(1);
+}
 export function updateButton(button, setUnselected) {
     let classList;
     if (typeof button === "string") {
@@ -19,6 +22,31 @@ export function updateButton(button, setUnselected) {
     }
     if (setUnselected || classList.contains("checkedButton")) {
         classList.remove("checkedButton");
+        classList.add("uncheckedButton");
+    }
+    else if (setUnselected && classList.contains("butButton")) {
+        classList.remove("butButton");
+        classList.add("uncheckedButton");
+    }
+    else {
+        classList.remove("uncheckedButton");
+        classList.add("checkedButton");
+    }
+}
+export function updateTrinaryButton(button) {
+    let classList;
+    if (typeof button === "string") {
+        classList = getHTMLElement("#" + button + "_Button").classList;
+    }
+    else {
+        classList = button.classList;
+    }
+    if (classList.contains("checkedButton")) {
+        classList.remove("checkedButton");
+        classList.add("butButton");
+    }
+    else if (classList.contains("butButton")) {
+        classList.remove("butButton");
         classList.add("uncheckedButton");
     }
     else {
@@ -124,4 +152,30 @@ export function average(list) {
         return list.reduce((a, b) => a + b) / list.length;
     }
     return 0;
+}
+export var Trinary;
+(function (Trinary) {
+    Trinary["Yes"] = "yes";
+    Trinary["No"] = "no";
+    Trinary["But"] = "but";
+})(Trinary || (Trinary = {}));
+export function cycleTrinary(trinary) {
+    switch (trinary) {
+        case Trinary.Yes:
+            return Trinary.But;
+        case Trinary.But:
+            return Trinary.No;
+        case Trinary.No:
+            return Trinary.Yes;
+    }
+}
+export function cycleTrinaryBool(trinary) {
+    switch (trinary) {
+        case Trinary.Yes:
+            return Trinary.No;
+        case Trinary.But:
+            return Trinary.No;
+        case Trinary.No:
+            return Trinary.Yes;
+    }
 }

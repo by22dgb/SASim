@@ -15,6 +15,15 @@ export function getOneTimersSA(saveString) {
     const oneTimers = data.oneTimers;
     return pick(oneTimers, "Master_of_Arms", "Dusty_Tome", "Whirlwind_of_Arms");
 }
+export function getOneTimersSAName() {
+    const bonuses = Object.keys(getOneTimersSA());
+    const names = [];
+    for (const bonus of bonuses) {
+        const name = bonus;
+        names.push(name);
+    }
+    return names;
+}
 export function getRing() {
     const chances = autoBattle.getRingStatusChance();
     return {
@@ -54,6 +63,9 @@ export function clearBonuses() {
         const name = key;
         updateButton(name, true);
     }
+    modifiedAutoBattleWithBuild();
+}
+export function clearExtras() {
     const mutations = getMutations();
     for (const key of Object.keys(mutations)) {
         const name = key;
@@ -76,19 +88,34 @@ export function equipRingMods(ringMods) {
     const ring = getRing();
     if (ring.bonus.owned) {
         for (const mod of ringMods) {
-            // Backend
-            const index = ring.stats.mods.indexOf(mod);
-            if (index === -1) {
-                ring.stats.mods.push(mod);
-            }
-            else {
-                ring.stats.mods.splice(index, 1);
-            }
-            // Frontend
-            updateButton(mod);
+            equipRingMod(mod);
         }
         modifiedAutoBattle();
     }
+}
+export function equipRingMod(mod) {
+    const ring = getRing();
+    if (mod !== "dustMult") {
+        mod = mod.toLowerCase();
+    }
+    if (mod === "dust")
+        mod = "dustMult";
+    else if (mod === "atk")
+        mod = "attack";
+    else if (mod === "hp")
+        mod = "health";
+    else if (mod === "ls")
+        mod = "lifesteal";
+    else if (mod === "def")
+        mod = "defence";
+    // Backend
+    const index = ring.stats.mods.indexOf(mod);
+    if (index === -1)
+        ring.stats.mods.push(mod);
+    else
+        ring.stats.mods.splice(index, 1);
+    // Frontend
+    updateButton(mod);
 }
 export function unequipRingMods() {
     const ring = getRing();

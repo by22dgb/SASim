@@ -1,7 +1,8 @@
 import { Currency } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
 import { getBonusPrice, getOneTimerPrice, getRingPrice, } from "./bonusesController.js";
-import { getItem, getItemPrice } from "./itemsController.js";
+import { getItemPrice } from "./itemEquipController.js";
+import { getItem } from "./itemsController.js";
 export function getUpgradePrice(name, increment) {
     // Send in a negative number to get the price of the current level.
     const originalPrice = getPrice(name);
@@ -35,10 +36,7 @@ export function getCurrency(name) {
     const itemKeys = Object.keys(autoBattle.items);
     if (itemKeys.includes(name)) {
         const item = getItem(name);
-        if ("dustType" in item && item.dustType === "shards") {
-            return Currency.shards;
-        }
-        return Currency.dust;
+        return item.currency;
     }
     const oneTimerKeys = Object.keys(autoBattle.oneTimers);
     if (oneTimerKeys.includes(name)) {
