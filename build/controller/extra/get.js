@@ -44,8 +44,9 @@ export function getOppositesLimit(items) {
     const allItems = getItemsOwned();
     const opposites = [];
     for (const item of allItems) {
-        if (!items.includes(item))
+        if (!items.includes(item) && getItem(item).state === Trinary.No) {
             opposites.push(item);
+        }
     }
     return opposites;
 }
