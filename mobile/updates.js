@@ -507,7 +507,7 @@ function tooltip(
     }
     game.global.lockTooltip = true;
     costText =
-      "<div class='maxCenter'><div class='btn btn-info' id='confirmTooltipBtn' onclick='cancelTooltip(); toggleSetting(\"usePlayFab\");'>Enable Online Saving</div><div class='btn btn-danger' onclick='cancelTooltip()'>Don't Enable</div></div>";
+      "<div class='maxCenter'><div class='btn btn-info' id='confirmTooltipBtn' onclick='cancelTooltip();'>Cool!</div></div>";
     elem.style.left = "33.75%";
     elem.style.top = "25%";
   }
