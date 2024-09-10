@@ -595,8 +595,7 @@ function newGame() {
           return prettify(number * 100);
         },
         getDamage: function () {
-          if (getEmpowerment() == "Poison" && getUberEmpowerment() == "Poison")
-            return this.currentDebuffPower * 2;
+          if (getEmpowerment() == "Poison" && getUberEmpowerment() == "Poison") return this.currentDebuffPower * 2;
           return this.currentDebuffPower;
         },
         getLevel: function () {
@@ -620,8 +619,7 @@ function newGame() {
         retainLevel: 0,
         tokens: 0,
         nextUberCost: 0,
-        enlightenDesc:
-          "your Trimps deal 3x damage, and Poison Nature stacks deal 2x damage",
+        enlightenDesc: "your Trimps deal 3x damage, and Poison Nature stacks deal 2x damage",
       },
       Wind: {
         description: function () {
@@ -811,18 +809,10 @@ function newGame() {
           "You are about to purchase Quick Trimps for 20 bones. This will cause your Trimps to breed twice as fast <b>until your next Portal</b>. Is this what you wanted to do?",
         owned: false,
         fire: function () {
-          swapClass(
-            "psColor",
-            "psColorOrange",
-            document.getElementById("trimpsPs")
-          );
+          swapClass("psColor", "psColorOrange", document.getElementById("trimpsPs"));
         },
         reset: function () {
-          swapClass(
-            "psColor",
-            "psColorWhite",
-            document.getElementById("trimpsPs")
-          );
+          swapClass("psColor", "psColorWhite", document.getElementById("trimpsPs"));
         },
         load: function () {
           this.fire();
@@ -836,18 +826,10 @@ function newGame() {
           "You are about to purchase Sharp Trimps for 25 bones. This will cause your Trimps to deal 50% more damage <b>until your next Portal</b>. Is this what you wanted to do?",
         owned: false,
         fire: function () {
-          swapClass(
-            "attackColor",
-            "attackColorOrange",
-            document.getElementById("goodGuyAttack")
-          );
+          swapClass("attackColor", "attackColorOrange", document.getElementById("goodGuyAttack"));
         },
         reset: function () {
-          swapClass(
-            "attackColor",
-            "attackColorNormal",
-            document.getElementById("goodGuyAttack")
-          );
+          swapClass("attackColor", "attackColorNormal", document.getElementById("goodGuyAttack"));
         },
         load: function () {
           this.fire();
@@ -872,18 +854,10 @@ function newGame() {
         },
         owned: false,
         fire: function () {
-          swapClass(
-            "hePhColor",
-            "hePhColorOrange",
-            document.getElementById("heliumPh")
-          );
+          swapClass("hePhColor", "hePhColorOrange", document.getElementById("heliumPh"));
         },
         reset: function () {
-          swapClass(
-            "hePhColor",
-            "hePhColorNormal",
-            document.getElementById("heliumPh")
-          );
+          swapClass("hePhColor", "hePhColorNormal", document.getElementById("heliumPh"));
         },
         load: function () {
           this.fire();
@@ -928,8 +902,7 @@ function newGame() {
         get confirmation() {
           var text =
             "You are about to purchase a level of Bone Shrine, granting +10 minutes of primary resources as loot when worshipping the Shrine";
-          if (this.owned == 4 || this.owned == 9)
-            text += ", and -30 minutes on the cooldown time per charge";
+          if (this.owned == 4 || this.owned == 9) text += ", and -30 minutes on the cooldown time per charge";
           text += ". Is this what you wanted to do?";
           return text;
         },
@@ -1001,21 +974,14 @@ function newGame() {
             return;
           }
           elem.style.display = "block";
-          elem.innerHTML =
-            this.charges + " Bone Charge" + needAnS(this.charges);
-          var className =
-            this.charges == 0
-              ? "isEmpty"
-              : this.charges < 10
-              ? "isFilling"
-              : "isFull";
+          elem.innerHTML = this.charges + " Bone Charge" + needAnS(this.charges);
+          var className = this.charges == 0 ? "isEmpty" : this.charges < 10 ? "isFilling" : "isFull";
           swapClass("is", className, elem);
         },
         consume: function (previewOnly) {
           if (this.owned <= 0 || (!previewOnly && this.charges <= 0)) return;
           if (!previewOnly && game.options.menu.pauseGame.enabled) return;
-          if (!previewOnly && game.global.challengeActive == "Pandemonium")
-            return;
+          if (!previewOnly && game.global.challengeActive == "Pandemonium") return;
           var eligible = ["food", "wood", "metal"];
           var storage = ["Barn", "Shed", "Forge"];
           var purchased = [0, 0, 0];
@@ -1028,23 +994,10 @@ function newGame() {
             var amt = simpleSeconds(resName, this.timeGranted() * 60);
             amt = scaleLootBonuses(amt, true);
             var tempMax = resObj.max;
-            var packMod =
-              getPerkLevel("Packrat") * game.portal.Packrat.modifier;
+            var packMod = getPerkLevel("Packrat") * game.portal.Packrat.modifier;
             var newTotal = resObj.owned + amt;
-            while (
-              newTotal >
-              calcHeirloomBonus(
-                "Shield",
-                "storageSize",
-                tempMax + tempMax * packMod
-              )
-            ) {
-              var nextCost = calculatePercentageBuildingCost(
-                storage[x],
-                resName,
-                0.25,
-                tempMax
-              );
+            while (newTotal > calcHeirloomBonus("Shield", "storageSize", tempMax + tempMax * packMod)) {
+              var nextCost = calculatePercentageBuildingCost(storage[x], resName, 0.25, tempMax);
               if (newTotal < nextCost) break;
               newTotal -= nextCost;
               amt -= nextCost;
@@ -1128,18 +1081,14 @@ function newGame() {
           titles: ["Not Saving", "Auto Saving"],
           onToggle: function () {
             var elem = document.getElementById("saveIndicator");
-            if (this.enabled)
-              elem.innerHTML = "<span class='autosaving'>(AutoSaving)</span>";
-            else
-              elem.innerHTML =
-                "<span class='notAutosaving'>(Not AutoSaving)</span>";
+            if (this.enabled) elem.innerHTML = "<span class='autosaving'>(AutoSaving)</span>";
+            else elem.innerHTML = "<span class='notAutosaving'>(Not AutoSaving)</span>";
           },
         },
         saveAndExit: {
           enabled: 0,
           extraTags: "general",
-          description:
-            "Save the game, then close it! Your Trimps will be here when you get back.",
+          description: "Save the game, then close it! Your Trimps will be here when you get back.",
           titles: ["Save and Exit"],
           onToggle: function () {
             save();
@@ -1176,8 +1125,7 @@ function newGame() {
             "Logarithmic Notation",
           ],
           onToggle: function () {
-            document.getElementById("tab5Text").innerHTML =
-              "+" + prettify(game.global.lastCustomAmt);
+            document.getElementById("tab5Text").innerHTML = "+" + prettify(game.global.lastCustomAmt);
           },
         },
         tooltips: {
@@ -1197,8 +1145,7 @@ function newGame() {
         queueAnimation: {
           enabled: 1,
           extraTags: "layout animation performance",
-          description:
-            "Toggle on or off the building queue blue color animation.",
+          description: "Toggle on or off the building queue blue color animation.",
           titles: ["No Queue Animation", "Queue Animation"],
         },
         barOutlines: {
@@ -1218,15 +1165,13 @@ function newGame() {
         menuFormatting: {
           enabled: 1,
           extraTags: "layout",
-          description:
-            "Toggle on or off large number formatting for jobs and buildings on the left menu.",
+          description: "Toggle on or off large number formatting for jobs and buildings on the left menu.",
           titles: ["No Menu Formatting", "Formatting Menu"],
         },
         formatPerkLevels: {
           enabled: 1,
           extraTags: "layout",
-          description:
-            "Toggle on or off large number formatting for Perk levels.",
+          description: "Toggle on or off large number formatting for Perk levels.",
           titles: ["No Perk Formatting", "Formatting Perk Levels"],
         },
         smallPerks: {
@@ -1234,27 +1179,19 @@ function newGame() {
           enabled: 0,
           description:
             "Shrink the size of perk buttons in the Portal and View Perks windows. <b>Large Perk Buttons</b> is default and fits 5 buttons per row. <b>Small Perk Buttons</b> shrinks the size to fit 6 per row, and <b>Tiny Perk Buttons</b> fits 7 per row.",
-          titles: [
-            "Large Perk Buttons",
-            "Small Perk Buttons",
-            "Tiny Perk Buttons",
-          ],
+          titles: ["Large Perk Buttons", "Small Perk Buttons", "Tiny Perk Buttons"],
         },
         progressBars: {
           enabled: 1,
           extraTags: "performance",
-          description:
-            "Toggle progress bars to on, off, or performance. Performance and off will reduce CPU usage.",
+          description: "Toggle progress bars to on, off, or performance. Performance and off will reduce CPU usage.",
           titles: ["No Progress Bars", "Progress Bars", "Performance Bars"],
           onToggle: function () {
             var bars = document.getElementsByClassName("progress-bar");
             for (var x = 0; x < bars.length; x++) {
               if (this.enabled == 2) bars[x].className += " noTransition";
               else {
-                bars[x].className = bars[x].className.replace(
-                  " noTransition",
-                  ""
-                );
+                bars[x].className = bars[x].className.replace(" noTransition", "");
                 if (this.enabled == 0) bars[x].style.width = "0%";
               }
             }
@@ -1288,8 +1225,7 @@ function newGame() {
         confirmhole: {
           enabled: 1,
           extraTags: "alerts",
-          description:
-            "Toggles on or off the confirmation popup on scary purchases like Wormholes.",
+          description: "Toggles on or off the confirmation popup on scary purchases like Wormholes.",
           titles: ["Not Confirming", "Confirming"],
         },
         equipHighlight: {
@@ -1297,11 +1233,7 @@ function newGame() {
           extraTags: "qol",
           description:
             "Enables/disables blue highlighting of equipment based on resource efficiency. Default is to only show highest available tier, or you can set this to <b>Highlight All Tiers</b> to check old tiers of Equipment too.",
-          titles: [
-            "No Equip Highlight",
-            "Highlight Equipment",
-            "Highlight All Tiers",
-          ],
+          titles: ["No Equip Highlight", "Highlight Equipment", "Highlight All Tiers"],
           onToggle: function () {
             if (this.enabled == 0) {
               for (var item in game.equipment) {
@@ -1324,8 +1256,7 @@ function newGame() {
         achievementPopups: {
           enabled: 1,
           extraTags: "alerts",
-          description:
-            "Decide whether or not you want popups on completing an achievement.",
+          description: "Decide whether or not you want popups on completing an achievement.",
           titles: ["No Achieve Popup", "Popup Achievements"],
         },
         mapLoot: {
@@ -1349,18 +1280,9 @@ function newGame() {
           description:
             "<p><b>Repeat Forever</b> will cause the map to continually repeat if Repeat Maps is enabled.</p><p><b>Repeat to 10</b> will repeat unless you have 10 Map Bonus stacks.</p><p><b>Repeat for Items</b> will repeat unless there are no more special items left for that level of map.</p><p><b>Repeat for Any</b> will repeat unless there are no special items available AND you can not earn more Map Bonus stacks.</p><p><b>This setting only matters if Repeat is on. Toggling Repeat off will still leave the map when it is finished no matter what.</b></p>",
           get titles() {
-            var arr = [
-              "Repeat Forever",
-              "Repeat to 10",
-              "Repeat for Items",
-              "Repeat for Any",
-            ];
-            if (
-              this.enabled == 0 &&
-              game.global.mapCounterGoal > game.global.mapRunCounter
-            ) {
-              var count =
-                game.global.mapCounterGoal - game.global.mapRunCounter;
+            var arr = ["Repeat Forever", "Repeat to 10", "Repeat for Items", "Repeat for Any"];
+            if (this.enabled == 0 && game.global.mapCounterGoal > game.global.mapRunCounter) {
+              var count = game.global.mapCounterGoal - game.global.mapRunCounter;
               arr[0] = "Repeat " + count + " Time" + needAnS(count);
             }
             return arr;
@@ -1373,16 +1295,14 @@ function newGame() {
         },
         exitTo: {
           enabled: 0,
-          description:
-            "Choose whether to go to the Maps Screen or World after completing a map.",
+          description: "Choose whether to go to the Maps Screen or World after completing a map.",
           titles: ["Exit to Maps", "Exit to World"],
           locked: true,
           secondLocation: ["toggleexitToCM"],
         },
         repeatVoids: {
           enabled: 0,
-          description:
-            "Decide if you want to continue running the rest of your Void Maps after finishing one.",
+          description: "Decide if you want to continue running the rest of your Void Maps after finishing one.",
           titles: ["One Void Map", "Finish All Voids"],
           locked: true,
           secondLocation: ["togglerepeatVoidsCM"],
@@ -1409,8 +1329,7 @@ function newGame() {
         showFullBreed: {
           enabled: 0,
           extraTags: "popular general",
-          description:
-            "Display time to breed a full group of soldiers next to the current breed timer.",
+          description: "Display time to breed a full group of soldiers next to the current breed timer.",
           titles: ["Less Breed Timer", "More Breed Timer"],
         },
         darkTheme: {
@@ -1418,12 +1337,7 @@ function newGame() {
           enabled: 1,
           description:
             "Toggle between the default Trimps theme, a custom dark theme, a gradient theme by u/5h3i1ah, and the default theme with a black background.",
-          titles: [
-            "Black Background",
-            "Default Theme",
-            "Dark Theme",
-            "Gradient Theme",
-          ],
+          titles: ["Black Background", "Default Theme", "Dark Theme", "Gradient Theme"],
           //styleName index should always be equal to title index minus 2, and should match the css file name
           styleNames: ["dark", "gradient", "default"],
           removeStyles: function () {
@@ -1432,12 +1346,10 @@ function newGame() {
               if (!link) continue;
               document.head.removeChild(link);
             }
-            document.getElementById("innerWrapper").style.backgroundColor =
-              "initial";
+            document.getElementById("innerWrapper").style.backgroundColor = "initial";
           },
           applyStyle: function (titleIndex) {
-            var styleName =
-              titleIndex <= 1 ? "default" : this.styleNames[titleIndex - 2];
+            var styleName = titleIndex <= 1 ? "default" : this.styleNames[titleIndex - 2];
             var link = document.createElement("link");
             link.type = "text/css";
             link.rel = "stylesheet";
@@ -1448,8 +1360,7 @@ function newGame() {
           onToggle: function () {
             this.removeStyles();
             if (this.enabled == 0) {
-              document.getElementById("innerWrapper").style.backgroundColor =
-                "black";
+              document.getElementById("innerWrapper").style.backgroundColor = "black";
             }
             this.applyStyle(this.enabled);
           },
@@ -1463,8 +1374,7 @@ function newGame() {
         romanNumerals: {
           enabled: 1,
           extraTags: "layout",
-          description:
-            "Show either Roman Numerals or Arabic Numerals for Equipment Prestiges.",
+          description: "Show either Roman Numerals or Arabic Numerals for Equipment Prestiges.",
           titles: ["Arabic Numerals", "Roman Numerals"],
           onToggle: function () {
             drawAllUpgrades();
@@ -1474,8 +1384,7 @@ function newGame() {
         extraStats: {
           enabled: 1,
           extraTags: "layout",
-          description:
-            "Toggle on or off adding extra information to map items.",
+          description: "Toggle on or off adding extra information to map items.",
           titles: ["Minimalist Maps", "Extra Map Info"],
           onToggle: function () {
             refreshMaps();
@@ -1502,11 +1411,7 @@ function newGame() {
           enabled: 1,
           description:
             "Decide whether or not you want popups on looting an Heirloom.<br/><br/><b>Pop Highest Heirloom</b> will only show a popup if you find the highest available tier Heirloom for your current level.",
-          titles: [
-            "No Heirloom Pop",
-            "Popping Heirlooms",
-            "Pop Highest Heirloom",
-          ],
+          titles: ["No Heirloom Pop", "Popping Heirlooms", "Pop Highest Heirloom"],
         },
         portalChallenge: {
           extraTags: "alerts",
@@ -1519,8 +1424,7 @@ function newGame() {
             if (
               game.portal.Artisanistry.locked ||
               game.portal.Range.locked ||
-              (game.global.highestLevelCleared >= 34 &&
-                game.portal.Carpentry.locked)
+              (game.global.highestLevelCleared >= 34 && game.portal.Carpentry.locked)
             )
               return true;
             if (game.global.highestLevelCleared < 39) return false;
@@ -1530,8 +1434,7 @@ function newGame() {
         detailedPerks: {
           extraTags: "qol",
           enabled: 0,
-          description:
-            "Decide whether or not to show extra information on Perk buttons.",
+          description: "Decide whether or not to show extra information on Perk buttons.",
           titles: ["Minimal Perk Info", "Extra Perk Info"],
         },
         alwaysAbandon: {
@@ -1549,16 +1452,8 @@ function newGame() {
           onToggle: function () {
             if (!game.global.mapsActive) return;
             var setTo = this.enabled ? ["8", "2"] : ["10", "off"];
-            swapClass(
-              "col-xs",
-              "col-xs-" + setTo[0],
-              document.getElementById("gridContainer")
-            );
-            swapClass(
-              "col-xs",
-              "col-xs-" + setTo[1],
-              document.getElementById("extraMapBtns")
-            );
+            swapClass("col-xs", "col-xs-" + setTo[0], document.getElementById("gridContainer"));
+            swapClass("col-xs", "col-xs-" + setTo[1], document.getElementById("extraMapBtns"));
           },
           lockUnless: function () {
             return game.global.totalPortals > 0;
@@ -1591,11 +1486,7 @@ function newGame() {
           extraTags: "layout",
           description:
             "Choose if you would like to see a different cell color for cells that you overkilled. <b>No Overcolors</b> will not change any colors based on Overkill. <b>Normal Overkill Colors</b> is the default setting, and shows a special color for cells that were Overkilled. <b>Connected Overkill Colors</b> will show the Overkill cell colors for all cells while Overkilling.",
-          titles: [
-            "No Overcolors",
-            "Normal Overkill Colors",
-            "Connected Overkill Colors",
-          ],
+          titles: ["No Overcolors", "Normal Overkill Colors", "Connected Overkill Colors"],
           lockUnless: function () {
             return !game.portal.Overkill.locked;
           },
@@ -1605,8 +1496,7 @@ function newGame() {
           extraTags: "qol",
           get description() {
             var appliesTo = " only to Warpstation";
-            if (game.global.improvedAutoStorage)
-              appliesTo = " to Warpstation and AutoStorage";
+            if (game.global.improvedAutoStorage) appliesTo = " to Warpstation and AutoStorage";
             return (
               "Choose whether or not to force instant-craft buildings to use the queue. Currently applies " +
               appliesTo +
@@ -1623,12 +1513,7 @@ function newGame() {
           extraTags: "other",
           description:
             "Choose whether you would like the game to pause combat by sending you to maps when you reach a Spire. <b>Keep Fighting at Spires</b> will not interrupt you when reaching a Spire, <b>Map at Spires</b> will send you to maps on every Spire, <b>Map at Top 2 Spires</b> will send you to maps at the highest and second highest level Spire reached, and <b>Map at Top Spire</b> will switch to maps only on the single highest Spire reached.",
-          titles: [
-            "Keep Fighting at Spires",
-            "Map at Spires",
-            "Map at Top 2 Spires",
-            "Map at Top Spire",
-          ],
+          titles: ["Keep Fighting at Spires", "Map at Spires", "Map at Top 2 Spires", "Map at Top Spire"],
           lockUnless: function () {
             return game.global.highestLevelCleared >= 199;
           },
@@ -1647,21 +1532,18 @@ function newGame() {
               for (var x = 0; x < setZone.length; x++) {
                 if (
                   game.global.world < setZone[x].world ||
-                  (game.global.world == setZone[x].world &&
-                    game.global.lastClearedCell + 2 < setZone[x].cell)
+                  (game.global.world == setZone[x].world && game.global.lastClearedCell + 2 < setZone[x].cell)
                 ) {
                   nextZone = setZone[x].world;
                   if (x < setZone.length - 1) nextZone += "+";
                   break;
                 }
               }
-              if (nextZone == "")
-                nextZone = setZone.length ? setZone[0].world : "one";
+              if (nextZone == "") nextZone = setZone.length ? setZone[0].world : "one";
             }
             if (game.talents.maz.purchased) {
               nextZone += " (";
-              if (game.global.universe == 2)
-                nextZone += this.U2Mode.toUpperCase();
+              if (game.global.universe == 2) nextZone += this.U2Mode.toUpperCase();
               else nextZone += this.U1Mode.toUpperCase();
               nextZone += ")";
             }
@@ -1777,63 +1659,26 @@ function newGame() {
                 continue;
               }
               world = parseInt(world.value, 10);
-              var check = readNiceCheckbox(
-                document.getElementById("mazCheckbox" + x)
-              );
-              var preset = parseInt(
-                document.getElementById("mazPreset" + x).value,
-                10
-              );
-              var repeat = parseInt(
-                document.getElementById("mazRepeat" + x).value,
-                10
-              );
-              var until = parseInt(
-                document.getElementById("mazRepeatUntil" + x).value,
-                10
-              );
-              var exit = parseInt(
-                document.getElementById("mazExit" + x).value,
-                10
-              );
-              var bwWorld = parseInt(
-                document.getElementById("mazBwWorld" + x).value,
-                10
-              );
-              var cell = parseInt(
-                document.getElementById("mazCell" + x).value,
-                10
-              );
-              var enableCheck = readNiceCheckbox(
-                document.getElementById("mazEnableSetting" + x)
-              );
-              var times = parseInt(
-                document.getElementById("mazTimes" + x).value,
-                10
-              );
-              var through = parseInt(
-                document.getElementById("mazThrough" + x).value,
-                10
-              );
+              var check = readNiceCheckbox(document.getElementById("mazCheckbox" + x));
+              var preset = parseInt(document.getElementById("mazPreset" + x).value, 10);
+              var repeat = parseInt(document.getElementById("mazRepeat" + x).value, 10);
+              var until = parseInt(document.getElementById("mazRepeatUntil" + x).value, 10);
+              var exit = parseInt(document.getElementById("mazExit" + x).value, 10);
+              var bwWorld = parseInt(document.getElementById("mazBwWorld" + x).value, 10);
+              var cell = parseInt(document.getElementById("mazCell" + x).value, 10);
+              var enableCheck = readNiceCheckbox(document.getElementById("mazEnableSetting" + x));
+              var times = parseInt(document.getElementById("mazTimes" + x).value, 10);
+              var through = parseInt(document.getElementById("mazThrough" + x).value, 10);
               var rx = parseInt(document.getElementById("mazRx" + x).value, 10);
-              var prio = parseInt(
-                document.getElementById("mazPrio" + x).value,
-                10
-              );
+              var prio = parseInt(document.getElementById("mazPrio" + x).value, 10);
               var tx = parseInt(document.getElementById("mazTx" + x).value, 10);
               if (isNaN(through) || through > 1000) through = 1000;
               else if (through < 10) through = 10;
               if (isNaN(world) || world < 10) {
-                error +=
-                  " Preset " +
-                  (x + 1) +
-                  " needs a value for Start Zone that's greater than 10.";
+                error += " Preset " + (x + 1) + " needs a value for Start Zone that's greater than 10.";
                 continue;
               } else if (world > 1000) {
-                error +=
-                  " Preset " +
-                  (x + 1) +
-                  " needs a value for Start Zone that's less than 1000.";
+                error += " Preset " + (x + 1) + " needs a value for Start Zone that's less than 1000.";
                 continue;
               }
               if (
@@ -1974,12 +1819,7 @@ function newGame() {
               // 	}
               // }
               var presetMax = 9;
-              if (
-                preset == 5 &&
-                (game.global.universe != 2 ||
-                  game.global.highestRadonLevelCleared < 69)
-              )
-                preset = 0;
+              if (preset == 5 && (game.global.universe != 2 || game.global.highestRadonLevelCleared < 69)) preset = 0;
               if (preset < 0 || preset > presetMax) preset = 0;
               if (repeat < 0 || repeat > 2) repeat = 0;
               if (until < 0 || until > 9) until = 0;
@@ -1987,41 +1827,25 @@ function newGame() {
               if (exit < 0 || exit > 2) exit = 0;
               if (isNaN(rx) || rx < 1 || rx > 9999) {
                 if (until == 9) {
-                  error +=
-                    "Preset " +
-                    x +
-                    " needs a value for Repeat X Times between 1 and 9999.";
+                  error += "Preset " + x + " needs a value for Repeat X Times between 1 and 9999.";
                   continue;
                 } else rx = 1;
               }
               if (isNaN(tx) || tx > 1000 || tx < 1) {
                 if (times == -2) {
-                  error +=
-                    "Preset " +
-                    x +
-                    " needs a value for Repeat Every X Zones between 1 and 1000.";
+                  error += "Preset " + x + " needs a value for Repeat Every X Zones between 1 and 1000.";
                   continue;
                 }
               }
-              if (
-                !bwWorld ||
-                preset != 3 ||
-                isNaN(bwWorld) ||
-                bwWorld < 125 ||
-                bwWorld > 1000
-              ) {
+              if (!bwWorld || preset != 3 || isNaN(bwWorld) || bwWorld < 125 || bwWorld > 1000) {
                 if (until == 5) {
-                  error +=
-                    "Preset " +
-                    x +
-                    " needs a value for Exit after L between 125 and 1000.";
+                  error += "Preset " + x + " needs a value for Exit after L between 125 and 1000.";
                   continue;
                 } else bwWorld = 125;
               }
               if (bwWorld > 125) {
                 var adj = bwWorld - 125;
-                if (bwWorld % 15 != 0)
-                  bwWorld = 125 + Math.floor(adj / 15) * 15;
+                if (bwWorld % 15 != 0) bwWorld = 125 + Math.floor(adj / 15) * 15;
               }
               if (isNumberBad(prio)) prio = x;
               var currSetting = this.getSetZone();
@@ -2039,8 +1863,7 @@ function newGame() {
                 times: times,
                 on: enableCheck,
                 prio: prio,
-                done:
-                  currSetting && currSetting.done ? currSetting.done : false,
+                done: currSetting && currSetting.done ? currSetting.done : false,
               };
               if (rx && until == 9) thisSetting.rx = rx;
               if (tx && times == -2) thisSetting.tx = tx;
@@ -2052,14 +1875,7 @@ function newGame() {
               return;
             }
             setting.sort(function (a, b) {
-              if (a.prio == b.prio)
-                return a.world == b.world
-                  ? a.cell > b.cell
-                    ? 1
-                    : -1
-                  : a.world > b.world
-                  ? 1
-                  : -1;
+              if (a.prio == b.prio) return a.world == b.world ? (a.cell > b.cell ? 1 : -1) : a.world > b.world ? 1 : -1;
               return a.prio > b.prio ? 1 : -1;
             });
             for (var y = 0; y < setting.length; y++) delete setting[y].prio;
@@ -2067,8 +1883,7 @@ function newGame() {
             this.enabled = 1;
             toggleSetting("mapAtZone", null, false, true);
             cancelTooltip(true);
-            if (reopen)
-              toggleSetting("mapAtZone", undefined, false, false, false, true);
+            if (reopen) toggleSetting("mapAtZone", undefined, false, false, false, true);
           },
           secondLocation: ["togglemapAtZone2", "togglemapAtZoneCM"],
           lockUnless: function () {
@@ -2088,11 +1903,7 @@ function newGame() {
           extraTags: "qol",
           description:
             "<p>Toggle between <b>Limited GA Firing</b>, <b>Geneticistassist Fire</b> and <b>No GA Firing</b>.</p><p><b>Limited GA Firing</b> will prevent Geneticistassist from firing Farmers, Lumberjacks, or Miners.</p><p><b>Geneticistassist Fire</b> is the default value, and allows Geneticistassist to fire anything.</p><p><b>No GA Firing</b> prevents your Geneticistassist from being able to fire anything at all, including other Geneticists.</p>",
-          titles: [
-            "Limited GA Firing",
-            "Geneticistassist Fire",
-            "No GA Firing",
-          ],
+          titles: ["Limited GA Firing", "Geneticistassist Fire", "No GA Firing"],
           lockUnless: function () {
             return game.global.Geneticistassist;
           },
@@ -2104,16 +1915,8 @@ function newGame() {
             "Shrink the buttons in the menu where you purchase Buildings, Upgrades, Jobs, and Equipment. <b>Large Buttons</b> is default and fits 4 buttons per row. <b>Small Buttons</b> shrinks the size to fit 5 per row, and <b>Tiny Buttons</b> fits 6 per row. Small and Tiny may not be readable on small screens.",
           titles: ["Large Buttons", "Small Buttons", "Tiny Buttons"],
           onToggle: function () {
-            var classNames = [
-              "buttonSizeLarge",
-              "buttonSizeSmall",
-              "buttonSizeTiny",
-            ];
-            swapClass(
-              "buttonSize",
-              classNames[this.enabled],
-              document.getElementById("buyHere")
-            );
+            var classNames = ["buttonSizeLarge", "buttonSizeSmall", "buttonSizeTiny"];
+            swapClass("buttonSize", classNames[this.enabled], document.getElementById("buyHere"));
           },
         },
         masteryTab: {
@@ -2127,12 +1930,7 @@ function newGame() {
                 : "")
             );
           },
-          titles: [
-            "No Mastery Info",
-            "Alert Mastery",
-            "Show Essence",
-            "Hybrid Alerts",
-          ],
+          titles: ["No Mastery Info", "Alert Mastery", "Show Essence", "Hybrid Alerts"],
           lockUnless: function () {
             return game.global.highestLevelCleared >= 180;
           },
@@ -2149,12 +1947,9 @@ function newGame() {
           get description() {
             var text =
               "<p>This setting applies to big popups that occur after hitting certain milestones each portal. This setting will currently block: the Improbability popup";
-            if (game.global.highestLevelCleared >= 199)
-              text += ", the popup at Corruption";
-            if (game.global.highestLevelCleared >= 219)
-              text += ", the popup at The Spire";
-            if (game.global.highestLevelCleared >= 249)
-              text += ", and the popup on reaching Magma.";
+            if (game.global.highestLevelCleared >= 199) text += ", the popup at Corruption";
+            if (game.global.highestLevelCleared >= 219) text += ", the popup at The Spire";
+            if (game.global.highestLevelCleared >= 249) text += ", and the popup on reaching Magma.";
             text +=
               "</p><p>Note that this setting only blocks large popups once your Highest Zone Reached is 20 Zones past the location of the popup.</p>";
             return text;
@@ -2169,14 +1964,12 @@ function newGame() {
             var text =
               "<p>Choose what mode the Dimensional Generator should start each run on. <b>Default Generator</b> will continue with whatever setting you were using at the end of your last run. <b>The rest of the settings<b> are named by what mode will be set to active at the start of each run.</p>";
             if (game.permanentGeneratorUpgrades.Supervision.owned)
-              text +=
-                "<p><b>Hold Ctrl while clicking to open the Generator State Configuration menu.</b></p>";
+              text += "<p><b>Hold Ctrl while clicking to open the Generator State Configuration menu.</b></p>";
             return text;
           },
           get titles() {
             var arr = ["Default Generator", "Gain Fuel", "Gain Mi"];
-            if (game.permanentGeneratorUpgrades.Hybridization.owned)
-              arr.push("Hybrid");
+            if (game.permanentGeneratorUpgrades.Hybridization.owned) arr.push("Hybrid");
             return arr;
           },
           lockUnless: function () {
@@ -2210,12 +2003,7 @@ function newGame() {
           extraTags: "other",
           description:
             "<p>When <b>Using Gene Send</b> is enabled, as long as you have one Geneticist, AutoFight will automatically send soldiers to fight if they have been breeding for longer than your Geneticistassist setting.</p><p>When <b>Enforce Gene Send</b> is enabled, as long as you have one Geneticist, AutoFight will never send a group of Trimps to fight unless you are at max population or you have reached your set Geneticistassist timer.</p><p>Finally, if you choose <b>Wait For Gene Send</b> and have at least one Geneticist, AutoFight will only send Trimps to fight after they have been breeding long enough to reach your set Geneticistassist timer. This guarantees that Anticipation and Geneticist levels build up for as long as your set timer, but may result in no soldiers being sent for some time while you sit at full population.</p>",
-          titles: [
-            "No Gene Sending",
-            "Using Gene Send",
-            "Enforce Gene Send",
-            "Wait For Gene Send",
-          ],
+          titles: ["No Gene Sending", "Using Gene Send", "Enforce Gene Send", "Wait For Gene Send"],
         },
         fireForJobs: {
           enabled: 0,
@@ -2266,19 +2054,13 @@ function newGame() {
           description:
             "<p><b>No Offline Progress</b> will cause no extra resources to be earned and no time to be warped when you return to the game. The Portal and Zone timers will not advance while offline, and the game will be in the same state you left it when you come back. This can be useful for speedrun achievements or if you just really really don&apos;t trust your Trimps when you&apos;re gone.</p><p><b>Hybrid Offline</b> combines Time Warp and Trustworthy Trimps into the best offline experience that Science can buy. Time Warp caps at 24 hours, so using Hybrid Offline will grant Trustworthy Trimps at the beginning of your Time Warp for all offline time over 24 hours, and will also grant Trustworthy Trimps for any extra time should you choose to end Time Warp early. Note that the Portal Time and Time in Zone clocks will advance for all time granted by Trustworthy Trimps and by Time Warp.</p><p><b>Time Warp Only</b> will grant up to 24 hours of your offline progress as Time Warp without granting any extra resources from Trustworthy Trimps at the beginning (for time over 24 hours), or at the end (for canceled Time Warp time). This can also be useful for timed runs or tracking stats, as the time added will be capped to however much time you spend in Time Warp.</p><p><b>Trustworthy Trimps Only</b> will skip Time Warp when you come back and grant resources for all time offline from Trustworthy Trimps. For when you want to get back in the game as soon as possible!</p><p style=&apos;text-align: center&apos;><b>This setting can be changed from the Time Warp screen<br/>or in Settings -> Other.</b></p>",
           //description: "Disables or enables earning resources while offline. <b>Warning: If this is toggled off, no resources will be earned from Trustworthy Trimps when coming back to the game after being offline.</b> This also stops the current run timer when offline and can be helpful if you are analysing stats and do not want resources counted when there is no timer running",
-          titles: [
-            "No Offline Progress",
-            "Hybrid Offline",
-            "Time Warp Only",
-            "Trustworthy Trimps Only",
-          ],
+          titles: ["No Offline Progress", "Hybrid Offline", "Time Warp Only", "Trustworthy Trimps Only"],
           secondLocation: ["toggleofflineProgresstimewarp"],
         },
         archAutomator: {
           enabled: 0,
           extraTags: "other",
-          description:
-            "Customize the Archaeology Automator. Has no effect unless running the Archaeology Challenge.",
+          description: "Customize the Archaeology Automator. Has no effect unless running the Archaeology Challenge.",
           titles: ["Archaeology Automator"],
           lockUnless: function () {
             return game.global.highestRadonLevelCleared >= 89;
@@ -2293,8 +2075,7 @@ function newGame() {
         sealedSpire: {
           enabled: 0,
           extraTags: "other",
-          description:
-            "Your Spire is Sealed, but you can look at it here if you want to.",
+          description: "Your Spire is Sealed, but you can look at it here if you want to.",
           titles: ["View the Spire"],
           lockUnless: function () {
             return playerSpire.sealed;
@@ -2320,16 +2101,9 @@ function newGame() {
           onToggle: function () {
             if (this.enabled) {
               this.timeAtPause = new Date().getTime();
-              if (
-                game.options.menu.autoSave.enabled == 1 &&
-                game.options.menu.saveOnPause.enabled == 1
-              )
+              if (game.options.menu.autoSave.enabled == 1 && game.options.menu.saveOnPause.enabled == 1)
                 save(false, true);
-              swapClass(
-                "timer",
-                "timerPaused",
-                document.getElementById("portalTimer")
-              );
+              swapClass("timer", "timerPaused", document.getElementById("portalTimer"));
               handlePauseMessage(true);
             } else if (this.timeAtPause) {
               var now = new Date().getTime();
@@ -2340,19 +2114,13 @@ function newGame() {
               game.global.mapStarted += dif;
               game.global.lastGeneratorTick += dif;
               game.global.lastSoldierSentAt += dif;
-              if (game.permaBoneBonuses.boosts.lastChargeAt != -1)
-                game.permaBoneBonuses.boosts.lastChargeAt += dif;
-              if (game.portal.Frenzy.frenzyStarted != -1)
-                game.portal.Frenzy.frenzyStarted += dif;
+              if (game.permaBoneBonuses.boosts.lastChargeAt != -1) game.permaBoneBonuses.boosts.lastChargeAt += dif;
+              if (game.portal.Frenzy.frenzyStarted != -1) game.portal.Frenzy.frenzyStarted += dif;
               this.timeAtPause = 0;
               game.global.time = 0;
               game.global.lastOnline = now;
               game.global.start = now;
-              swapClass(
-                "timer",
-                "timerNotPaused",
-                document.getElementById("portalTimer")
-              );
+              swapClass("timer", "timerNotPaused", document.getElementById("portalTimer"));
               handlePauseMessage(false);
             }
           },
@@ -2374,8 +2142,7 @@ function newGame() {
         deleteSave: {
           enabled: 0,
           extraTags: "reset hard wipe clear other",
-          description:
-            "Delete your save and start fresh. Your Trimps will not be happy.",
+          description: "Delete your save and start fresh. Your Trimps will not be happy.",
           titles: ["Delete Save"],
           onToggle: function () {
             cancelTooltip();
@@ -2433,8 +2200,7 @@ function newGame() {
         icon: "th-large",
       },
       explorers: {
-        description:
-          "Automatically picks up SpeedExplorer books when you pass their Zone.",
+        description: "Automatically picks up SpeedExplorer books when you pass their Zone.",
         name: "Explorer Aura I",
         tier: 1,
         purchased: false,
@@ -2447,24 +2213,18 @@ function newGame() {
         purchased: false,
         icon: "*heart5",
         getTotalVP: function () {
-          return game.talents.voidPower2.purchased
-            ? game.talents.voidPower3.purchased
-              ? 65
-              : 35
-            : 15;
+          return game.talents.voidPower2.purchased ? (game.talents.voidPower3.purchased ? 65 : 35) : 15;
         },
       },
       pierce: {
-        description:
-          "Reduce the amount of enemy damage that can pierce block by 25%.",
+        description: "Reduce the amount of enemy damage that can pierce block by 25%.",
         name: "Metallic Coat",
         tier: 2,
         purchased: false,
         icon: "tint",
       },
       heirloom: {
-        description:
-          "You can spend an extra 10% of your Nu on your Heirlooms, bringing the total to 110%.",
+        description: "You can spend an extra 10% of your Nu on your Heirlooms, bringing the total to 110%.",
         name: "Heirnuum I",
         tier: 2,
         purchased: false,
@@ -2518,8 +2278,7 @@ function newGame() {
         icon: "*spinner9",
       },
       voidPower2: {
-        description:
-          "Your Trimps gain an additional 20% attack and health inside Void Maps.",
+        description: "Your Trimps gain an additional 20% attack and health inside Void Maps.",
         name: "Void Power II",
         tier: 3,
         purchased: false,
@@ -2535,8 +2294,7 @@ function newGame() {
         icon: "*gift2",
       },
       skeletimp: {
-        description:
-          "Double the chance for a Megaskeletimp to appear instead of a Skeletimp.",
+        description: "Double the chance for a Megaskeletimp to appear instead of a Skeletimp.",
         name: "King of Bones I",
         tier: 3,
         purchased: false,
@@ -2550,8 +2308,7 @@ function newGame() {
         icon: "*map-signs",
       },
       headstart2: {
-        description:
-          "Corruption begins an additional 10 levels earlier, at Zone 166.",
+        description: "Corruption begins an additional 10 levels earlier, at Zone 166.",
         name: "Headstart II",
         tier: 3,
         purchased: false,
@@ -2595,14 +2352,11 @@ function newGame() {
         icon: "*spoon-knife",
         onPurchase: function () {
           document.getElementById("turkimpBuff").style.display = "block";
-          if (game.global.playerGathering)
-            setGather(game.global.playerGathering);
+          if (game.global.playerGathering) setGather(game.global.playerGathering);
         },
         onRespec: function () {
-          if (game.global.turkimpTimer <= 0)
-            document.getElementById("turkimpBuff").style.display = "none";
-          if (game.global.playerGathering)
-            setGather(game.global.playerGathering);
+          if (game.global.turkimpTimer <= 0) document.getElementById("turkimpBuff").style.display = "none";
+          if (game.global.playerGathering) setGather(game.global.playerGathering);
         },
       },
       magimp: {
@@ -2614,8 +2368,7 @@ function newGame() {
         icon: "*dice",
       },
       headstart3: {
-        description:
-          "Corruption begins an additional 15 levels earlier, at Zone 151.",
+        description: "Corruption begins an additional 15 levels earlier, at Zone 151.",
         name: "Headstart III",
         tier: 4,
         purchased: false,
@@ -2623,8 +2376,7 @@ function newGame() {
         requires: "headstart2",
       },
       mapBattery: {
-        description:
-          "Doubles the Zone bonus for completing maps once you reach 10 stacks.",
+        description: "Doubles the Zone bonus for completing maps once you reach 10 stacks.",
         name: "Map Battery",
         tier: 4,
         purchased: false,
@@ -2636,9 +2388,7 @@ function newGame() {
           if (game.talents.liquification3.purchased) percent = 75;
           return (
             "Reduce the time in between fights and attacks by an additional 100ms through Z" +
-            Math.floor(
-              (getHighestLevelCleared(false, true) + 1) * (percent / 100)
-            ) +
+            Math.floor((getHighestLevelCleared(false, true) + 1) * (percent / 100)) +
             " (" +
             percent +
             "% of your highest Zone reached)."
@@ -2665,8 +2415,7 @@ function newGame() {
         icon: "*hammer2",
       },
       skeletimp2: {
-        description:
-          "Reduce the minimum time between Skeletimp spawns by 10 minutes.",
+        description: "Reduce the minimum time between Skeletimp spawns by 10 minutes.",
         name: "King of Bones II",
         tier: 5,
         purchased: false,
@@ -2682,16 +2431,14 @@ function newGame() {
         icon: "*diamonds",
       },
       magmaFlow: {
-        description:
-          "Cause two extra Magma cells to appear on any Zone that already has Magma.",
+        description: "Cause two extra Magma cells to appear on any Zone that already has Magma.",
         name: "Magma Flow",
         tier: 5,
         purchased: false,
         icon: "*fire",
       },
       explorers2: {
-        description:
-          "Start with an extra SpeedExplorer book after each Portal.",
+        description: "Start with an extra SpeedExplorer book after each Portal.",
         name: "Explorer Aura II",
         tier: 5,
         purchased: false,
@@ -2728,8 +2475,7 @@ function newGame() {
         icon: "*hammer2",
       },
       heirloom2: {
-        description:
-          "You can spend another extra 10% of your Nu on your Heirlooms, bringing the total to 120%.",
+        description: "You can spend another extra 10% of your Nu on your Heirlooms, bringing the total to 120%.",
         name: "Heirnuum II",
         tier: 6,
         purchased: false,
@@ -2738,19 +2484,14 @@ function newGame() {
       },
       liquification: {
         get description() {
-          if (game.global.universe == 2)
-            return "This Mastery is currently disabled in Universe 2";
-          var text = this.purchased
-            ? "This mastery is increasing "
-            : "This mastery would increase ";
+          if (game.global.universe == 2) return "This Mastery is currently disabled in Universe 2";
+          var text = this.purchased ? "This mastery is increasing " : "This mastery would increase ";
           var totalSpires = game.global.spiresCompleted;
           var fluffyCount = Fluffy.isRewardActive("liquid");
           var fluffyText = "Y";
           if (fluffyCount > 0) {
-            if (fluffyCount == 1)
-              fluffyText = "Counting your Fluffy bonus as half of a Spire, y";
-            else
-              fluffyText = "Counting your two Fluffy bonuses as one Spire, y";
+            if (fluffyCount == 1) fluffyText = "Counting your Fluffy bonus as half of a Spire, y";
+            else fluffyText = "Counting your two Fluffy bonuses as one Spire, y";
             totalSpires += fluffyCount * 0.5;
           }
           return (
@@ -2763,18 +2504,13 @@ function newGame() {
             ", giving you " +
             totalSpires * 5 +
             "% of your highest Zone reached (through Z" +
-            Math.floor(
-              (totalSpires / 20) * (getHighestLevelCleared(false, true) + 1)
-            ) +
+            Math.floor((totalSpires / 20) * (getHighestLevelCleared(false, true) + 1)) +
             "). " +
             text +
             " your bonus to " +
             (totalSpires + 1) * 5 +
             "% of your highest Zone reached (through Z" +
-            Math.floor(
-              ((totalSpires + 1) / 20) *
-                (getHighestLevelCleared(false, true) + 1)
-            ) +
+            Math.floor(((totalSpires + 1) / 20) * (getHighestLevelCleared(false, true) + 1)) +
             ")."
           );
         },
@@ -2795,8 +2531,7 @@ function newGame() {
         icon: "*map-o",
       },
       scry2: {
-        description:
-          "Complete an entire Void Map in Scryer Formation to earn an additional 50% Helium.",
+        description: "Complete an entire Void Map in Scryer Formation to earn an additional 50% Helium.",
         name: "Scryhard II",
         tier: 6,
         purchased: false,
@@ -2812,8 +2547,7 @@ function newGame() {
         icon: "*fire2",
       },
       mapLoot2: {
-        description:
-          "Reduces the min and max number of cells by 5 when creating maps.",
+        description: "Reduces the min and max number of cells by 5 when creating maps.",
         name: "Map Reducer II",
         tier: 7,
         purchased: false,
@@ -2863,8 +2597,7 @@ function newGame() {
             heliumOrRadon() +
             " from Void Maps is also increased by 0.25% for each Zone reached last run.</p>";
           var amt = getLastPortal() * 0.0025;
-          text +=
-            "<p>You reached <b>Z" + getLastPortal() + "</b> last Portal, ";
+          text += "<p>You reached <b>Z" + getLastPortal() + "</b> last Portal, ";
           if (this.purchased) text += " earning you a bonus of ";
           else text += " which would earn you a bonus of ";
           text +=
@@ -2884,8 +2617,7 @@ function newGame() {
         icon: "*feed",
       },
       healthStrength: {
-        description:
-          "Your Trimps gain 15% additive damage per Healthy cell in your current Zone.",
+        description: "Your Trimps gain 15% additive damage per Healthy cell in your current Zone.",
         name: "Strength in Health I",
         tier: 8,
         purchased: false,
@@ -2902,18 +2634,14 @@ function newGame() {
       },
       liquification2: {
         get description() {
-          if (game.global.universe == 2)
-            return "This Mastery is currently disabled in Universe 2";
-          var text = this.purchased
-            ? "This mastery is increasing "
-            : "This mastery would increase ";
+          if (game.global.universe == 2) return "This Mastery is currently disabled in Universe 2";
+          var text = this.purchased ? "This mastery is increasing " : "This mastery would increase ";
           var totalSpires = game.global.spiresCompleted;
           if (game.talents.liquification.purchased) totalSpires++;
           var fluffyCount = Fluffy.isRewardActive("liquid");
           var fluffyText = "";
           if (fluffyCount > 0) {
-            if (fluffyCount == 1)
-              fluffyText = " and your Fluffy bonus as half of a Spire";
+            if (fluffyCount == 1) fluffyText = " and your Fluffy bonus as half of a Spire";
             else fluffyText += " and your two Fluffy bonuses as another";
             totalSpires += fluffyCount * 0.5;
           }
@@ -2927,18 +2655,13 @@ function newGame() {
             ", giving you " +
             totalSpires * 5 +
             "% of your highest Zone reached (through Z" +
-            Math.floor(
-              (totalSpires / 20) * (getHighestLevelCleared(false, true) + 1)
-            ) +
+            Math.floor((totalSpires / 20) * (getHighestLevelCleared(false, true) + 1)) +
             "). " +
             text +
             " your bonus to " +
             (totalSpires + 1) * 5 +
             "% of your highest Zone reached (through Z" +
-            Math.floor(
-              ((totalSpires + 1) / 20) *
-                (getHighestLevelCleared(false, true) + 1)
-            ) +
+            Math.floor(((totalSpires + 1) / 20) * (getHighestLevelCleared(false, true) + 1)) +
             ")."
           );
         },
@@ -2949,8 +2672,7 @@ function newGame() {
         icon: "*water",
       },
       stillRowing2: {
-        description:
-          "Your Trimps will now gain attack equal to 2x their looting bonus from each Spire row cleared.",
+        description: "Your Trimps will now gain attack equal to 2x their looting bonus from each Spire row cleared.",
         name: "Still Rowing II",
         tier: 8,
         purchased: false,
@@ -2958,8 +2680,7 @@ function newGame() {
         icon: "align-justify",
       },
       amalg: {
-        description:
-          "Causes the 50% damage bonus from each Amalgamator to be compounding rather than additive.",
+        description: "Causes the 50% damage bonus from each Amalgamator to be compounding rather than additive.",
         name: "Amalgagreater",
         tier: 8,
         purchased: false,
@@ -3086,9 +2807,7 @@ function newGame() {
               " +" +
               getHeirloomBonus("Shield", "critChance") / 2 +
               "% additional Crit Chance.</p>";
-          else
-            text +=
-              "<p>However, you do not currently have Crit Chance on your Shield.</p>";
+          else text += "<p>However, you do not currently have Crit Chance on your Shield.</p>";
           return text;
         },
         name: "Charged Crits",
@@ -3176,13 +2895,9 @@ function newGame() {
         get description() {
           var number = game.global.highestRadonLevelCleared >= 49 ? "2/3" : "2";
           var totalDesc =
-            game.global.highestRadonLevelCleared >= 49
-              ? "<span class='icomoon icon-infinity'></span>"
-              : "2";
-          var challengeList =
-            game.global.highestRadonLevelCleared >= 49 ? "Trappapalooza, " : "";
-          challengeList +=
-            "Trapper, Coordinate, Trimp, Obliterated or Eradicated";
+            game.global.highestRadonLevelCleared >= 49 ? "<span class='icomoon icon-infinity'></span>" : "2";
+          var challengeList = game.global.highestRadonLevelCleared >= 49 ? "Trappapalooza, " : "";
+          challengeList += "Trapper, Coordinate, Trimp, Obliterated or Eradicated";
           var text =
             "<p>Triples the Challenge<sup>" +
             number +
@@ -3192,12 +2907,7 @@ function newGame() {
             challengeList +
             ").</p>";
           var currentC2 = countChallengeSquaredReward(true);
-          text +=
-            "<p>You currently have a C<sup>" +
-            totalDesc +
-            "</sup> bonus of " +
-            prettify(currentC2) +
-            "%.";
+          text += "<p>You currently have a C<sup>" + totalDesc + "</sup> bonus of " + prettify(currentC2) + "%.";
           totalDesc = "Challenge<sup>" + totalDesc + "</sup> bonus ";
           if (this.purchased) {
             var newVal = countChallengeSquaredReward(true, "noMesmer");
@@ -3241,17 +2951,14 @@ function newGame() {
               Math.floor(game.global.highestRadonLevelCleared * 0.75) +
               ") rather than a measly 50%</b>"
             );
-          var text = this.purchased
-            ? "This mastery is increasing "
-            : "This mastery would increase ";
+          var text = this.purchased ? "This mastery is increasing " : "This mastery would increase ";
           var totalSpires = game.global.spiresCompleted;
           if (game.talents.liquification.purchased) totalSpires++;
           if (game.talents.liquification2.purchased) totalSpires++;
           var fluffyCount = Fluffy.isRewardActive("liquid");
           var fluffyText = "";
           if (fluffyCount > 0) {
-            if (fluffyCount == 1)
-              fluffyText = " and your Fluffy bonus as half of a Spire";
+            if (fluffyCount == 1) fluffyText = " and your Fluffy bonus as half of a Spire";
             else fluffyText += " and your two Fluffy bonuses as another";
             totalSpires += fluffyCount * 0.5;
           }
@@ -3267,18 +2974,13 @@ function newGame() {
             ", giving you " +
             totalSpires * 5 +
             "% of your highest Zone reached (through Z" +
-            Math.floor(
-              (totalSpires / 20) * (getHighestLevelCleared(false, true) + 1)
-            ) +
+            Math.floor((totalSpires / 20) * (getHighestLevelCleared(false, true) + 1)) +
             "). " +
             text +
             " your bonus to " +
             (totalSpires + 2) * 5 +
             "% of your highest Zone reached (through Z" +
-            Math.floor(
-              ((totalSpires + 2) / 20) *
-                (getHighestLevelCleared(false, true) + 1)
-            ) +
+            Math.floor(((totalSpires + 2) / 20) * (getHighestLevelCleared(false, true) + 1)) +
             ")."
           );
         },
@@ -3558,10 +3260,7 @@ function newGame() {
         radLevel: 0,
         radSpent: 0,
         getMult: function () {
-          return Math.pow(
-            this.getBonusAmt(),
-            getPerkLevel("Greed") + getPerkLevel("Masterfulness")
-          );
+          return Math.pow(this.getBonusAmt(), getPerkLevel("Greed") + getPerkLevel("Masterfulness"));
         },
         getBonusAmt: function () {
           var tribs = game.buildings.Tribute.owned;
@@ -3584,10 +3283,7 @@ function newGame() {
         radSpent: 0,
         timeLastZone: -1,
         getMult: function () {
-          return Math.pow(
-            this.getBonusAmt(),
-            getPerkLevel("Tenacity") + getPerkLevel("Masterfulness")
-          );
+          return Math.pow(this.getBonusAmt(), getPerkLevel("Tenacity") + getPerkLevel("Masterfulness"));
         },
         getCarryoverMult: function () {
           var mult = 0.5;
@@ -3648,10 +3344,8 @@ function newGame() {
         },
         getActiveLevels: function () {
           var perkLevel = getPerkLevel("Equality");
-          if (this.scalingActive && this.scalingCount < perkLevel)
-            return this.scalingCount;
-          if (!this.scalingActive && this.disabledStackCount > -1)
-            return this.disabledStackCount;
+          if (this.scalingActive && this.scalingCount < perkLevel) return this.scalingCount;
+          if (!this.scalingActive && this.disabledStackCount > -1) return this.disabledStackCount;
           return perkLevel;
         },
         specialGrowth: 1.5,
@@ -3743,8 +3437,7 @@ function newGame() {
         modifier: 0.1,
         priceBase: 3,
         heliumSpent: 0,
-        tooltip:
-          "Bring some pheromones with you to ensure that your Trimps will permanently breed 10% faster.",
+        tooltip: "Bring some pheromones with you to ensure that your Trimps will permanently breed 10% faster.",
         radLevel: 0,
         radSpent: 0,
         locked: false,
@@ -3831,8 +3524,7 @@ function newGame() {
           "Crystallize some Radon, creating an interdimensional Prism that you can carry back through Portals. Each level adds 1% to your Trimps' Prismatic Shield and makes your Trimps feel 5% more comfortable in battle. Once you have 20 or more points of Prismal, you will automatically collect Prismalicious from the Prismatic Palace after completing Z20. <b>Maximum of 100 levels.</b>",
         max: 100,
         onChange: function () {
-          if (!game.upgrades.Prismatic.done)
-            document.getElementById("blockDiv").style.visibility = "visible";
+          if (!game.upgrades.Prismatic.done) document.getElementById("blockDiv").style.visibility = "visible";
         },
       },
       Hunger: {
@@ -3900,27 +3592,14 @@ function newGame() {
         //in seconds
         frenzyLeft: function () {
           if (this.frenzyStarted == -1) return 0;
-          var timeSince = Math.floor(
-            (new Date().getTime() - this.frenzyStarted) / 1000
-          );
+          var timeSince = Math.floor((new Date().getTime() - this.frenzyStarted) / 1000);
           var remaining = this.frenzyTime() - timeSince;
           if (remaining <= 0) return 0;
           return remaining;
         },
         drawStacks: function () {
-          if (
-            this.frenzyStarted == -1 ||
-            autoBattle.oneTimers.Mass_Hysteria.owned
-          )
-            manageStacks(
-              null,
-              null,
-              true,
-              "frenzyPerkStacks",
-              null,
-              null,
-              true
-            );
+          if (this.frenzyStarted == -1 || autoBattle.oneTimers.Mass_Hysteria.owned)
+            manageStacks(null, null, true, "frenzyPerkStacks", null, null, true);
           else {
             var icon = "";
             if (this.canRecharge()) icon = "icon-star-full";
@@ -3950,10 +3629,8 @@ function newGame() {
             prettify((this.getAttackMult() - 1) * 100) +
             "% more damage.<br/><br/>";
           if (!this.deathless)
-            text +=
-              "Your Trimps have died under this Frenzy buff and will be unable to recharge it.";
-          else if (rechargeTime < 0)
-            text += "Your Trimps are able to refresh this Frenzy buff!";
+            text += "Your Trimps have died under this Frenzy buff and will be unable to recharge it.";
+          else if (rechargeTime < 0) text += "Your Trimps are able to refresh this Frenzy buff!";
           else
             text +=
               "The Trimps that earned this Frenzy buff are still alive, and they will be able to refresh its duration starting in " +
@@ -4025,12 +3702,7 @@ function newGame() {
             "Grants your Trimps the ability to locate small Runetrinkets around the World. Purchasing this Perk will grant your Trimps a chance per Zone cleared above Z100 to find a Runetrinket. Each Runetrinket increases your Trimps' attack, health, and gathered primary resources by 1% (additive) per perk level. You can store a maximum of " +
             this.trinketsPerLevel +
             " Runetrinkets per perk level, reducing levels in this perk will deactivate any trinkets above cap but not lose them. Runetrinkets persist through Portal and never reset. The chance to find a Runetrinket increases by about 50% per level of this Perk, and scales as the Zone number increases (up to Z200). You'll also find 1 guaranteed Runetrinket every 25 Zones above Z100 for every 2 levels of this perk.";
-          text +=
-            "<br/><br/>You have " +
-            prettify(this.trinkets) +
-            " Runetrinket" +
-            needAnS(this.trinkets) +
-            ".";
+          text += "<br/><br/>You have " + prettify(this.trinkets) + " Runetrinket" + needAnS(this.trinkets) + ".";
           text +=
             " You are currently gaining " +
             formatMultAsPercent(this.getMult(useTemp), true) +
@@ -4045,11 +3717,7 @@ function newGame() {
         trinketsPerLevel: 1000,
         seed: Math.floor(Math.random() * 1e6),
         getChanceText: function (useTemp) {
-          var chance = this.getDropChance(
-            game.global.world + 1,
-            false,
-            useTemp
-          );
+          var chance = this.getDropChance(game.global.world + 1, false, useTemp);
           if (chance <= 0) {
             return (
               "You will have a <b>" +
@@ -4058,11 +3726,7 @@ function newGame() {
             );
           }
           if (chance <= 100) {
-            return (
-              "You have a <b>" +
-              prettify(chance) +
-              "%</b> chance to find a Runetrinket at the end of this Zone."
-            );
+            return "You have a <b>" + prettify(chance) + "%</b> chance to find a Runetrinket at the end of this Zone.";
           }
           var guaranteed = Math.floor(chance / 100);
           return (
@@ -4091,8 +3755,7 @@ function newGame() {
           if (useWorld > 201) useWorld = 200;
           var zones = useWorld - 100;
           var chance = (1 + (perkLevel - 1) / 2) * Math.pow(1.03, zones);
-          if (game.global.challengeActive == "Alchemy" && !ignoreAlch)
-            chance = alchObj.getRunetrinketMult(chance);
+          if (game.global.challengeActive == "Alchemy" && !ignoreAlch) chance = alchObj.getRunetrinketMult(chance);
           return chance;
         },
         getTrinketCap: function () {
@@ -4147,8 +3810,7 @@ function newGame() {
         priceBase: 100e21,
         radLevel: 0,
         radSpent: 0,
-        tooltip:
-          "Expanding Tauntimps grant an extra 0.01% Housing per Perk level.",
+        tooltip: "Expanding Tauntimps grant an extra 0.01% Housing per Perk level.",
         specialGrowth: 3,
       },
     },
@@ -4335,8 +3997,7 @@ function newGame() {
             if (game.global.soldierHealth > game.global.soldierHealthMax)
               game.global.soldierHealth = game.global.soldierHealthMax;
           }
-          if (this.balanceStacks > this.highestStacks)
-            this.highestStacks = this.balanceStacks;
+          if (this.balanceStacks > this.highestStacks) this.highestStacks = this.balanceStacks;
         },
         removeStack: function () {
           this.balanceStacks--;
@@ -4359,8 +4020,7 @@ function newGame() {
           return this.balanceStacks * 0.01 + 1;
         },
         onComplete: function () {
-          if (game.challenges.Balance.highestStacks <= 100)
-            giveSingleAchieve("Underbalanced");
+          if (game.challenges.Balance.highestStacks <= 100) giveSingleAchieve("Underbalanced");
           var reward = game.challenges.Balance.heldHelium;
           message(
             "You have completed the Balance challenge! You have been rewarded with " +
@@ -4383,17 +4043,12 @@ function newGame() {
       },
       Scientist: {
         get description() {
-          var is5 =
-            game.global.highestLevelCleared >= 129 && game.global.sLevel >= 4;
+          var is5 = game.global.highestLevelCleared >= 129 && game.global.sLevel >= 4;
           return (
             "Attempt modifying the portal to " +
-            (is5
-              ? "retain positive qualities from previous dimensions"
-              : "harvest resources when travelling") +
+            (is5 ? "retain positive qualities from previous dimensions" : "harvest resources when travelling") +
             ". Until you perfect the technique, you will start with <b>_</b> science but will be unable to research or hire scientists" +
-            (is5
-              ? " and <b style='color: maroon'>all enemy damage will be 10X higher</b>"
-              : "") +
+            (is5 ? " and <b style='color: maroon'>all enemy damage will be 10X higher</b>" : "") +
             ". Choose your upgrades wisely! Clearing <b>'The Block' (11)</b> with this challenge active will cause you to * each time you use your portal."
           );
         },
@@ -4402,10 +4057,8 @@ function newGame() {
         heldBooks: 0,
         filter: function (fromCheck) {
           if (portalUniverse == 2) return false;
-          if (game.global.sLevel == 0)
-            return game.global.highestLevelCleared >= 39;
-          else if (game.global.sLevel == 1)
-            return game.global.highestLevelCleared >= 49;
+          if (game.global.sLevel == 0) return game.global.highestLevelCleared >= 39;
+          else if (game.global.sLevel == 1) return game.global.highestLevelCleared >= 49;
           else if (game.global.sLevel == 2) {
             return game.global.highestLevelCleared >= 89;
           } else if (game.global.sLevel == 3) {
@@ -4526,10 +4179,8 @@ function newGame() {
         },
         abandon: function () {
           if (game.challenges.Trimp.heldBooks > 1)
-            game.upgrades.Coordination.allowed +=
-              game.challenges.Trimp.heldBooks - 1;
-          if (game.challenges.Trimp.heldBooks > 0)
-            unlockUpgrade("Coordination");
+            game.upgrades.Coordination.allowed += game.challenges.Trimp.heldBooks - 1;
+          if (game.challenges.Trimp.heldBooks > 0) unlockUpgrade("Coordination");
           document.getElementById("realTrimpName").innerHTML = "Trimps";
         },
         start: function () {
@@ -4683,9 +4334,7 @@ function newGame() {
         },
         abandon: function () {
           if (document.getElementById("livingBuff"))
-            document
-              .getElementById("goodGuyName")
-              .removeChild(document.getElementById("livingBuff"));
+            document.getElementById("goodGuyName").removeChild(document.getElementById("livingBuff"));
         },
       },
       Mapocalypse: {
@@ -4699,8 +4348,7 @@ function newGame() {
         abandon: function () {
           for (var x = 0; x < game.global.mapsOwnedArray.length; x++) {
             game.global.mapsOwnedArray[x].difficulty =
-              parseFloat(game.global.mapsOwnedArray[x].difficulty) -
-              this.difficultyIncrease;
+              parseFloat(game.global.mapsOwnedArray[x].difficulty) - this.difficultyIncrease;
           }
         },
         onComplete: function () {
@@ -4729,8 +4377,7 @@ function newGame() {
           "Visit a dimension where Bad Guys are Coordinated but never fast, to allow you to study naturally evolved Coordination. Completing <b>'Dimension of Anger' (20)</b> with this challenge active will cause all enemies to lose their Coordination.",
         completed: false,
         allowSquared: true,
-        squaredDescription:
-          "Visit a dimension where Bad Guys are Coordinated but never fast, chip 'em down!",
+        squaredDescription: "Visit a dimension where Bad Guys are Coordinated but never fast, chip 'em down!",
         replaceSquareFreq: 3,
         replaceSquareThresh: 30,
         filter: function () {
@@ -4771,8 +4418,7 @@ function newGame() {
           game.challenges.Crushed.heldHelium = 0;
           game.global.challengeActive = "";
           addHelium(heliumAdded);
-          if (game.challenges.Crushed.critsTaken == 0)
-            giveSingleAchieve("Thick Skinned");
+          if (game.challenges.Crushed.critsTaken == 0) giveSingleAchieve("Thick Skinned");
           game.challenges.Crushed.abandon();
         },
         heldHelium: 0,
@@ -5054,24 +4700,8 @@ function newGame() {
           return getHighestLevelCleared(true) >= 459;
         },
         clearStacks: function () {
-          manageStacks(
-            null,
-            null,
-            true,
-            "frigidShatterStacks",
-            null,
-            null,
-            true
-          );
-          manageStacks(
-            null,
-            null,
-            true,
-            "frigidWarmthStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks(null, null, true, "frigidShatterStacks", null, null, true);
+          manageStacks(null, null, true, "frigidWarmthStacks", null, null, true);
         },
         drawStacks: function () {
           if (this.shattered > 0) {
@@ -5086,15 +4716,7 @@ function newGame() {
               false
             );
           } else {
-            manageStacks(
-              null,
-              null,
-              true,
-              "frigidShatterStacks",
-              null,
-              null,
-              true
-            );
+            manageStacks(null, null, true, "frigidShatterStacks", null, null, true);
           }
           if (this.warmth > 0) {
             manageStacks(
@@ -5108,15 +4730,7 @@ function newGame() {
               false
             );
           } else {
-            manageStacks(
-              null,
-              null,
-              true,
-              "frigidWarmthStacks",
-              null,
-              null,
-              true
-            );
+            manageStacks(null, null, true, "frigidWarmthStacks", null, null, true);
           }
         },
         shatteredTooltip: function () {
@@ -5188,8 +4802,7 @@ function newGame() {
                   "%.",
                 "Notices"
               );
-          } else
-            message("You completed Frigid again, just for fun!", "Notices");
+          } else message("You completed Frigid again, just for fun!", "Notices");
           game.global.challengeActive = "";
         },
       },
@@ -5211,10 +4824,7 @@ function newGame() {
           if (roll == 0) {
             this.nextWonder = game.global.world + 5;
             this.wonders++;
-            message(
-              "Fluffy has Experienced the Wonder of " + mapObj.name + "!",
-              "Notices"
-            );
+            message("Fluffy has Experienced the Wonder of " + mapObj.name + "!", "Notices");
             Fluffy.rewardExp(3);
             this.drawStacks();
           }
@@ -5267,23 +4877,10 @@ function newGame() {
           return getHighestLevelCleared(true) >= 599;
         },
         clearStacks: function () {
-          manageStacks(
-            null,
-            null,
-            true,
-            "experienceWonderStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks(null, null, true, "experienceWonderStacks", null, null, true);
         },
         drawStacks: function () {
-          var color =
-            this.nextWonder == 300
-              ? "Grey"
-              : game.global.world >= this.nextWonder
-              ? "Green"
-              : "Red";
+          var color = this.nextWonder == 300 ? "Grey" : game.global.world >= this.nextWonder ? "Green" : "Red";
           manageStacks(
             "Wonders Experienced",
             this.wonders,
@@ -5295,11 +4892,7 @@ function newGame() {
             false,
             "xpColor"
           );
-          swapClass(
-            "xpColor",
-            "xpColor" + color,
-            document.getElementById("experienceWonderStacks")
-          );
+          swapClass("xpColor", "xpColor" + color, document.getElementById("experienceWonderStacks"));
         },
         getFinalXpMult: function (extraTiers) {
           var addBw = 0;
@@ -5322,8 +4915,7 @@ function newGame() {
             "% of all Exp earned. Enemies have +" +
             prettify((this.getEnemyMult() - 1) * 100) +
             "% increased Attack and Health.<br/><br/>";
-          if (this.nextWonder == 300)
-            text += "The first Wonder can be seen starting at Z300.";
+          if (this.nextWonder == 300) text += "The first Wonder can be seen starting at Z300.";
           else if (game.global.world <= this.nextWonder)
             text +=
               "Fluffy last saw a Wonder on Z" +
@@ -5331,22 +4923,16 @@ function newGame() {
               ", and the next one is available at Z" +
               this.nextWonder +
               ".";
-          else
-            text +=
-              "Fluffy thinks you could find a Wonder now if you ran a few maps!";
+          else text += "Fluffy thinks you could find a Wonder now if you ran a few maps!";
           if (this.heldExperience > 0) {
-            var currentTiers = Math.floor(
-              (game.stats.highestBw.value - 605) / 15
-            );
+            var currentTiers = Math.floor((game.stats.highestBw.value - 605) / 15);
             if (currentTiers < 0) currentTiers = 0;
             if (currentTiers > 7) currentTiers = 7;
             text +=
               "<br/><br/>Fluffy has earned a total of " +
               prettify(this.heldExperience) +
               " Exp so far, and will gain an extra " +
-              prettify(
-                this.heldExperience * this.getFinalXpMult(currentTiers)
-              ) +
+              prettify(this.heldExperience * this.getFinalXpMult(currentTiers)) +
               " Exp on completion (+" +
               prettify(game.challenges.Experience.getFinalXpMult() * 100) +
               "% from Wonders, + " +
@@ -5514,17 +5100,13 @@ function newGame() {
           var jobCount = 0;
           for (var job in game.jobs) jobCount += game.jobs[job].owned; //Dragimp adds 1
           if (
-            jobCount - game.jobs.Dragimp.owned - game.jobs.Amalgamator.owned ==
-              0 &&
+            jobCount - game.jobs.Dragimp.owned - game.jobs.Amalgamator.owned == 0 &&
             game.stats.trimpsFired.value == 0
           )
             giveSingleAchieve("Resourceyphobe");
         },
         onNextWorld: function () {
-          var resCount =
-            game.resources.food.owned +
-            game.resources.wood.owned +
-            game.resources.science.owned;
+          var resCount = game.resources.food.owned + game.resources.wood.owned + game.resources.science.owned;
           game.resources.food.owned = 0;
           game.resources.wood.owned = 0;
           game.resources.science.owned = 0;
@@ -5557,8 +5139,7 @@ function newGame() {
         addStack: function () {
           this.balanceStacks++;
           if (this.balanceStacks > 500) this.balanceStacks = 500;
-          if (this.balanceStacks > this.highestStacks)
-            this.highestStacks = this.balanceStacks;
+          if (this.balanceStacks > this.highestStacks) this.highestStacks = this.balanceStacks;
         },
         removeStack: function () {
           this.balanceStacks--;
@@ -5579,10 +5160,7 @@ function newGame() {
         },
         onComplete: function () {
           if (this.balanceStacks >= 500) giveSingleAchieve("Upsized");
-          message(
-            "You have completed the Unbalance challenge! You have unlocked the Equality Perk!",
-            "Notices"
-          );
+          message("You have completed the Unbalance challenge! You have unlocked the Equality Perk!", "Notices");
           game.challenges.Unbalance.abandon();
           game.global.challengeActive = "";
           unlockPerk("Equality");
@@ -5621,11 +5199,7 @@ function newGame() {
           addHelium(reward);
         },
         onComplete: function () {
-          if (
-            game.global.canRespecPerks &&
-            !game.global.bonePortalThisRun &&
-            game.portal.Prismal.radLevel == 0
-          )
+          if (game.global.canRespecPerks && !game.global.bonePortalThisRun && game.portal.Prismal.radLevel == 0)
             giveSingleAchieve("Unpoppable");
           var reward = game.challenges.Bublé.heldHelium;
           reward *= 5;
@@ -5660,8 +5234,7 @@ function newGame() {
           manageStacks(null, null, false, "enemyDuelPoints", null, null, true);
         },
         drawStacks: function () {
-          if (this.trimpStacks < this.lowestTrimpStacks)
-            this.lowestTrimpStacks = this.trimpStacks;
+          if (this.trimpStacks < this.lowestTrimpStacks) this.lowestTrimpStacks = this.trimpStacks;
           manageStacks(
             "Duel Points",
             this.trimpStacks,
@@ -5685,21 +5258,12 @@ function newGame() {
           var name = isTrimp ? "Your Trimps" : "The Bad Guys";
           var stacks = isTrimp ? this.trimpStacks : this.enemyStacks;
           var text = name + " have " + stacks + " Duel Points.";
-          if (stacks > 50)
-            text += " " + name + " have 3x attack for being over 50 points.";
-          else if (
-            stacks < 10 &&
-            game.global.runningChallengeSquared &&
-            isTrimp
-          )
+          if (stacks > 50) text += " " + name + " have 3x attack for being over 50 points.";
+          else if (stacks < 10 && game.global.runningChallengeSquared && isTrimp)
             text += " " + name + " have 10x health for being below 10 points.";
           else if (stacks < 10)
-            text +=
-              " " +
-              name +
-              " always attack first and have 10x health for being below 10 points.";
-          else if (stacks < 20)
-            text += " " + name + " have 10x health for being below 20 points.";
+            text += " " + name + " always attack first and have 10x health for being below 10 points.";
+          else if (stacks < 20) text += " " + name + " have 10x health for being below 20 points.";
           text +=
             "<br/><br/>" +
             name +
@@ -5712,10 +5276,7 @@ function newGame() {
         },
         onComplete: function () {
           if (this.lowestTrimpStacks >= 20) giveSingleAchieve("Pwnd");
-          message(
-            "You have completed the Duel challenge! You have unlocked the Criticality Perk!",
-            "Notices"
-          );
+          message("You have completed the Duel challenge! You have unlocked the Criticality Perk!", "Notices");
           game.challenges.Duel.abandon();
           game.global.challengeActive = "";
           unlockPerk("Criticality");
@@ -5894,24 +5455,8 @@ function newGame() {
           this.motivatedStacks = 100;
           this.exhaustedStacks = 0;
           game.global.challengeActive = "";
-          manageStacks(
-            "Motivated",
-            null,
-            true,
-            "quagmireMotivatedStacks",
-            null,
-            null,
-            true
-          );
-          manageStacks(
-            "Exhausted",
-            null,
-            true,
-            "quagmireExhaustedStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks("Motivated", null, true, "quagmireMotivatedStacks", null, null, true);
+          manageStacks("Exhausted", null, true, "quagmireExhaustedStacks", null, null, true);
           this.removeBog();
         },
         getSpeedPenalty: function () {
@@ -5944,8 +5489,7 @@ function newGame() {
           if (this.exhaustedStacks == 0) return 1;
           var mult = 1;
           var mod = game.global.mapsActive ? 0.05 : 0.1;
-          if (this.exhaustedStacks < 0)
-            mult = Math.pow(1 + mod, Math.abs(this.exhaustedStacks));
+          if (this.exhaustedStacks < 0) mult = Math.pow(1 + mod, Math.abs(this.exhaustedStacks));
           else mult = Math.pow(1 - mod, this.exhaustedStacks);
           return mult;
         },
@@ -5956,8 +5500,7 @@ function newGame() {
         get squaredDescription() {
           var desc =
             "Travel to an ultra scary alternate reality with horrific Bad Guys. Enemies heal for 25% of their maximum health before each attack. If an enemy ever heals itself back to 100% health, your army will fall to despair and instantly wither away. Every enemy slain by your Trimps in the World or World-level Maps grants 1 stack of Hardness to your Trimps (stacking up to 10,000 and increasing Health by 0.1% per stack) and 1 stack of Horror to all enemies (increasing Attack by 0.05% per stack). Whenever a group of Trimps is killed by Wither, Trimps lose half of their stacks of Hardness and block the enemy's ability to heal and Wither for an amount of cells equal to 10% of the Hardness stacks lost. Plaguebringer";
-          if (game.global.highestRadonLevelCleared >= 200)
-            desc += " and Overkill are";
+          if (game.global.highestRadonLevelCleared >= 200) desc += " and Overkill are";
           else desc += " is";
           desc += " disabled during Wither<sup>3</sup>";
           return desc;
@@ -5987,10 +5530,7 @@ function newGame() {
           return getHighestLevelCleared(true) >= 69;
         },
         addStacks: function () {
-          if (
-            !game.global.mapsActive ||
-            getCurrentMapObject().level >= game.global.world
-          ) {
+          if (!game.global.mapsActive || getCurrentMapObject().level >= game.global.world) {
             if (this.trimpStacks < 10000) {
               if (game.global.soldierHealth > 0) {
                 var increase = this.getTrimpHealthMult();
@@ -6018,33 +5558,9 @@ function newGame() {
           this.trimpStacks = 0;
           this.enemyStacks = 0;
           this.healImmunity = 0;
-          manageStacks(
-            null,
-            null,
-            true,
-            "witherHardenedStacks",
-            null,
-            null,
-            true
-          );
-          manageStacks(
-            null,
-            null,
-            false,
-            "witherHorrorStacks",
-            null,
-            null,
-            true
-          );
-          manageStacks(
-            null,
-            null,
-            true,
-            "witherImmunityStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks(null, null, true, "witherHardenedStacks", null, null, true);
+          manageStacks(null, null, false, "witherHorrorStacks", null, null, true);
+          manageStacks(null, null, true, "witherImmunityStacks", null, null, true);
         },
         drawStacks: function () {
           manageStacks(
@@ -6074,16 +5590,7 @@ function newGame() {
               "icomoon icon-plus",
               "Enemies cannot heal or inflict Wither while your Trimps have Wither Immunity."
             );
-          else
-            manageStacks(
-              null,
-              null,
-              true,
-              "witherImmunityStacks",
-              null,
-              null,
-              true
-            );
+          else manageStacks(null, null, true, "witherImmunityStacks", null, null, true);
         },
         onLoad: function () {
           this.drawStacks();
@@ -6093,9 +5600,7 @@ function newGame() {
           var buffName = isTrimp ? "Hardened" : "Horror";
           var stat = isTrimp ? "Health" : "Attack";
           var stacks = isTrimp ? this.trimpStacks : this.enemyStacks;
-          var mult = isTrimp
-            ? this.getTrimpHealthMult()
-            : this.getEnemyAttackMult();
+          var mult = isTrimp ? this.getTrimpHealthMult() : this.getEnemyAttackMult();
           mult = prettify((mult - 1) * 100);
           var text =
             name +
@@ -6139,10 +5644,7 @@ function newGame() {
           unlockPerk("Hunger");
         },
         onFail: function () {
-          message(
-            "You have failed the Revenge Challenge! Better luck next time!",
-            "Notices"
-          );
+          message("You have failed the Revenge Challenge! Better luck next time!", "Notices");
           this.stacks = 0;
           game.global.challengeActive = "";
           this.abandon();
@@ -6154,15 +5656,7 @@ function newGame() {
         },
         fireAbandon: true,
         abandon: function () {
-          manageStacks(
-            null,
-            null,
-            true,
-            "revengeChallengeStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks(null, null, true, "revengeChallengeStacks", null, null, true);
         },
         drawStacks: function () {
           manageStacks(
@@ -6180,10 +5674,7 @@ function newGame() {
         },
         stackTooltip: function () {
           var text =
-            "Your Trimps have been killed by enemy overkill damage " +
-            this.stacks +
-            " time" +
-            needAnS(this.stacks);
+            "Your Trimps have been killed by enemy overkill damage " + this.stacks + " time" + needAnS(this.stacks);
           text +=
             "<br/><br/>Your Trimps have " +
             prettify(this.getMult()) +
@@ -6267,8 +5758,7 @@ function newGame() {
           if (this.questComplete) return;
           if (this.questId < 2) return; //resource quests checked from gather
           if (this.questId <= 3) this.checkQuest();
-          else if (this.questId <= 5 && game.global.lastClearedCell == 98)
-            this.checkQuest();
+          else if (this.questId <= 5 && game.global.lastClearedCell == 98) this.checkQuest();
           //Do nothing for 6, checkQuest called from smithy purchase
         },
         getQuestProgress: function () {
@@ -6276,11 +5766,7 @@ function newGame() {
           if (this.questComplete) return "Quest Complete!";
           if (this.questId <= 1) {
             return (
-              prettify(game.resources[this.resource].owned) +
-              " / " +
-              prettify(this.questProgress) +
-              " " +
-              this.resource
+              prettify(game.resources[this.resource].owned) + " / " + prettify(this.questProgress) + " " + this.resource
             );
           }
           if (this.questId <= 3) {
@@ -6297,8 +5783,7 @@ function newGame() {
         completeQuest: function () {
           this.questComplete = true;
           this.finishedQuests++;
-          if (this.finishedQuests == 80 && this.questsMade == 80)
-            giveSingleAchieve("Level Up");
+          if (this.finishedQuests == 80 && this.questsMade == 80) giveSingleAchieve("Level Up");
           message(
             "You have completed your quest! You've completed " +
               this.finishedQuests +
@@ -6339,9 +5824,7 @@ function newGame() {
           for (var y = 0; y < this.questDescriptions.length; y++) {
             if (y != 6 || this.questId != 6) quests.push(y);
           }
-          var roll = Math.floor(
-            seededRandom(game.global.u2WorldSeed++) * quests.length
-          );
+          var roll = Math.floor(seededRandom(game.global.u2WorldSeed++) * quests.length);
           roll = quests[roll];
           this.questId = roll;
           this.questComplete = false;
@@ -6356,9 +5839,7 @@ function newGame() {
               res.push("food");
               game.resources.food.owned = 5;
             }
-            var resRoll = Math.floor(
-              seededRandom(game.global.u2WorldSeed++) * res.length
-            );
+            var resRoll = Math.floor(seededRandom(game.global.u2WorldSeed++) * res.length);
             this.resource = res[resRoll];
             var mult = roll == 0 ? 5 : 2;
             this.questProgress = game.resources[res[resRoll]].owned * mult;
@@ -6367,9 +5848,7 @@ function newGame() {
             this.res = "";
           }
           message(
-            "You have a new quest! <b>" +
-              this.getQuestDescription() +
-              "</b>. Good luck!",
+            "You have a new quest! <b>" + this.getQuestDescription() + "</b>. Good luck!",
             "Notices",
             "*exclamation",
             "questMessage questNew"
@@ -6378,16 +5857,12 @@ function newGame() {
         getQuestDescription: function (addProgress) {
           if (this.questId == -1) "No active quest";
           var desc = this.questDescriptions[this.questId];
-          if (this.questId <= 1)
-            desc = desc.replace("{resource}", this.resource);
+          if (this.questId <= 1) desc = desc.replace("{resource}", this.resource);
           if (addProgress) desc += ". Progress: " + this.getQuestProgress();
           return desc;
         },
         getQuestStartZone: function (desc) {
-          var questStart =
-            desc || game.global.runningChallengeSquared
-              ? game.c2.Quest - 80
-              : 6;
+          var questStart = desc || game.global.runningChallengeSquared ? game.c2.Quest - 80 : 6;
           if (questStart < 6) questStart = 6;
           return questStart;
         },
@@ -6434,8 +5909,7 @@ function newGame() {
           return getHighestLevelCleared(true) >= 89;
         },
         automatorTooltip: function () {
-          var text =
-            "<div id='ArchaeologyAutomatorError' style='color: red'></div>";
+          var text = "<div id='ArchaeologyAutomatorError' style='color: red'></div>";
           text +=
             "<div>The Archaeology Automator is any Archaeologist's best friend (once they figure out how to use it)! Below you'll need to enter a string for the Automator to parse. Your string should be separated by commas, and will indicate priority for Relic purchases.<br/><br/>An example of a viable string would be '-10a,5s,5r,10s,10r,5a'. <b>Use 'a' for trimp Attack, 'e' for Enemy attack, 'r' for Radon, 's' for reSource, and 'b' for Breed speed.</b><br/><br/>As previously stated, each rule (separated by commas) in this string dictates the priority of that particular upgrade. With the given example string, the Automator will first buy Trimp Attack Relics until they're at or above -10, then will attempt to get the Resource Relic up to positive 5 points, then it will do the same with Radon. Once all of these Relics lose a point, the Automator will go back and fill Attack back up to -10 first, then Resource back up to 5, then Radon back to 5, then will move on to trying to get Resource to 10. Each time points are lost in a Relic, or if the Automator string is modified, the Automator will start back at the first rule and work its way back up.</div>";
           var selectedPerc = game.global.archThresh;
@@ -6537,9 +6011,7 @@ function newGame() {
             errElem.innerHTML = error;
             return;
           }
-          var selectElem = document.getElementById(
-            "ArchaeologyAutomatorSelect"
-          );
+          var selectElem = document.getElementById("ArchaeologyAutomatorSelect");
           var thresh = selectElem == null ? 50 : parseInt(selectElem.value, 10);
           game.global.archString = val;
           game.global.archThresh = thresh;
@@ -6561,8 +6033,7 @@ function newGame() {
             var points = this.getPoints(defs[letter]);
             if (points < number) {
               if (nextCost > costMax) return defs[letter] + "RelicCost";
-              if (makePurchase)
-                buyUpgrade(defs[letter] + "Relic", undefined, true);
+              if (makePurchase) buyUpgrade(defs[letter] + "Relic", undefined, true);
               return defs[letter];
             }
           }
@@ -6601,8 +6072,7 @@ function newGame() {
               cap +
               ".";
           }
-          text +=
-            "<br/><br/><b>Hold Ctrl while clicking any relic upgrade to access the Relic Automator!</b>";
+          text += "<br/><br/><b>Hold Ctrl while clicking any relic upgrade to access the Relic Automator!</b>";
           text +=
             "<br/><br/>You have discovered " +
             (this.getPoints(what) + game.global.world - 1) +
@@ -6628,10 +6098,7 @@ function newGame() {
           return 1.05;
         },
         getStatMult: function (what, forcePoints) {
-          var points =
-            typeof forcePoints === "undefined"
-              ? this.points[what]
-              : forcePoints;
+          var points = typeof forcePoints === "undefined" ? this.points[what] : forcePoints;
           if (what == "enemyAttack") points *= -1;
           var amt = Math.pow(this.getBaseStatMult(what), points);
           if (what == "radon") amt *= 3;
@@ -6667,10 +6134,7 @@ function newGame() {
             );
           }
           if (!game.global.ArchaeologyDone) {
-            message(
-              "You've gained the ability to create Small and Large Research Caches in Maps!",
-              "Notices"
-            );
+            message("You've gained the ability to create Small and Large Research Caches in Maps!", "Notices");
             game.global.ArchaeologyDone = true;
           }
           game.challenges.Archaeology.abandon();
@@ -6763,24 +6227,8 @@ function newGame() {
           }
         },
         abandon: function () {
-          manageStacks(
-            null,
-            null,
-            true,
-            "mayhemChallengeStacks",
-            null,
-            null,
-            true
-          );
-          manageStacks(
-            null,
-            null,
-            true,
-            "mayhemPoisonStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks(null, null, true, "mayhemChallengeStacks", null, null, true);
+          manageStacks(null, null, true, "mayhemPoisonStacks", null, null, true);
         },
         drawStacks: function () {
           manageStacks(
@@ -6803,15 +6251,7 @@ function newGame() {
               false
             );
           } else {
-            manageStacks(
-              null,
-              null,
-              true,
-              "mayhemPoisonStacks",
-              null,
-              null,
-              true
-            );
+            manageStacks(null, null, true, "mayhemPoisonStacks", null, null, true);
           }
         },
         onLoad: function () {
@@ -6850,8 +6290,7 @@ function newGame() {
                 "%",
               "Notices"
             );
-          } else
-            message("You completed Mayhem again, just for fun!", "Notices");
+          } else message("You completed Mayhem again, just for fun!", "Notices");
           if (game.global.mayhemCompletions >= 25) giveSingleAchieve("Peace");
           game.global.challengeActive = "";
           game.challenges.Mayhem.abandon();
@@ -6878,9 +6317,7 @@ function newGame() {
           if (!forC3)
             text +=
               " Completing <b>Z105</b> with this Challenge active will return the Dimension to normal" +
-              (game.global.stormDone
-                ? "."
-                : " and reward you with a brand new building to help with the weather!");
+              (game.global.stormDone ? "." : " and reward you with a brand new building to help with the weather!");
           return text;
         },
         completed: false,
@@ -6929,15 +6366,7 @@ function newGame() {
               false
             );
           } else {
-            manageStacks(
-              null,
-              null,
-              false,
-              "stormBetaStacks",
-              null,
-              null,
-              true
-            );
+            manageStacks(null, null, false, "stormBetaStacks", null, null, true);
           }
           if (this.mutations > 0) {
             manageStacks(
@@ -6950,15 +6379,7 @@ function newGame() {
               false
             );
           } else {
-            manageStacks(
-              null,
-              null,
-              false,
-              "stormMutationStacks",
-              null,
-              null,
-              true
-            );
+            manageStacks(null, null, false, "stormMutationStacks", null, null, true);
           }
         },
         stackTooltip: function (type) {
@@ -6987,8 +6408,7 @@ function newGame() {
         },
         enemyAttacked: function (cell) {
           this.beta++;
-          if (this.beta > this.mutationThresh * 50)
-            this.beta = this.mutationThresh * 50;
+          if (this.beta > this.mutationThresh * 50) this.beta = this.mutationThresh * 50;
           this.checkMutate(cell);
         },
         getAttackMult: function () {
@@ -7034,24 +6454,13 @@ function newGame() {
           if (cell.health > cell.maxHealth) cell.health = cell.maxHealth;
           if (this.cellStartAttack > 0) cell.attack = this.cellStartAttack;
           updateAllBattleNumbers();
-          manageStacks(
-            null,
-            null,
-            false,
-            "stormMutationStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks(null, null, false, "stormMutationStacks", null, null, true);
           manageStacks(null, null, false, "stormBetaStacks", null, null, true);
           manageStacks(null, null, true, "stormAlphaStacks", null, null, true);
         },
         onComplete: function () {
           if (!this.mutated) giveSingleAchieve("Clear Skies");
-          message(
-            "You have completed the Storm Challenge and unlocked the Antenna building!",
-            "Notices"
-          );
+          message("You have completed the Storm Challenge and unlocked the Antenna building!", "Notices");
           unlockBuilding("Antenna");
           game.global.stormDone = true;
           game.challenges.Storm.abandon();
@@ -7096,14 +6505,9 @@ function newGame() {
               prettify(this.getHorrimpChance(mapObj.level)) +
               "% chance per cell to find a Horrimp.";
           if (this.insanity <= 0) return text;
-          var showLoot =
-            this.insanity == 500 ? 66.6666 : this.getLootMult().toFixed(4);
+          var showLoot = this.insanity == 500 ? 66.6666 : this.getLootMult().toFixed(4);
           text +=
-            "<br/><br/>Your Trimps have x" +
-            this.getHealthMult().toFixed(4) +
-            " health and x" +
-            showLoot +
-            " loot.";
+            "<br/><br/>Your Trimps have x" + this.getHealthMult().toFixed(4) + " health and x" + showLoot + " loot.";
           return text;
         },
         getHealthMult: function () {
@@ -7119,8 +6523,7 @@ function newGame() {
             if (game.global.soldierHealth > game.global.soldierHealthMax)
               game.global.soldierHealth = game.global.soldierHealthMax;
           }
-          if (this.insanity > this.maxInsanity)
-            this.insanity = this.maxInsanity;
+          if (this.insanity > this.maxInsanity) this.insanity = this.maxInsanity;
           this.drawStacks();
         },
         completeMap: function (level) {
@@ -7153,8 +6556,7 @@ function newGame() {
           this.drawStacks();
         },
         onComplete: function () {
-          if (this.highestLevel <= 50 && this.insanity == 500)
-            giveSingleAchieve("Actually Insane");
+          if (this.highestLevel <= 50 && this.insanity == 500) giveSingleAchieve("Actually Insane");
           var reward = game.challenges.Insanity.heldHelium;
           reward *= 5;
           message(
@@ -7211,11 +6613,7 @@ function newGame() {
             false
           );
           var frenzyIcon =
-            this.frenzyStacks < 1
-              ? "icon-star-empty"
-              : this.frenzyStacks < 25
-              ? "icon-star-half"
-              : "icon-star-full";
+            this.frenzyStacks < 1 ? "icon-star-empty" : this.frenzyStacks < 25 ? "icon-star-half" : "icon-star-full";
           manageStacks(
             "Frenzied",
             this.frenzyStacks,
@@ -7253,8 +6651,7 @@ function newGame() {
           );
         },
         getHealthMult: function (getWeak) {
-          if (this.frenzyStacks == 0 || getWeak)
-            return 1 - this.weakened * 0.0499;
+          if (this.frenzyStacks == 0 || getWeak) return 1 - this.weakened * 0.0499;
           return 1 - this.frenzyStacks * 0.02;
         },
         getAttackMult: function () {
@@ -7311,8 +6708,7 @@ function newGame() {
           this.drawStacks();
         },
         onComplete: function () {
-          if (this.weakened == 20 && this.fullWeakAt < 100)
-            giveSingleAchieve("You're Doing it Wrong");
+          if (this.weakened == 20 && this.fullWeakAt < 100) giveSingleAchieve("You're Doing it Wrong");
           unlockPerk("Frenzy");
           message(
             "You have completed the Berserk challenge! You have unlocked the Frenzy Perk and your world has been returned to normal.",
@@ -7352,16 +6748,7 @@ function newGame() {
               this.stackTooltip("experienced"),
               false
             );
-          else
-            manageStacks(
-              null,
-              null,
-              true,
-              "experiencedStacks",
-              null,
-              null,
-              true
-            );
+          else manageStacks(null, null, true, "experiencedStacks", null, null, true);
           if (this.swarmStacks > 0)
             manageStacks(
               "The Swarm Grows",
@@ -7379,9 +6766,7 @@ function newGame() {
             return "This group of Trimps has killed a bug and knows their weakness, allowing them to attack first.";
           return (
             "All World enemies in this dimension" +
-            (!game.global.mapsActive
-              ? " have grown while you were "
-              : " are growing while you are ") +
+            (!game.global.mapsActive ? " have grown while you were " : " are growing while you are ") +
             "in maps, granting +" +
             prettify((this.getSwarmMult() - 1) * 100) +
             "% attack and health."
@@ -7441,18 +6826,7 @@ function newGame() {
         completeAfterZone: 135,
         unlockString: " reach Zone 130.",
         fireAbandon: true,
-        rewardsList: [
-          "cruf1",
-          "cruf2",
-          "cruf3",
-          "cruf4",
-          "cruf5",
-          "cruf6",
-          "cruf7",
-          "cruf8",
-          "cruf9",
-          "cruf10",
-        ],
+        rewardsList: ["cruf1", "cruf2", "cruf3", "cruf4", "cruf5", "cruf6", "cruf7", "cruf8", "cruf9", "cruf10"],
         totalXp: 0,
         firstLevelXp: 300000,
         growth: 2.5,
@@ -7505,10 +6879,7 @@ function newGame() {
         },
         boostsActive: function () {
           if (game.global.universe != 2) return false;
-          if (
-            game.global.challengeActive == "Nurture" ||
-            (this.cruffysUntil && game.global.world <= this.cruffysUntil)
-          )
+          if (game.global.challengeActive == "Nurture" || (this.cruffysUntil && game.global.world <= this.cruffysUntil))
             return true;
           return false;
         },
@@ -7521,14 +6892,10 @@ function newGame() {
           var experience = this.totalXp;
           var removeExp = 0;
           if (level > 0) {
-            removeExp = Math.floor(
-              this.firstLevelXp *
-                ((Math.pow(this.growth, level) - 1) / (this.growth - 1))
-            );
+            removeExp = Math.floor(this.firstLevelXp * ((Math.pow(this.growth, level) - 1) / (this.growth - 1)));
           }
           var totalNeeded = Math.floor(
-            this.firstLevelXp *
-              ((Math.pow(this.growth, level + 1) - 1) / (this.growth - 1))
+            this.firstLevelXp * ((Math.pow(this.growth, level + 1) - 1) / (this.growth - 1))
           );
           totalNeeded -= removeExp;
           experience -= removeExp;
@@ -7538,13 +6905,11 @@ function newGame() {
           if (this.level >= 19) return;
           this.totalXp += reward * game.buildings.Laboratory.getExpMult();
           this.calculateLevel();
-          if (this.level >= 19 && game.global.world <= 69)
-            this.achieveDone = true;
+          if (this.level >= 19 && game.global.world <= 69) this.achieveDone = true;
         },
         calculateLevel: function () {
           this.level = Math.floor(
-            log10((this.totalXp / this.firstLevelXp) * (this.growth - 1) + 1) /
-              log10(this.growth)
+            log10((this.totalXp / this.firstLevelXp) * (this.growth - 1) + 1) / log10(this.growth)
           );
           if (this.level > 19) this.level = 19;
         },
@@ -7576,8 +6941,7 @@ function newGame() {
           game.global.challengeActive = "";
           if (game.portal.Observation.radLocked && this.getLevel() >= 10) {
             unlockPerk("Observation");
-            if (game.portal.Observation.trinkets == 0)
-              game.portal.Observation.trinkets = 10;
+            if (game.portal.Observation.trinkets == 0) game.portal.Observation.trinkets = 10;
             message("You have also unlocked the Observation Perk!", "Notices");
           }
           if (this.achieveDone) giveSingleAchieve("Nurtured AF");
@@ -7612,11 +6976,7 @@ function newGame() {
             prettify(scaleMult) +
             "x Attack and Health";
           var disabledCount = this.disabledEquipCount();
-          if (disabledCount == 0)
-            text +=
-              " and all Equipment will be " +
-              prettify(scaleMult) +
-              "x more expensive.</b>";
+          if (disabledCount == 0) text += " and all Equipment will be " + prettify(scaleMult) + "x more expensive.</b>";
           else
             text +=
               ", all Equipment will be " +
@@ -7745,12 +7105,10 @@ function newGame() {
           var cell = game.global.gridArray[game.global.lastClearedCell + 1];
           if (cell.health < 0) return;
           if (cell.preMayhemHealth) {
-            if (game.global.lastClearedCell == 98)
-              cell.maxHealth = cell.preMayhemHealth * this.getBossMult();
+            if (game.global.lastClearedCell == 98) cell.maxHealth = cell.preMayhemHealth * this.getBossMult();
             else cell.maxHealth = cell.preMayhemHealth * this.getPandMult();
           }
-          if (cell.maxHealth != -1 && cell.health > cell.maxHealth)
-            cell.health = cell.maxHealth;
+          if (cell.maxHealth != -1 && cell.health > cell.maxHealth) cell.health = cell.maxHealth;
         },
         abandon: function () {
           manageStacks(null, null, true, "pandOrderStacks", null, null, true);
@@ -7834,11 +7192,7 @@ function newGame() {
                 "%",
               "Notices"
             );
-          } else
-            message(
-              "You completed Pandemonium again, just for fun!",
-              "Notices"
-            );
+          } else message("You completed Pandemonium again, just for fun!", "Notices");
           game.global.challengeActive = "";
         },
         completed: false,
@@ -8024,8 +7378,7 @@ function newGame() {
           return 1 + 3 * this.embers;
         },
         getWoodMult: function (checkBurning) {
-          if (!checkBurning && game.global.mapsActive && this.bonfires == 0)
-            return 1;
+          if (!checkBurning && game.global.mapsActive && this.bonfires == 0) return 1;
           return Math.pow(0.95, this.embers);
         },
         onNextWorld: function () {
@@ -8087,11 +7440,7 @@ function newGame() {
         highestGlass: 0,
         onEnemyKilled: function () {
           if (this.shards <= 0) return;
-          if (
-            game.global.mapsActive &&
-            getCurrentMapObject().level < game.global.world
-          )
-            return;
+          if (game.global.mapsActive && getCurrentMapObject().level < game.global.world) return;
           this.shards -= 2 + this.crystals;
           if (this.shards < 0) this.shards = 0;
           this.drawStacks();
@@ -8120,15 +7469,7 @@ function newGame() {
           this.crystals = 0;
           this.updateCellHealth();
           manageStacks(null, null, false, "glassShardStacks", null, null, true);
-          manageStacks(
-            null,
-            null,
-            false,
-            "glassCrystalStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks(null, null, false, "glassCrystalStacks", null, null, true);
         },
         checkReflect: function (cell, trimpAttack) {
           if (this.crystals <= 0) return;
@@ -8187,9 +7528,7 @@ function newGame() {
           );
         },
         attackMult: function () {
-          return (
-            Math.pow(2, Math.floor(this.shards / 100)) * (100 + this.shards)
-          );
+          return Math.pow(2, Math.floor(this.shards / 100)) * (100 + this.shards);
         },
         shardHealthMult: function () {
           return Math.pow(2, Math.floor(this.shards / 100));
@@ -8273,15 +7612,7 @@ function newGame() {
             this.ranMelting = false;
             game.mapUnlocks.SmithFree.fire();
           }
-          manageStacks(
-            null,
-            null,
-            true,
-            "smithlessArmorStacks",
-            null,
-            null,
-            true
-          );
+          manageStacks(null, null, true, "smithlessArmorStacks", null, null, true);
           manageStacks(null, null, false, "ubersmithStacks", null, null, true);
         },
         onComplete: function () {
@@ -8345,16 +7676,7 @@ function newGame() {
               false,
               true
             );
-          } else
-            manageStacks(
-              null,
-              null,
-              false,
-              "ubersmithStacks",
-              null,
-              null,
-              true
-            );
+          } else manageStacks(null, null, false, "ubersmithStacks", null, null, true);
         },
         ubersmithTooltip: function () {
           return "Deal as much damage as possible to this Ubersmith in only 10 attacks! When these stacks reach 0, the Ubersmith will lose its power and grant Enhanced Armor based on how much damage it took. Ubersmiths are always fast!";
@@ -8472,10 +7794,7 @@ function newGame() {
           return this.desolationMult();
         },
         onNextWorld: function () {
-          this.updateHealth(
-            this.desolationMult(game.global.world - 1),
-            this.desolationMult(game.global.world)
-          );
+          this.updateHealth(this.desolationMult(game.global.world - 1), this.desolationMult(game.global.world));
           this.drawStacks();
         },
         clearedMap: function (level) {
@@ -8487,13 +7806,7 @@ function newGame() {
         onEnemyKilled: function () {
           if (game.global.mapsActive) return;
           var cell = getCurrentWorldCell();
-          var cellAttack = calculateDamage(
-            cell.attack,
-            false,
-            false,
-            false,
-            cell
-          );
+          var cellAttack = calculateDamage(cell.attack, false, false, false, cell);
           reduceSoldierHealth(cellAttack * 5);
           this.addChilledStacks(20);
         },
@@ -8517,15 +7830,7 @@ function newGame() {
               false
             );
           } else {
-            manageStacks(
-              null,
-              null,
-              true,
-              "desoChilledStacks",
-              null,
-              null,
-              true
-            );
+            manageStacks(null, null, true, "desoChilledStacks", null, null, true);
           }
         },
         onLoad: function () {
@@ -8561,8 +7866,7 @@ function newGame() {
                 "%",
               "Notices"
             );
-          } else
-            message("You completed Desolation again, just for fun!", "Notices");
+          } else message("You completed Desolation again, just for fun!", "Notices");
           game.global.challengeActive = "";
         },
         completed: false,
@@ -8651,10 +7955,7 @@ function newGame() {
           return abv + "/Hour this Run";
         },
         display: function () {
-          var resOwned =
-            game.global.universe == 2
-              ? game.resources.radon.owned
-              : game.resources.helium.owned;
+          var resOwned = game.global.universe == 2 ? game.resources.radon.owned : game.resources.helium.owned;
           return resOwned > 0;
         },
         value: function (useTemp) {
@@ -8663,13 +7964,9 @@ function newGame() {
           timeThisPortal /= 3600000;
           var resToUse;
           if (game.global.universe == 2) {
-            resToUse = useTemp
-              ? game.global.tempHighRadon
-              : game.resources.radon.owned;
+            resToUse = useTemp ? game.global.tempHighRadon : game.resources.radon.owned;
           } else {
-            resToUse = useTemp
-              ? game.global.tempHighHelium
-              : game.resources.helium.owned;
+            resToUse = useTemp ? game.global.tempHighHelium : game.resources.helium.owned;
           }
           return Math.floor(resToUse / timeThisPortal);
         },
@@ -8687,9 +7984,7 @@ function newGame() {
         atZone: 0,
         value: function () {
           return (
-            prettify(game.stats.bestHeliumHourThisRun.storedValue) +
-            ", Z:" +
-            game.stats.bestHeliumHourThisRun.atZone
+            prettify(game.stats.bestHeliumHourThisRun.storedValue) + ", Z:" + game.stats.bestHeliumHourThisRun.atZone
           );
         },
         evaluate: function () {
@@ -8794,8 +8089,7 @@ function newGame() {
             return;
           }
           if (game.global.world > this.value) this.value = game.global.world;
-          if (game.global.world > this.valueTotal)
-            this.valueTotal = game.global.world;
+          if (game.global.world > this.valueTotal) this.valueTotal = game.global.world;
         },
         hidden: false,
       },
@@ -8813,8 +8107,7 @@ function newGame() {
         evaluate: function () {
           //called on completion of void map
           if (game.global.world > this.value) this.value = game.global.world;
-          if (game.global.world > this.valueTotal)
-            this.valueTotal = game.global.world;
+          if (game.global.world > this.valueTotal) this.valueTotal = game.global.world;
         },
         hidden: false,
       },
@@ -9164,9 +8457,7 @@ function newGame() {
         upgrades: 0,
         modifier: 1,
         tickAtFuel: function (fuel) {
-          return Math.floor(
-            Math.sqrt(fuel) * (this.base * 0.1 * this.upgrades + this.base)
-          );
+          return Math.floor(Math.sqrt(fuel) * (this.base * 0.1 * this.upgrades + this.base));
         },
         cost: function () {
           return this.baseCost + 8 * this.upgrades;
@@ -9246,8 +8537,7 @@ function newGame() {
         description: function () {
           var requires =
             "<p class='" +
-            (game.permanentGeneratorUpgrades.Hybridization.owned &&
-            game.permanentGeneratorUpgrades.Storage.owned
+            (game.permanentGeneratorUpgrades.Hybridization.owned && game.permanentGeneratorUpgrades.Storage.owned
               ? "green"
               : "red") +
             "'>Requires Hybridization and Storage.</p>";
@@ -9279,14 +8569,12 @@ function newGame() {
         owned: false,
       },
       Shielding: {
-        description:
-          "Reduce the amount of Magmite that decays after each portal by 10% (additive)",
+        description: "Reduce the amount of Magmite that decays after each portal by 10% (additive)",
         cost: 1050,
         owned: false,
       },
       Slowburn: {
-        description:
-          "Reduce the rate of fuel consumption per tick by 0.1, from 0.5 to 0.4",
+        description: "Reduce the rate of fuel consumption per tick by 0.1, from 0.5 to 0.4",
         cost: 1875,
         owned: false,
       },
@@ -9309,9 +8597,7 @@ function newGame() {
       },
     },
     //Total 4448% after 4.6
-    tierValues: [
-      0, 0.3, 1, 2.5, 5, 10, 20, 40, 80, 160, 250, 400, 750, 1200, 2000,
-    ],
+    tierValues: [0, 0.3, 1, 2.5, 5, 10, 20, 40, 80, 160, 250, 400, 750, 1200, 2000],
     //rip colorsList, 11/28/15 - 11/28/17. He served us well until it became obvious that CSS was better.
     //colorsList: ["white", "#155515", "#151565", "#551555", "#954515", "#651515", "#951545", "#35a5a5", "#d58565", "#d53535"],
     achievements: {
@@ -9323,26 +8609,20 @@ function newGame() {
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
-            return (
-              game.global.highestLevelCleared +
-              " / " +
-              this.breakpoints[this.finished]
-            );
+            return game.global.highestLevelCleared + " / " + this.breakpoints[this.finished];
           return "Highest is " + game.global.highestLevelCleared;
         },
         evaluate: function () {
           return game.global.highestLevelCleared;
         },
         breakpoints: [
-          2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140,
-          150, 160, 170, 180, 190, 200, 210, 220, 230, 240, 250, 260, 270, 280,
-          290, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 600, 650,
-          700, 750, 800, 809,
+          2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 210, 220,
+          230, 240, 250, 260, 270, 280, 290, 300, 325, 350, 375, 400, 425, 450, 475, 500, 525, 550, 600, 650, 700, 750,
+          800, 809,
         ],
         tiers: [
-          1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6,
-          6, 6, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 10,
-          11, 12,
+          1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8,
+          8, 8, 8, 8, 8, 9, 9, 9, 10, 11, 12,
         ],
         names: [
           "This is Easy",
@@ -9408,23 +8688,19 @@ function newGame() {
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
-            return (
-              game.global.highestRadonLevelCleared +
-              " / " +
-              this.breakpoints[this.finished]
-            );
+            return game.global.highestRadonLevelCleared + " / " + this.breakpoints[this.finished];
           return "Highest is " + game.global.highestRadonLevelCleared;
         },
         evaluate: function () {
           return game.global.highestRadonLevelCleared;
         },
         breakpoints: [
-          2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140,
-          150, 160, 170, 180, 190, 200, 225, 250, 275, 300, 325, 350, 375, 400,
+          2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 225, 250,
+          275, 300, 325, 350, 375, 400,
         ],
         tiers: [
-          9, 9, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 13,
-          13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14,
+          9, 9, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14,
+          14, 14,
         ],
         names: [
           "This is Harder",
@@ -9466,24 +8742,15 @@ function newGame() {
         finished: 0,
         title: "Trimp Damage",
         description: function (number) {
-          return (
-            "Reach " + prettify(this.breakpoints[number]) + " displayed damage"
-          );
+          return "Reach " + prettify(this.breakpoints[number]) + " displayed damage";
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
-            return (
-              prettify(this.highest) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
-            );
+            return prettify(this.highest) + " / " + prettify(this.breakpoints[this.finished]);
           return "Highest is " + prettify(this.highest);
         },
         highest: 0,
-        breakpoints: [
-          100, 100000, 1e11, 1e17, 1e23, 1e29, 1e35, 1e41, 1e47, 1e53, 1e60,
-          1e67,
-        ],
+        breakpoints: [100, 100000, 1e11, 1e17, 1e23, 1e29, 1e35, 1e41, 1e47, 1e53, 1e60, 1e67],
         tiers: [1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6],
         names: [
           "Lead Trimps",
@@ -9507,22 +8774,15 @@ function newGame() {
         highest: 0,
         title: "Trimps Owned",
         description: function (number) {
-          return (
-            "Have  " + prettify(this.breakpoints[number]) + " total Trimps"
-          );
+          return "Have  " + prettify(this.breakpoints[number]) + " total Trimps";
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
-            return (
-              prettify(Math.floor(this.highest)) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
-            );
+            return prettify(Math.floor(this.highest)) + " / " + prettify(this.breakpoints[this.finished]);
           return "Highest is " + prettify(Math.floor(this.highest));
         },
         breakpoints: [
-          50, 150, 300, 1000, 10000, 100000, 1000000, 10000000, 100000000,
-          1000000000, 10000000000, 100000000000,
+          50, 150, 300, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000, 100000000000,
         ],
         tiers: [1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4],
         names: [
@@ -9582,16 +8842,13 @@ function newGame() {
         title: "Total Portals",
         description: function (number) {
           var s = number > 0 ? "s" : "";
-          return (
-            "Use the Portal " + prettify(this.breakpoints[number]) + " time" + s
-          );
+          return "Use the Portal " + prettify(this.breakpoints[number]) + " time" + s;
         },
         display: function () {
           return game.global.totalPortals > 0;
         },
         progress: function () {
-          if (this.breakpoints.length > this.finished)
-            return this.evaluate() + " / " + this.breakpoints[this.finished];
+          if (this.breakpoints.length > this.finished) return this.evaluate() + " / " + this.breakpoints[this.finished];
           return this.evaluate() + " total";
         },
         evaluate: function () {
@@ -9616,18 +8873,13 @@ function newGame() {
         finished: 0,
         title: "Total Zone Clears",
         description: function (number) {
-          return (
-            "Clear  " + prettify(this.breakpoints[number]) + " total Zones"
-          );
+          return "Clear  " + prettify(this.breakpoints[number]) + " total Zones";
         },
         evaluate: function () {
-          return (
-            game.stats.zonesCleared.value + game.stats.zonesCleared.valueTotal
-          );
+          return game.stats.zonesCleared.value + game.stats.zonesCleared.valueTotal;
         },
         progress: function () {
-          if (this.breakpoints.length > this.finished)
-            return this.evaluate() + " / " + this.breakpoints[this.finished];
+          if (this.breakpoints.length > this.finished) return this.evaluate() + " / " + this.breakpoints[this.finished];
           return prettify(this.evaluate()) + " total";
         },
         breakpoints: [30, 70, 130, 200, 400, 777, 1000, 1500, 10000, 50000], //total Zones according to stats
@@ -9658,17 +8910,11 @@ function newGame() {
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
-            return (
-              prettify(this.evaluate()) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
-            );
+            return prettify(this.evaluate()) + " / " + prettify(this.breakpoints[this.finished]);
           return prettify(this.evaluate()) + " total";
         },
         evaluate: function () {
-          return (
-            game.stats.mapsCleared.value + game.stats.mapsCleared.valueTotal
-          );
+          return game.stats.mapsCleared.value + game.stats.mapsCleared.valueTotal;
         },
         breakpoints: [50, 100, 2000, 5000, 10000, 20000, 50000, 100000], //total maps according to stats
         tiers: [1, 2, 2, 3, 3, 4, 4, 5],
@@ -9689,16 +8935,12 @@ function newGame() {
         finished: 0,
         title: "Helium Collection",
         description: function (number) {
-          return (
-            "Gather " + prettify(this.breakpoints[number]) + " total Helium"
-          );
+          return "Gather " + prettify(this.breakpoints[number]) + " total Helium";
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
             return (
-              prettify(Math.floor(this.evaluate() * 10000) / 10000) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
+              prettify(Math.floor(this.evaluate() * 10000) / 10000) + " / " + prettify(this.breakpoints[this.finished])
             );
           return prettify(this.evaluate()) + " total";
         },
@@ -9708,10 +8950,7 @@ function newGame() {
         display: function () {
           return game.global.totalHeliumEarned > 0;
         },
-        breakpoints: [
-          100, 10e2, 10e3, 10e4, 10e5, 10e6, 10e7, 10e8, 10e10, 10e11, 10e13,
-          10e15,
-        ],
+        breakpoints: [100, 10e2, 10e3, 10e4, 10e5, 10e6, 10e7, 10e8, 10e10, 10e11, 10e13, 10e15],
         tiers: [1, 2, 3, 4, 5, 6, 6, 7, 7, 7, 8, 8],
         names: [
           "Cool",
@@ -9734,16 +8973,12 @@ function newGame() {
         finished: 0,
         title: "Radon Collection",
         description: function (number) {
-          return (
-            "Gather " + prettify(this.breakpoints[number]) + " total Radon"
-          );
+          return "Gather " + prettify(this.breakpoints[number]) + " total Radon";
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
             return (
-              prettify(Math.floor(this.evaluate() * 10000) / 10000) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
+              prettify(Math.floor(this.evaluate() * 10000) / 10000) + " / " + prettify(this.breakpoints[this.finished])
             );
           return prettify(this.evaluate()) + " total";
         },
@@ -9753,9 +8988,7 @@ function newGame() {
         display: function () {
           return game.global.totalRadonEarned > 0 || game.global.universe == 2;
         },
-        breakpoints: [
-          100, 1e4, 5e5, 1e7, 1e9, 1e11, 1e13, 1e16, 1e19, 1e21, 1e24,
-        ],
+        breakpoints: [100, 1e4, 5e5, 1e7, 1e9, 1e11, 1e13, 1e16, 1e19, 1e21, 1e24],
         tiers: [9, 9, 10, 10, 10, 11, 12, 12, 13, 13, 13],
         names: [
           "Radon Runner",
@@ -9777,16 +9010,12 @@ function newGame() {
         finished: 0,
         title: "Helium Per Hour",
         description: function (number) {
-          return (
-            "Reach " + prettify(this.breakpoints[number]) + " Helium Per Hour"
-          );
+          return "Reach " + prettify(this.breakpoints[number]) + " Helium Per Hour";
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
             return (
-              prettify(Math.floor(this.evaluate() * 10000) / 10000) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
+              prettify(Math.floor(this.evaluate() * 10000) / 10000) + " / " + prettify(this.breakpoints[this.finished])
             );
           return "Currently at " + prettify(this.evaluate());
         },
@@ -9796,9 +9025,7 @@ function newGame() {
         display: function () {
           return game.global.totalHeliumEarned > 0;
         },
-        breakpoints: [
-          10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e9, 1e11, 1e13, 1e15, 5e17,
-        ],
+        breakpoints: [10, 100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e9, 1e11, 1e13, 1e15, 5e17],
         tiers: [2, 3, 3, 4, 4, 5, 6, 7, 7, 8, 8, 9],
         names: [
           "Coldlector",
@@ -9826,15 +9053,11 @@ function newGame() {
           return "Collect " + prettify(number) + " Heirloom" + s;
         },
         progress: function () {
-          if (this.breakpoints.length > this.finished)
-            return this.evaluate() + " / " + this.breakpoints[this.finished];
+          if (this.breakpoints.length > this.finished) return this.evaluate() + " / " + this.breakpoints[this.finished];
           return prettify(this.evaluate()) + " total";
         },
         evaluate: function () {
-          return (
-            game.stats.totalHeirlooms.value +
-            game.stats.totalHeirlooms.valueTotal
-          );
+          return game.stats.totalHeirlooms.value + game.stats.totalHeirlooms.valueTotal;
         },
         display: function () {
           return this.evaluate() > 0;
@@ -9865,17 +9088,11 @@ function newGame() {
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
-            return (
-              prettify(this.evaluate()) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
-            );
+            return prettify(this.evaluate()) + " / " + prettify(this.breakpoints[this.finished]);
           return prettify(this.evaluate()) + " total";
         },
         evaluate: function () {
-          return (
-            game.stats.gemsCollected.value + game.stats.gemsCollected.valueTotal
-          );
+          return game.stats.gemsCollected.value + game.stats.gemsCollected.valueTotal;
         },
         breakpoints: [1, 1e9, 1e21, 1e30, 1e39, 1e48, 1e57], //total gems according to statistics
         tiers: [1, 2, 3, 4, 5, 6, 7],
@@ -9896,23 +9113,14 @@ function newGame() {
         title: "Daily Bonus",
         description: function (number) {
           var number = this.breakpoints[number];
-          return (
-            "Earn " + prettify(number) + " Helium from the Daily Challenge"
-          );
+          return "Earn " + prettify(number) + " Helium from the Daily Challenge";
         },
         evaluate: function () {
-          return (
-            game.stats.dailyBonusHelium.value +
-            game.stats.dailyBonusHelium.valueTotal
-          );
+          return game.stats.dailyBonusHelium.value + game.stats.dailyBonusHelium.valueTotal;
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
-            return (
-              prettify(this.evaluate()) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
-            );
+            return prettify(this.evaluate()) + " / " + prettify(this.breakpoints[this.finished]);
           return prettify(this.evaluate()) + " total";
         },
         breakpoints: [5e5, 1e6, 5e6, 2.5e7, 2e9, 1e12, 1e15, 1e21, 1e24],
@@ -9940,28 +9148,18 @@ function newGame() {
         description: function (number) {
           var number = this.breakpoints[number];
           return (
-            "<span style='font-size: .8em'>Reach Z" +
-            number +
-            " after losing no more than one fight per Zone.</span>"
+            "<span style='font-size: .8em'>Reach Z" + number + " after losing no more than one fight per Zone.</span>"
           );
         },
         evaluate: function () {
-          if (
-            !this.earnable ||
-            game.stats.battlesLost.value > this.lastZone + 1
-          )
-            return 0;
+          if (!this.earnable || game.stats.battlesLost.value > this.lastZone + 1) return 0;
           return game.global.world;
         },
         progress: function () {
-          if (!this.earnable && this.lastZone == -1)
-            return "You need to portal to become eligible";
-          if (!this.earnable)
-            return "You lost more than once on Z" + this.lastZone;
-          if (game.stats.battlesLost.value > this.lastZone + 1)
-            return "You lost too many fights!";
-          if (game.stats.battlesLost.value == this.lastZone + 1)
-            return "You've lost once this Zone, be careful!";
+          if (!this.earnable && this.lastZone == -1) return "You need to portal to become eligible";
+          if (!this.earnable) return "You lost more than once on Z" + this.lastZone;
+          if (game.stats.battlesLost.value > this.lastZone + 1) return "You lost too many fights!";
+          if (game.stats.battlesLost.value == this.lastZone + 1) return "You've lost once this Zone, be careful!";
           return "Still Earnable!";
         },
         earnable: true,
@@ -9990,11 +9188,7 @@ function newGame() {
         title: "Mapless Drifter",
         description: function (number) {
           var number = this.breakpoints[number];
-          return (
-            "<span style='font-size: .8em'>Reach U2 Z" +
-            number +
-            " without ever entering a Map.</span>"
-          );
+          return "<span style='font-size: .8em'>Reach U2 Z" + number + " without ever entering a Map.</span>";
         },
         evaluate: function () {
           if (!this.earnable || game.global.universe == 1) return 0;
@@ -10002,16 +9196,12 @@ function newGame() {
         },
         progress: function () {
           if (game.global.universe == 1) return "You must be in Universe 2!";
-          if (!this.earnable && this.lastZone == -1)
-            return "You need to portal to become eligible";
+          if (!this.earnable && this.lastZone == -1) return "You need to portal to become eligible";
           if (!this.earnable) return "You ran a Map on Z" + this.lastZone;
           return "Still Earnable!";
         },
         display: function () {
-          return (
-            game.global.highestRadonLevelCleared > 1 ||
-            game.global.universe == 2
-          );
+          return game.global.highestRadonLevelCleared > 1 || game.global.universe == 2;
         },
         earnable: true,
         lastZone: 0,
@@ -10050,9 +9240,7 @@ function newGame() {
         },
         evaluate: function (number) {
           if (game.global.universe == 1) return 0;
-          var nextBreakpoint = number
-            ? this.breakpoints2[number]
-            : this.breakpoints2[this.finished];
+          var nextBreakpoint = number ? this.breakpoints2[number] : this.breakpoints2[this.finished];
           if (game.global.lowestShield < nextBreakpoint) return 0;
           return game.global.world;
         },
@@ -10061,11 +9249,7 @@ function newGame() {
           if (game.global.universe == 1) return "You must be in Universe 2!";
           var breakpoint2 = this.breakpoints2[index];
           if (game.global.lowestShield < breakpoint2)
-            return (
-              "Your Shield has already hit " +
-              game.global.lowestShield +
-              "% this run."
-            );
+            return "Your Shield has already hit " + game.global.lowestShield + "% this run.";
           return "Still Earnable! Lowest is " + game.global.lowestShield + "%";
         },
         display: function () {
@@ -10099,17 +9283,11 @@ function newGame() {
           return "Collect " + prettify(number) + " Mutated Seeds";
         },
         evaluate: function () {
-          return (
-            game.stats.mutatedSeeds.value + game.stats.mutatedSeeds.valueTotal
-          );
+          return game.stats.mutatedSeeds.value + game.stats.mutatedSeeds.valueTotal;
         },
         progress: function () {
           if (this.breakpoints.length > this.finished)
-            return (
-              prettify(this.evaluate()) +
-              " / " +
-              prettify(this.breakpoints[this.finished])
-            );
+            return prettify(this.evaluate()) + " / " + prettify(this.breakpoints[this.finished]);
           return prettify(this.evaluate()) + " total";
         },
         breakpoints: [5000, 1e5, 1e6, 5e7, 2.5e9, 1e11, 5e12],
@@ -10134,9 +9312,7 @@ function newGame() {
         title: "Speed: The Block",
         description: function (number) {
           number = formatMinutesForDescriptions(this.breakpoints[number]);
-          return (
-            "Clear The Block in less than " + number + " from start of run"
-          );
+          return "Clear The Block in less than " + number + " from start of run";
         },
         evaluate: function () {
           return getMinutesThisPortal();
@@ -10154,12 +9330,7 @@ function newGame() {
         showAll: true,
         breakpoints: [480, 240, 120, 60], //In minutes
         tiers: [1, 1, 2, 2],
-        names: [
-          "Block Hobbyist",
-          "Block Apprentice",
-          "Block Professional",
-          "Block Rockstar",
-        ],
+        names: ["Block Hobbyist", "Block Apprentice", "Block Professional", "Block Rockstar"],
         icon: "icomoon icon-alarmclock",
         newStuff: [],
       },
@@ -10171,10 +9342,7 @@ function newGame() {
           return "Clear The Wall in less than " + number + " from start of run";
         },
         display: function () {
-          return (
-            game.global.highestLevelCleared >= 10 &&
-            (game.global.totalPortals >= 1 || this.finished >= 1)
-          );
+          return game.global.highestLevelCleared >= 10 && (game.global.totalPortals >= 1 || this.finished >= 1);
         },
         evaluate: function () {
           return getMinutesThisPortal();
@@ -10201,10 +9369,7 @@ function newGame() {
           return "Clear DoA in less than " + number + " from start of run";
         },
         display: function () {
-          return (
-            game.global.highestLevelCleared >= 14 &&
-            (game.global.totalPortals >= 1 || this.finished >= 1)
-          );
+          return game.global.highestLevelCleared >= 14 && (game.global.totalPortals >= 1 || this.finished >= 1);
         },
         evaluate: function () {
           return getMinutesThisPortal();
@@ -10219,13 +9384,7 @@ function newGame() {
         showAll: true,
         breakpoints: [480, 240, 120, 60, 1], //In minutes
         tiers: [2, 2, 3, 3, 8],
-        names: [
-          "Angry Jogger",
-          "Angry Runner",
-          "Angry Sprinter",
-          "Angry Racer",
-          "Angry Teleporter",
-        ],
+        names: ["Angry Jogger", "Angry Runner", "Angry Sprinter", "Angry Racer", "Angry Teleporter"],
         icon: "icomoon icon-alarmclock",
         newStuff: [],
       },
@@ -10237,10 +9396,7 @@ function newGame() {
           return "Clear ToD in less than " + number + " from start of run";
         },
         display: function () {
-          return (
-            game.global.highestLevelCleared >= 19 &&
-            (game.global.totalPortals >= 1 || this.finished >= 1)
-          );
+          return game.global.highestLevelCleared >= 19 && (game.global.totalPortals >= 1 || this.finished >= 1);
         },
         evaluate: function () {
           return getMinutesThisPortal();
@@ -10255,12 +9411,7 @@ function newGame() {
         showAll: true,
         breakpoints: [480, 240, 120, 60], //In minutes
         tiers: [2, 3, 3, 4],
-        names: [
-          "Walk to Doom",
-          "Trot to Doom",
-          "Canter to Doom",
-          "Gallop to Doom",
-        ],
+        names: ["Walk to Doom", "Trot to Doom", "Canter to Doom", "Gallop to Doom"],
         icon: "icomoon icon-alarmclock",
         newStuff: [],
       },
@@ -10272,10 +9423,7 @@ function newGame() {
           return "Clear Prison in less than " + number + " from start of run";
         },
         display: function () {
-          return (
-            game.global.highestLevelCleared >= 32 &&
-            (game.global.totalPortals >= 1 || this.finished >= 1)
-          );
+          return game.global.highestLevelCleared >= 32 && (game.global.totalPortals >= 1 || this.finished >= 1);
         },
         evaluate: function () {
           return getMinutesThisPortal();
@@ -10310,9 +9458,7 @@ function newGame() {
         description: function (number) {
           number = formatMinutesForDescriptions(this.breakpoints[number]);
           return (
-            "<span style='font-size: .8em'>Clear Bionic Wonderland in less than " +
-            number +
-            " from start of run</span>"
+            "<span style='font-size: .8em'>Clear Bionic Wonderland in less than " + number + " from start of run</span>"
           );
         },
         display: function () {
@@ -10331,14 +9477,7 @@ function newGame() {
         showAll: true,
         breakpoints: [1440, 1200, 720, 480, 210, 150], //In minutes
         tiers: [4, 4, 5, 5, 6, 6],
-        names: [
-          "Lover of Bots",
-          "Friend of Bots",
-          "Acquaintance of Bots",
-          "Bot Disliker",
-          "Bot Hater",
-          "Bot Slayer",
-        ],
+        names: ["Lover of Bots", "Friend of Bots", "Acquaintance of Bots", "Bot Disliker", "Bot Hater", "Bot Slayer"],
         icon: "icomoon icon-alarmclock",
         newStuff: [],
       },
@@ -10348,9 +9487,7 @@ function newGame() {
         description: function (number) {
           number = formatMinutesForDescriptions(this.breakpoints[number]);
           return (
-            "<span style='font-size: .8em'>Clear Imploding Star in less than " +
-            number +
-            " from start of run</span>"
+            "<span style='font-size: .8em'>Clear Imploding Star in less than " + number + " from start of run</span>"
           );
         },
         display: function () {
@@ -10386,11 +9523,7 @@ function newGame() {
         title: "Speed: Spire",
         description: function (number) {
           number = formatMinutesForDescriptions(this.breakpoints[number]);
-          return (
-            "<span style='font-size: .8em'>Clear the Spire in less than " +
-            number +
-            " from start of run</span>"
-          );
+          return "<span style='font-size: .8em'>Clear the Spire in less than " + number + " from start of run</span>";
         },
         display: function () {
           return game.global.highestLevelCleared >= 169;
@@ -10451,13 +9584,7 @@ function newGame() {
         showAll: true,
         breakpoints: [500, 200, 120, 60, 10],
         tiers: [6, 7, 8, 8, 9],
-        names: [
-          "Toxic Treader",
-          "Toxic Trotter",
-          "Toxic Traveller",
-          "Toxic Tempo",
-          "Toxic Teleporter",
-        ],
+        names: ["Toxic Treader", "Toxic Trotter", "Toxic Traveller", "Toxic Tempo", "Toxic Teleporter"],
         icon: "icomoon icon-alarmclock",
         newStuff: [],
       },
@@ -10492,13 +9619,7 @@ function newGame() {
         showAll: true,
         breakpoints: [480, 240, 120, 80, 20],
         tiers: [6, 7, 8, 8, 9],
-        names: [
-          "Chillin",
-          "Arctic Accelerator",
-          "Rimy Runner",
-          "Subzero Sprinter",
-          "Frigid and Furious",
-        ],
+        names: ["Chillin", "Arctic Accelerator", "Rimy Runner", "Subzero Sprinter", "Frigid and Furious"],
         icon: "icomoon icon-alarmclock",
         newStuff: [],
       },
@@ -10646,12 +9767,7 @@ function newGame() {
         showAll: true,
         breakpoints: [3840, 480, 120, 42],
         tiers: [12, 12, 13, 13],
-        names: [
-          "World Wall",
-          "Reality Rider",
-          "Destructive Destiny",
-          "Cosmic Collapser",
-        ],
+        names: ["World Wall", "Reality Rider", "Destructive Destiny", "Cosmic Collapser"],
         icon: "icomoon icon-alarmclock",
         newStuff: [],
       },
@@ -10660,17 +9776,10 @@ function newGame() {
         title: "U2 Speed: Big Wall",
         description: function (number) {
           number = formatMinutesForDescriptions(this.breakpoints[number]);
-          return (
-            "<span style='font-size: .8em'>Clear Big Wall in less than " +
-            number +
-            " from start of run</span>"
-          );
+          return "<span style='font-size: .8em'>Clear Big Wall in less than " + number + " from start of run</span>";
         },
         display: function () {
-          return (
-            game.global.universe == 2 ||
-            game.global.highestRadonLevelCleared >= 6
-          );
+          return game.global.universe == 2 || game.global.highestRadonLevelCleared >= 6;
         },
         evaluate: function () {
           return getMinutesThisPortal();
@@ -10685,12 +9794,7 @@ function newGame() {
         showAll: true,
         breakpoints: [100, 50, 10, 4], //In minutes
         tiers: [9, 9, 10, 11],
-        names: [
-          "Big Wall Crawler",
-          "Big Wall Scholar",
-          "Big Wall Mauler",
-          "Big Wall Baller",
-        ],
+        names: ["Big Wall Crawler", "Big Wall Scholar", "Big Wall Mauler", "Big Wall Baller"],
         icon: "icomoon icon-clock2",
         newStuff: [],
       },
@@ -10700,9 +9804,7 @@ function newGame() {
         description: function (number) {
           number = formatMinutesForDescriptions(this.breakpoints[number]);
           return (
-            "<span style='font-size: .8em'>Clear Prismatic Palace in less than " +
-            number +
-            " from start of run</span>"
+            "<span style='font-size: .8em'>Clear Prismatic Palace in less than " + number + " from start of run</span>"
           );
         },
         display: function () {
@@ -10730,11 +9832,7 @@ function newGame() {
         title: "U2 Speed: Atlantrimp",
         description: function (number) {
           number = formatMinutesForDescriptions(this.breakpoints[number]);
-          return (
-            "<span style='font-size: .8em'>Clear Atlantrimp in less than " +
-            number +
-            " from start of run</span>"
-          );
+          return "<span style='font-size: .8em'>Clear Atlantrimp in less than " + number + " from start of run</span>";
         },
         display: function () {
           return game.global.highestRadonLevelCleared >= 32;
@@ -10762,9 +9860,7 @@ function newGame() {
         description: function (number) {
           number = formatMinutesForDescriptions(this.breakpoints[number]);
           return (
-            "<span style='font-size: .8em'>Clear Melting Point in less than " +
-            number +
-            " from start of run</span>"
+            "<span style='font-size: .8em'>Clear Melting Point in less than " + number + " from start of run</span>"
           );
         },
         display: function () {
@@ -10897,9 +9993,7 @@ function newGame() {
             "Build up a Poison debuff that's 1000x higher than your attack",
             "Earn a Challenge<sup>2</sup> bonus of 2000%",
             "Complete a Bionic Wonderland map 45 levels higher than your Zone number",
-            "Beat the Spire with no respec and " +
-              prettify(100e6) +
-              " or less He Spent",
+            "Beat the Spire with no respec and " + prettify(100e6) + " or less He Spent",
             "Defeat an enemy on Obliterated",
             "Find an Amalgamator on Z1",
             "Get 10 Red Crits in a row",
@@ -10909,14 +10003,8 @@ function newGame() {
             "Complete Spire " + romanNumeral(5) + " with no deaths",
             "Build your 20th Spire Floor",
             "Complete a Bionic Wonderland map 200 levels higher than your Zone number",
-            "Complete Spire " +
-              romanNumeral(2) +
-              " on the Coordinate challenge",
-            "Beat Spire " +
-              romanNumeral(2) +
-              " with no respec and " +
-              prettify(1e9) +
-              " or less He spent",
+            "Complete Spire " + romanNumeral(2) + " on the Coordinate challenge",
+            "Beat Spire " + romanNumeral(2) + " with no respec and " + prettify(1e9) + " or less He spent",
             "Beat Imploding Star on Obliterated",
             "Close 750 Nurseries at the same time",
             "Earn Dark Essence with no respec and 0 He spent",
@@ -10925,18 +10013,16 @@ function newGame() {
           ];
         },
         tiers: [
-          2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6,
-          6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8,
-          8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9,
+          2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7,
+          7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9,
         ],
         description: function (number) {
           return this.descriptions[number];
         },
         filters: [
-          19, 29, 29, -1, 39, 59, -1, 79, -1, 99, 124, 59, 119, 74, -1, 74, 59,
-          59, 59, 124, 144, 59, 59, 109, -1, 164, 59, -1, 179, 179, 199, 199,
-          229, 245, 179, 189, 214, 199, 229, 299, 235, 65, 169, 199, 424, 349,
-          -1, 129, 399, 549, 599, 199, 324, 299, 299, 424, 229, 179, 424, 549,
+          19, 29, 29, -1, 39, 59, -1, 79, -1, 99, 124, 59, 119, 74, -1, 74, 59, 59, 59, 124, 144, 59, 59, 109, -1, 164,
+          59, -1, 179, 179, 199, 199, 229, 245, 179, 189, 214, 199, 229, 299, 235, 65, 169, 199, 424, 349, -1, 129, 399,
+          549, 599, 199, 324, 299, 299, 424, 229, 179, 424, 549,
         ],
         filterLevel: function () {
           return game.global.highestLevelCleared;
@@ -11072,15 +10158,14 @@ function newGame() {
           ];
         },
         tiers: [
-          10, 10, 10, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 13, 13,
-          13, 13, 13, 13, 13, 13, 14, 14, 14, 14,
+          10, 10, 10, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14,
         ],
         description: function (number) {
           return this.descriptions[number];
         },
         filters: [
-          -1, 14, 19, 24, 34, 39, 44, 49, 59, 69, 75, 75, 79, 84, 89, 104, 109,
-          114, 119, 135, 135, 100, 154, 174, 174, 224, 244,
+          -1, 14, 19, 24, 34, 39, 44, 49, 59, 69, 75, 75, 79, 84, 89, 104, 109, 114, 119, 135, 135, 100, 154, 174, 174,
+          224, 244,
         ],
         filterLevel: function () {
           return game.global.highestRadonLevelCleared;
@@ -11122,9 +10207,7 @@ function newGame() {
     heirlooms: {
       //Basic layout for modifiers. Steps can be set specifically for each modifier, or else default steps will be used
       //NOTE: currentBonus is the only thing that will persist!
-      values: [
-        10, 20, 30, 50, 150, 300, 800, 2000, 5000, 15000, 100000, 750000,
-      ],
+      values: [10, 20, 30, 50, 150, 300, 800, 2000, 5000, 15000, 100000, 750000],
       recycleOverride: [-1, -1, -1, -1, -1, -1, -1, -1, -1, 25e4, 1e6, 7.5e7],
       coreValues: function (tier) {
         return Math.floor(Math.pow(10, tier) * 20) * 2;
@@ -11189,30 +10272,12 @@ function newGame() {
         [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 10000],
       ],
       rarityBreakpoints: [
-        41, 60, 80, 100, 125, 146, 166, 181, 201, 230, 300, 400, 500, 600, 700,
-        1, 40, 80, 100, 135, 175, 200, 225, 250, 275, 300, 999,
+        41, 60, 80, 100, 125, 146, 166, 181, 201, 230, 300, 400, 500, 600, 700, 1, 40, 80, 100, 135, 175, 200, 225, 250,
+        275, 300, 999,
       ], //don't forget to update the 999 bracket when adding a new rarity!
-      universeBreakpoints: [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-        2, 2, 2,
-      ],
-      priceIncrease: [
-        1.5, 1.5, 1.25, 1.19, 1.15, 1.12, 1.1, 1.06, 1.04, 1.03, 1.02, 1.015,
-      ],
-      canReplaceMods: [
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        true,
-        false,
-        false,
-        false,
-        false,
-      ],
+      universeBreakpoints: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      priceIncrease: [1.5, 1.5, 1.25, 1.19, 1.15, 1.12, 1.1, 1.06, 1.04, 1.03, 1.02, 1.015],
+      canReplaceMods: [true, true, true, true, true, true, true, true, false, false, false, false],
       Core: {
         fireTrap: {
           name: "Fire Trap Damage",
@@ -11230,28 +10295,12 @@ function newGame() {
         poisonTrap: {
           name: "Poison Trap Damage",
           currentBonus: 0,
-          steps: [
-            -1,
-            [10, 25, 1],
-            [10, 25, 1],
-            [25, 50, 1],
-            [50, 100, 2],
-            [100, 199, 3],
-            [200, 400, 4],
-          ],
+          steps: [-1, [10, 25, 1], [10, 25, 1], [25, 50, 1], [50, 100, 2], [100, 199, 3], [200, 400, 4]],
         },
         lightningTrap: {
           name: "Lightning Trap Power",
           currentBonus: 0,
-          steps: [
-            -1,
-            -1,
-            [1, 10, 1],
-            [10, 20, 1],
-            [20, 50, 2],
-            [50, 100, 2],
-            [100, 199, 3],
-          ],
+          steps: [-1, -1, [1, 10, 1], [10, 20, 1], [20, 50, 2], [50, 100, 2], [100, 199, 3]],
           specialDescription: function (modifier) {
             return (
               "Increases the damage dealt by Lightning Trap" +
@@ -11300,15 +10349,7 @@ function newGame() {
         condenserEffect: {
           name: "Condenser Effect",
           currentBonus: 0,
-          steps: [
-            -1,
-            [1, 5, 0.25],
-            [1, 5, 0.25],
-            [5, 10, 0.25],
-            [5, 15, 0.5],
-            [10, 20, 0.5],
-            [20, 30, 0.5],
-          ],
+          steps: [-1, [1, 5, 0.25], [1, 5, 0.25], [5, 10, 0.25], [5, 15, 0.5], [10, 20, 0.5], [20, 30, 0.5]],
           max: [-1, 10, 10, 15, 25, 35, 50],
           specialDescription: function (modifier) {
             return (
@@ -11370,20 +10411,7 @@ function newGame() {
             return "Pet (" + Fluffy.getName() + ") Exp";
           },
           currentBonus: 0,
-          steps: [
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            [25, 50, 1],
-            [50, 100, 1],
-            [75, 200, 1],
-            [124, 400, 1.2],
-          ],
+          steps: [-1, -1, -1, -1, -1, -1, -1, -1, [25, 50, 1], [50, 100, 1], [75, 200, 1], [124, 400, 1.2]],
         },
         ParityPower: {
           name: "Parity Power",
@@ -11599,20 +10627,7 @@ function newGame() {
               "% of all non-lethal damage and nature stacks you afflict on your current enemy are copied onto the next enemy. Plaguebringer damage cannot bring an enemy below 5% health, but nature stacks will continue to accumulate."
             );
           },
-          steps: [
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            [1, 15, 0.5],
-            [15, 30, 0.5],
-            [30, 45, 0.5],
-            [40, 50, 0.5],
-          ],
+          steps: [-1, -1, -1, -1, -1, -1, -1, -1, [1, 15, 0.5], [15, 30, 0.5], [30, 45, 0.5], [40, 50, 0.5]],
           max: [0, 0, 0, 0, 0, 0, 0, 0, 75, 100, 125, 150],
         },
         prismatic: {
@@ -11622,20 +10637,7 @@ function newGame() {
           specialDescription: function () {
             return "ADDS this amount on to your total Prismatic Shield. This modifier can only function in the Radon Universe.";
           },
-          steps: [
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            [10, 50, 1],
-            [10, 40, 1],
-            [30, 60, 2],
-          ],
+          steps: [-1, -1, -1, -1, -1, -1, -1, -1, -1, [10, 50, 1], [10, 40, 1], [30, 60, 2]],
           max: [0, 0, 0, 0, 0, 0, 0, 0, 0, 250, 500, 750],
         },
         gammaBurst: {
@@ -11652,20 +10654,7 @@ function newGame() {
               "% of their attack damage. Stacks reset after releasing a Burst or when your Trimps die."
             );
           },
-          steps: [
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            -1,
-            [1000, 2000, 100],
-            -1,
-            -1,
-          ],
+          steps: [-1, -1, -1, -1, -1, -1, -1, -1, -1, [1000, 2000, 100], -1, -1],
         },
         inequality: {
           name: "Inequality",
@@ -11746,28 +10735,15 @@ function newGame() {
           //Mirror any changes here to canCommitCarpentry to check leveltemps
           var num = this.max;
           if (game.global.challengeActive == "Downsize") {
-            num =
-              game.global.totalGifts + game.unlocks.impCount.TauntimpAdded + 10;
+            num = game.global.totalGifts + game.unlocks.impCount.TauntimpAdded + 10;
             num += countTotalHousingBuildings();
           }
           num *= this.maxMod;
           if (getPerkLevel("Carpentry") > 0)
-            num = Math.floor(
-              num *
-                Math.pow(
-                  1 + game.portal.Carpentry.modifier,
-                  getPerkLevel("Carpentry")
-                )
-            );
+            num = Math.floor(num * Math.pow(1 + game.portal.Carpentry.modifier, getPerkLevel("Carpentry")));
           if (getPerkLevel("Carpentry_II") > 0)
-            num = Math.floor(
-              num *
-                (1 +
-                  game.portal.Carpentry_II.modifier *
-                    getPerkLevel("Carpentry_II"))
-            );
-          if (game.global.expandingTauntimp)
-            num = Math.floor(num * game.badGuys.Tauntimp.expandingMult());
+            num = Math.floor(num * (1 + game.portal.Carpentry_II.modifier * getPerkLevel("Carpentry_II")));
+          if (game.global.expandingTauntimp) num = Math.floor(num * game.badGuys.Tauntimp.expandingMult());
           num = Math.floor(num * alchObj.getPotionEffect("Elixir of Crafting"));
           if (autoBattle.bonuses.Scaffolding.level > 0)
             num = Math.floor(num * autoBattle.bonuses.Scaffolding.getMult());
@@ -11826,10 +10802,8 @@ function newGame() {
     equipment: {
       Shield: {
         locked: 1,
-        tooltip:
-          "A big, wooden shield. Adds $healthCalculated$ health to each soldier per level.",
-        blocktip:
-          "A big, wooden shield. Adds $blockCalculated$ block to each soldier per level.",
+        tooltip: "A big, wooden shield. Adds $healthCalculated$ health to each soldier per level.",
+        blocktip: "A big, wooden shield. Adds $blockCalculated$ block to each soldier per level.",
         modifier: 1,
         level: 0,
         cost: {
@@ -11845,8 +10819,7 @@ function newGame() {
       },
       Dagger: {
         locked: 1,
-        tooltip:
-          "Better than nothing. Adds $attackCalculated$ attack to each soldier per level.",
+        tooltip: "Better than nothing. Adds $attackCalculated$ attack to each soldier per level.",
         modifier: 1,
         level: 0,
         cost: {
@@ -11859,8 +10832,7 @@ function newGame() {
       },
       Boots: {
         locked: 1,
-        tooltip:
-          "At least their feet will be safe. Adds $healthCalculated$ health to each soldier per level.",
+        tooltip: "At least their feet will be safe. Adds $healthCalculated$ health to each soldier per level.",
         modifier: 1,
         level: 0,
         cost: {
@@ -11903,8 +10875,7 @@ function newGame() {
       //3
       Polearm: {
         locked: 1,
-        tooltip:
-          "This thing is big and pointy. It adds $attackCalculated$ attack to each soldier per level.",
+        tooltip: "This thing is big and pointy. It adds $attackCalculated$ attack to each soldier per level.",
         modifier: 1,
         level: 0,
         cost: {
@@ -12126,11 +11097,8 @@ function newGame() {
               imports.push(item);
             }
           }
-          var enemySeed = game.global.mapsActive
-            ? Math.floor(Math.random() * 10000000)
-            : game.global.enemySeed++;
-          var selected =
-            imports[getRandomIntSeeded(enemySeed, 0, imports.length)];
+          var enemySeed = game.global.mapsActive ? Math.floor(Math.random() * 10000000) : game.global.enemySeed++;
+          var selected = imports[getRandomIntSeeded(enemySeed, 0, imports.length)];
           game.badGuys[selected].loot(level, true);
         },
       },
@@ -12214,13 +11182,7 @@ function newGame() {
         fast: true,
         loot: function (level) {
           var amt = rewardResource("food", 0.5, level, true);
-          message(
-            "That Chickimp dropped " + prettify(amt) + " food!",
-            "Loot",
-            "apple",
-            null,
-            "primary"
-          );
+          message("That Chickimp dropped " + prettify(amt) + " food!", "Loot", "apple", null, "primary");
         },
       },
       Hippopotamimp: {
@@ -12264,13 +11226,7 @@ function newGame() {
         fast: false,
         loot: function (level) {
           var amt = rewardResource("wood", 0.5, level, true);
-          message(
-            "That Grimp dropped " + prettify(amt) + " wood!",
-            "Loot",
-            "tree-deciduous",
-            null,
-            "primary"
-          );
+          message("That Grimp dropped " + prettify(amt) + " wood!", "Loot", "tree-deciduous", null, "primary");
         },
       },
       Golimp: {
@@ -12317,13 +11273,7 @@ function newGame() {
         fast: false,
         loot: function (level) {
           var amt = rewardResource("metal", 0.5, level, true);
-          message(
-            "That Seirimp dropped " + prettify(amt) + " metal! Neat-O.",
-            "Loot",
-            "*cubes",
-            null,
-            "primary"
-          );
+          message("That Seirimp dropped " + prettify(amt) + " metal! Neat-O.", "Loot", "*cubes", null, "primary");
         },
       },
       Slagimp: {
@@ -12334,9 +11284,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("gems", 0.3, level, true);
           message(
-            "That Slagimp fell over, and " +
-              prettify(amt) +
-              " gems popped out! How about that?!",
+            "That Slagimp fell over, and " + prettify(amt) + " gems popped out! How about that?!",
             "Loot",
             "*diamond",
             null,
@@ -12352,9 +11300,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("metal", 0.2, level, true);
           message(
-            "The Moltimp thanked you for the combat, and handed you " +
-              prettify(amt) +
-              " bars of metal! Then he died.",
+            "The Moltimp thanked you for the combat, and handed you " + prettify(amt) + " bars of metal! Then he died.",
             "Loot",
             "*cubes",
             null,
@@ -12400,9 +11346,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("wood", 0.35, level, true);
           message(
-            "The Entimp is no more. You manage to salvage " +
-              prettify(amt) +
-              " logs of wood from his trunk!",
+            "The Entimp is no more. You manage to salvage " + prettify(amt) + " logs of wood from his trunk!",
             "Loot",
             "tree-deciduous",
             null,
@@ -12418,9 +11362,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("food", 0.35, level, true);
           message(
-            "Time for some stew! You scored " +
-              prettify(amt) +
-              " food from that Squirrimp!",
+            "Time for some stew! You scored " + prettify(amt) + " food from that Squirrimp!",
             "Loot",
             "apple",
             null,
@@ -12436,9 +11378,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("metal", 0.35, level, true);
           message(
-            "You sift through the Gravelimp, and manage to find " +
-              prettify(amt) +
-              " bars of metal! Good on you!",
+            "You sift through the Gravelimp, and manage to find " + prettify(amt) + " bars of metal! Good on you!",
             "Loot",
             "*cubes",
             null,
@@ -12458,9 +11398,7 @@ function newGame() {
           rewardResource("wood", 2, level);
           rewardResource("metal", 2, level);
           message(
-            "That Blimp dropped " +
-              prettify(amt) +
-              " Food, Wood and Metal! That should be useful.",
+            "That Blimp dropped " + prettify(amt) + " Food, Wood and Metal! That should be useful.",
             "Loot",
             "piggy-bank",
             null,
@@ -12468,29 +11406,19 @@ function newGame() {
           );
           if (game.global.runningChallengeSquared) return;
           var minLevel = game.global.universe == 2 ? 16 : 21;
-          if (
-            game.global.world >= minLevel &&
-            (getTotalPortals() >= 1 || game.global.portalActive)
-          ) {
+          if (game.global.world >= minLevel && (getTotalPortals() >= 1 || game.global.portalActive)) {
             if (game.resources.helium.owned == 0) fadeIn("helium", 10);
             amt = 1;
             if (game.global.challengeActive == "Domination") amt *= 3;
             amt = rewardResource("helium", amt, level);
             message(
-              "You were able to extract " +
-                prettify(amt) +
-                " " +
-                heliumOrRadon(true) +
-                "s from that Blimp!",
+              "You were able to extract " + prettify(amt) + " " + heliumOrRadon(true) + "s from that Blimp!",
               "Loot",
               heliumIcon(true),
               "helium",
               "helium"
             );
-            if (
-              game.global.world >= 40 &&
-              game.global.challengeActive == "Balance"
-            ) {
+            if (game.global.world >= 40 && game.global.challengeActive == "Balance") {
               game.challenges.Balance.onComplete();
             }
           }
@@ -12508,8 +11436,7 @@ function newGame() {
           // 	game.global.alchemyUnlocked = true;
           // 	message("You have successfully cleared a Z155 Void Map on Alchemy with " + alchObj.getPotionCount("Gaseous Brew") + " Gaseous Brews and no Potions of the Void! The Void recognizes your superiority, and has granted you the ability to use Alchemy in any dimension of this Universe.", "Notices");
           // }
-          if (game.global.universe == 2)
-            autoBattle.completedVoidMap(game.global.world);
+          if (game.global.universe == 2) autoBattle.completedVoidMap(game.global.world);
           if (
             game.global.challengeActive == "Alchemy" &&
             game.global.world == 155 &&
@@ -12518,8 +11445,7 @@ function newGame() {
           )
             giveSingleAchieve("Mad Scientist");
           if (game.resources.helium.owned == 0) fadeIn("helium", 10);
-          var amt =
-            game.global.world >= 60 && game.global.universe == 1 ? 10 : 2;
+          var amt = game.global.world >= 60 && game.global.universe == 1 ? 10 : 2;
           if (mutations.Magma.active()) amt *= 3;
           if (game.global.challengeActive == "Domination") {
             amt *= 3;
@@ -12527,23 +11453,15 @@ function newGame() {
           }
           var percentage = 1;
           var rewardPercent = 1;
-          if (
-            game.global.universe == 1 &&
-            game.global.world >= mutations.Corruption.start(true)
-          ) {
+          if (game.global.universe == 1 && game.global.world >= mutations.Corruption.start(true)) {
             rewardPercent = 2;
-            percentage =
-              game.global.challengeActive == "Corrupted" ? 0.075 : 0.15;
+            percentage = game.global.challengeActive == "Corrupted" ? 0.075 : 0.15;
             var corrCount = mutations.Corruption.cellCount();
-            if (mutations.Healthy.active())
-              corrCount -= mutations.Healthy.cellCount();
+            if (mutations.Healthy.active()) corrCount -= mutations.Healthy.cellCount();
             percentage *= corrCount;
             if (mutations.Healthy.active()) {
-              var healthyValue = game.talents.healthStrength2.purchased
-                ? 0.65
-                : 0.45;
-              amt *=
-                mutations.Healthy.cellCount() * healthyValue + percentage + 1;
+              var healthyValue = game.talents.healthStrength2.purchased ? 0.65 : 0.45;
+              amt *= mutations.Healthy.cellCount() * healthyValue + percentage + 1;
             } else {
               amt *= percentage + 1;
             }
@@ -12566,16 +11484,11 @@ function newGame() {
           }
           var bonusMagmite = 10;
           if (fluffyCount) bonusMagmite *= fluffyCount;
-          if (
-            game.talents.quickGen.purchased &&
-            game.global.world >= 230 &&
-            game.global.universe == 1
-          ) {
+          if (game.talents.quickGen.purchased && game.global.world >= 230 && game.global.universe == 1) {
             game.global.magmite += bonusMagmite;
             updateGeneratorInfo();
           }
-          if (game.talents.scry2.purchased && game.global.canScryCache)
-            amt *= 1.5;
+          if (game.talents.scry2.purchased && game.global.canScryCache) amt *= 1.5;
 
           //Void map helium modifiers above here
 
@@ -12584,8 +11497,7 @@ function newGame() {
           var totalCleared = fromFluffy && fluffyCount ? fluffyCount : 1;
           game.stats.highestVoidMap.evaluate();
           game.stats.totalVoidMaps.value += totalCleared;
-          if (game.global.challengeActive == "Frigid")
-            game.challenges.Frigid.completedVoid(totalCleared);
+          if (game.global.challengeActive == "Frigid") game.challenges.Frigid.completedVoid(totalCleared);
           var msg =
             "Cthulimp and the map it came from crumble into the darkness. You find yourself instantly teleported to ";
           if (fromFluffy && fluffyCount == 1) {
@@ -12594,12 +11506,7 @@ function newGame() {
               Fluffy.getName() +
               " snuck to the end and quickly stole all the loot.";
             if (!game.global.runningChallengeSquared)
-              msg +=
-                " You gained another " +
-                prettify(amt) +
-                " " +
-                heliumOrRadon() +
-                "!";
+              msg += " You gained another " + prettify(amt) + " " + heliumOrRadon() + "!";
             message(msg, "Loot", heliumIcon(true), "helium", "helium");
             return;
           } else if (fromFluffy) {
@@ -12623,20 +11530,13 @@ function newGame() {
             message(msg, "Loot", heliumIcon(true), "helium", "helium");
             return;
           }
-          if (
-            game.options.menu.repeatVoids.enabled &&
-            game.global.totalVoidMaps > 1
-          ) {
+          if (game.options.menu.repeatVoids.enabled && game.global.totalVoidMaps > 1) {
             msg += "the next Void map";
           } else {
-            msg += game.options.menu.exitTo.enabled
-              ? "the world"
-              : "your map chamber";
+            msg += game.options.menu.exitTo.enabled ? "the world" : "your map chamber";
           }
           if (game.global.runningChallengeSquared) msg += ".";
-          else
-            msg +=
-              " with an extra " + prettify(amt) + " " + heliumOrRadon() + "!";
+          else msg += " with an extra " + prettify(amt) + " " + heliumOrRadon() + "!";
           message(msg, "Loot", heliumIcon(true), "helium", "helium");
         },
       },
@@ -12663,8 +11563,7 @@ function newGame() {
         fast: false,
         loot: function (level) {
           checkAchieve("angerTimed");
-          if (game.upgrades.Bounty.done == 0)
-            giveSingleAchieve("Forgot Something");
+          if (game.upgrades.Bounty.done == 0) giveSingleAchieve("Forgot Something");
         },
       },
       Dragimp: {
@@ -12675,13 +11574,7 @@ function newGame() {
         fast: false,
         loot: function (level) {
           var amt = rewardResource("gems", 0.35, level, false);
-          message(
-            "That Dragimp dropped " + prettify(amt) + " gems!",
-            "Loot",
-            "*diamond",
-            null,
-            "secondary"
-          );
+          message("That Dragimp dropped " + prettify(amt) + " gems!", "Loot", "*diamond", null, "secondary");
         },
       },
       Mitschimp: {
@@ -12694,13 +11587,7 @@ function newGame() {
         loot: function (level) {
           checkAchieve("blockTimed");
           var amt = rewardResource("wood", 2, level, true);
-          message(
-            "Mitschimp dropped " + prettify(amt) + " wood!",
-            "Loot",
-            "tree-deciduous",
-            null,
-            "primary"
-          );
+          message("Mitschimp dropped " + prettify(amt) + " wood!", "Loot", "tree-deciduous", null, "primary");
         },
       },
       Brickimp: {
@@ -12724,9 +11611,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("gems", 1, level, true);
           message(
-            "That Prismimp dropped " +
-              prettify(amt) +
-              " gems, how sweet of it!",
+            "That Prismimp dropped " + prettify(amt) + " gems, how sweet of it!",
             "Loot",
             "*diamond",
             null,
@@ -12824,13 +11709,7 @@ function newGame() {
         loot: function (level) {
           checkAchieve("doomTimed");
           var amt = rewardResource("metal", 2, level, true);
-          message(
-            "Indianimp dropped " + prettify(amt) + " metal!",
-            "Loot",
-            "*cubes",
-            null,
-            "primary"
-          );
+          message("Indianimp dropped " + prettify(amt) + " metal!", "Loot", "*cubes", null, "primary");
           if (game.global.runningChallengeSquared) return;
           if (game.global.challengeActive == "Trapper") {
             game.challenges.Trapper.onComplete();
@@ -12867,10 +11746,7 @@ function newGame() {
         loot: function (level) {
           checkAchieve("prisonTimed");
           if (game.global.runningChallengeSquared) return;
-          if (
-            game.global.challengeActive == "Electricity" ||
-            game.global.challengeActive == "Mapocalypse"
-          ) {
+          if (game.global.challengeActive == "Electricity" || game.global.challengeActive == "Mapocalypse") {
             game.challenges[game.global.challengeActive].onComplete();
           }
         },
@@ -12884,22 +11760,13 @@ function newGame() {
         health: 2.9,
         fast: false,
         loot: function (level) {
-          var mapLevel =
-            game.global.mapsOwnedArray[getMapIndex(game.global.currentMapId)]
-              .level;
-          if (mapLevel >= game.global.world + 45)
-            giveSingleAchieve("Bionic Sniper");
-          if (mapLevel >= game.global.world + 200)
-            giveSingleAchieve("Bionic Nuker");
+          var mapLevel = game.global.mapsOwnedArray[getMapIndex(game.global.currentMapId)].level;
+          if (mapLevel >= game.global.world + 45) giveSingleAchieve("Bionic Sniper");
+          if (mapLevel >= game.global.world + 200) giveSingleAchieve("Bionic Nuker");
           game.stats.highestBw.evaluate(mapLevel);
-          if (
-            game.global.challengeActive == "Experience" &&
-            mapLevel >= 605 &&
-            game.global.world > 600
-          )
+          if (game.global.challengeActive == "Experience" && mapLevel >= 605 && game.global.world > 600)
             game.challenges.Experience.onComplete();
-          if (game.global.challengeActive == "Experience")
-            game.challenges.Experience.drawStacks();
+          if (game.global.challengeActive == "Experience") game.challenges.Experience.drawStacks();
           checkAchieve("bionicTimed");
           var amt1 = rewardResource("wood", 1, level, true);
           var amt2 = rewardResource("food", 1, level, true);
@@ -12928,9 +11795,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("metal", 0.25, level, true);
           message(
-            "Mechimp disengaged. Reward encountered: " +
-              prettify(amt) +
-              " bars of metal. Huzzah.",
+            "Mechimp disengaged. Reward encountered: " + prettify(amt) + " bars of metal. Huzzah.",
             "Loot",
             "*cubes",
             null,
@@ -12947,9 +11812,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("metal", 0.25, level, true);
           message(
-            "Destructimp shorted out. Salvage results: " +
-              prettify(amt) +
-              " bars of metal. Acceptable.",
+            "Destructimp shorted out. Salvage results: " + prettify(amt) + " bars of metal. Acceptable.",
             "Loot",
             "*cubes",
             null,
@@ -12966,9 +11829,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("metal", 0.25, level, true);
           message(
-            "Terminatimp Terminated. Findings: " +
-              prettify(amt) +
-              " bars of metal. Hasta la Vista.",
+            "Terminatimp Terminated. Findings: " + prettify(amt) + " bars of metal. Hasta la Vista.",
             "Loot",
             "*cubes",
             null,
@@ -13055,9 +11916,7 @@ function newGame() {
         loot: function (level) {
           var amt = rewardResource("metal", 0.5, level, true);
           message(
-            "The Fusimp explodes, leaving behind " +
-              prettify(amt) +
-              " bars of metal and a nice dose of radiation.",
+            "The Fusimp explodes, leaving behind " + prettify(amt) + " bars of metal and a nice dose of radiation.",
             "Loot",
             "*cubes",
             null,
@@ -13114,11 +11973,9 @@ function newGame() {
         fast: true,
         loot: function (level) {
           if (game.global.spireActive) return;
-          if (!game.global.brokenPlanet && game.global.universe == 1)
-            planetBreaker();
+          if (!game.global.brokenPlanet && game.global.universe == 1) planetBreaker();
           if (game.global.runningChallengeSquared) return;
-          var amt =
-            game.global.world >= mutations.Corruption.start(true) ? 10 : 5;
+          var amt = game.global.world >= mutations.Corruption.start(true) ? 10 : 5;
           if (game.global.universe == 2) amt = 1;
           if (game.global.challengeActive == "Domination") amt *= 3;
           if (getTotalPortals() > 0 || game.global.portalActive) {
@@ -13138,19 +11995,13 @@ function newGame() {
           if (challengeActive("Slow") && game.global.world == 120) {
             game.challenges.Slow.onComplete();
           } else if (
-            (game.global.challengeActive == "Life" &&
-              game.global.world == 110) ||
-            (game.global.challengeActive == "Nom" &&
-              game.global.world == 145) ||
-            (game.global.challengeActive == "Toxicity" &&
-              game.global.world == 165) ||
-            ((game.global.challengeActive == "Watch" ||
-              game.global.challengeActive == "Lead") &&
+            (game.global.challengeActive == "Life" && game.global.world == 110) ||
+            (game.global.challengeActive == "Nom" && game.global.world == 145) ||
+            (game.global.challengeActive == "Toxicity" && game.global.world == 165) ||
+            ((game.global.challengeActive == "Watch" || game.global.challengeActive == "Lead") &&
               game.global.world >= 180) ||
-            (game.global.challengeActive == "Corrupted" &&
-              game.global.world >= 190) ||
-            (game.global.challengeActive == "Domination" &&
-              game.global.world >= 215)
+            (game.global.challengeActive == "Corrupted" && game.global.world >= 190) ||
+            (game.global.challengeActive == "Domination" && game.global.world >= 215)
           ) {
             var challenge = game.global.challengeActive;
             if (
@@ -13159,15 +12010,9 @@ function newGame() {
               game.buildings.Nursery.purchased == 0
             )
               giveSingleAchieve("Grindless");
-            if (
-              game.global.challengeActive == "Lead" &&
-              game.upgrades.Gigastation.done <= 1
-            )
+            if (game.global.challengeActive == "Lead" && game.upgrades.Gigastation.done <= 1)
               giveSingleAchieve("Unsatisfied Customer");
-            if (
-              game.global.challengeActive == "Lead" &&
-              game.stats.battlesLost.value <= 100
-            )
+            if (game.global.challengeActive == "Lead" && game.stats.battlesLost.value <= 100)
               giveSingleAchieve("Leadership");
             if (
               game.global.challengeActive == "Corrupted" &&
@@ -13175,19 +12020,13 @@ function newGame() {
               game.jobs.Geneticist.owned == 0
             )
               giveSingleAchieve("Organic Trimps");
-            if (
-              game.global.challengeActive == "Toxicity" &&
-              game.challenges.Toxicity.highestStacks <= 400
-            )
+            if (game.global.challengeActive == "Toxicity" && game.challenges.Toxicity.highestStacks <= 400)
               giveSingleAchieve("Trimp is Poison");
             if (game.global.challengeActive == "Life") {
-              if (game.challenges.Life.lowestStacks == 150)
-                giveSingleAchieve("Very Sneaky");
+              if (game.challenges.Life.lowestStacks == 150) giveSingleAchieve("Very Sneaky");
               game.challenges.Life.abandon();
             }
-            var reward = game.challenges[challenge].heliumMultiplier
-              ? game.challenges[challenge].heliumMultiplier
-              : 2;
+            var reward = game.challenges[challenge].heliumMultiplier ? game.challenges[challenge].heliumMultiplier : 2;
             reward = game.challenges[challenge].heldHelium * reward;
             message(
               "You have completed the " +
@@ -13201,10 +12040,7 @@ function newGame() {
             game.global.challengeActive = "";
             addHelium(reward);
             if (challenge == "Domination") game.challenges.Domination.abandon();
-          } else if (
-            game.global.challengeActive == "Mapology" &&
-            game.global.world == 100
-          ) {
+          } else if (game.global.challengeActive == "Mapology" && game.global.world == 100) {
             game.challenges.Mapology.onComplete();
           }
         },
@@ -13221,11 +12057,7 @@ function newGame() {
           if (game.global.spireActive) {
             return;
           }
-          if (
-            game.global.challengeActive == "Eradicated" &&
-            game.global.world >= 59 &&
-            !game.global.brokenPlanet
-          )
+          if (game.global.challengeActive == "Eradicated" && game.global.world >= 59 && !game.global.brokenPlanet)
             planetBreaker();
           if (!game.global.runningChallengeSquared) {
             var amt = 30;
@@ -13243,13 +12075,7 @@ function newGame() {
             );
           }
           if (game.global.world % 5 == 0) {
-            message(
-              "The Omnipotrimp explodes, killing all of your soldiers!",
-              "Combat",
-              null,
-              null,
-              "trimp"
-            );
+            message("The Omnipotrimp explodes, killing all of your soldiers!", "Combat", null, null, "trimp");
             game.stats.trimpsKilled.value += game.resources.trimps.soldiers;
             game.global.soldierHealth = 0;
             game.global.fighting = false;
@@ -13312,8 +12138,7 @@ function newGame() {
             );
             game.challenges.Quagmire.motivatedStacks--;
             game.challenges.Quagmire.exhaustedStacks--;
-            if (game.challenges.Quagmire.motivatedStacks <= 0)
-              game.challenges.Quagmire.abandon();
+            if (game.challenges.Quagmire.motivatedStacks <= 0) game.challenges.Quagmire.abandon();
             else game.challenges.Quagmire.drawStacks();
           }
         },
@@ -13328,12 +12153,7 @@ function newGame() {
         health: 4,
         loot: function () {
           createHeirloom(null, false, false, true);
-          var rarity = getHeirloomRarity(
-            game.global.world,
-            game.global.heirloomSeed,
-            false,
-            true
-          );
+          var rarity = getHeirloomRarity(game.global.world, game.global.heirloomSeed, false, true);
           rarity = game.heirlooms.rarityNames[rarity];
           message(
             "You have completed the Frozen Castle! The map has melted, but you managed to find a " +
@@ -13341,8 +12161,7 @@ function newGame() {
               " Heirloom!",
             "Notices"
           );
-          if (game.global.challengeActive == "Hypothermia")
-            game.challenges.Hypothermia.onComplete();
+          if (game.global.challengeActive == "Hypothermia") game.challenges.Hypothermia.onComplete();
         },
       },
       Frosnimp: {
@@ -13386,13 +12205,7 @@ function newGame() {
           if (game.resources.gems.owned == 0) fadeIn("gems", 10);
           var amt = rewardResource("gems", 7.5, level);
           message(
-            "That " +
-              name +
-              " gave you " +
-              prettify(amt) +
-              " gems! Thanks " +
-              name +
-              "!",
+            "That " + name + " gave you " + prettify(amt) + " gems! Thanks " + name + "!",
             "Loot",
             "*diamond",
             "exotic",
@@ -13434,10 +12247,7 @@ function newGame() {
         health: 1,
         fast: false,
         get dropDesc() {
-          if (game.global.expandingTauntimp)
-            return (
-              "Gain +" + prettify(this.expandingBase() * 100) + "% Max Trimps"
-            );
+          if (game.global.expandingTauntimp) return "Gain +" + prettify(this.expandingBase() * 100) + "% Max Trimps";
           return "Gain 0.3% of your current Trimps as extra housing";
         },
         loot: function (level, fromMagimp) {
@@ -13447,10 +12257,7 @@ function newGame() {
           if (game.global.expandingTauntimp) {
             var newMax = game.resources.trimps.realMax();
             var added = newMax - oldMax;
-            if (
-              game.global.challengeActive != "Trapper" &&
-              game.global.challengeActive != "Trappapalooza"
-            ) {
+            if (game.global.challengeActive != "Trapper" && game.global.challengeActive != "Trappapalooza") {
               if (game.resources.trimps.owned == oldMax) {
                 game.resources.trimps.owned = newMax;
               } else {
@@ -13469,32 +12276,20 @@ function newGame() {
           } else {
             var amt = Math.ceil(game.resources.trimps.max * 0.003);
             if (game.global.challengeActive == "Downsize") {
-              amt =
-                game.global.totalGifts +
-                game.unlocks.impCount.TauntimpAdded +
-                10;
+              amt = game.global.totalGifts + game.unlocks.impCount.TauntimpAdded + 10;
               amt += countTotalHousingBuildings();
               amt = Math.ceil(amt * 0.003);
             }
             game.unlocks.impCount.TauntimpAdded += amt;
             amt =
-              game.global.challengeActive == "Trapper" ||
-              game.global.challengeActive == "Trappapalooza"
+              game.global.challengeActive == "Trapper" || game.global.challengeActive == "Trappapalooza"
                 ? addMaxHousing(amt, false)
                 : addMaxHousing(amt, true);
             var msg = "It's nice, warm, and roomy in that dead " + name + ". ";
-            if (
-              game.global.challengeActive != "Trapper" &&
-              game.global.challengeActive != "Trappapalooza"
-            ) {
+            if (game.global.challengeActive != "Trapper" && game.global.challengeActive != "Trappapalooza") {
               msg += "You found ";
-              if (amt == 1)
-                msg +=
-                  prettify(amt) + " Trimp inside, and it looks hella bored.";
-              else
-                msg +=
-                  prettify(amt) +
-                  " Trimps inside, and they all seem content to stay living there!";
+              if (amt == 1) msg += prettify(amt) + " Trimp inside, and it looks hella bored.";
+              else msg += prettify(amt) + " Trimps inside, and they all seem content to stay living there!";
               message(msg, "Loot", "gift", "exotic", "exotic");
             } else {
               message(
@@ -13515,15 +12310,11 @@ function newGame() {
         },
         expandingBase: function () {
           var mult = 0.003;
-          if (game.portal.Expansion.radLevel > 0)
-            mult += 0.0001 * game.portal.Expansion.radLevel;
+          if (game.portal.Expansion.radLevel > 0) mult += 0.0001 * game.portal.Expansion.radLevel;
           return mult;
         },
         expandingMult: function () {
-          return Math.pow(
-            this.expandingBase() + 1,
-            game.unlocks.impCount.Tauntimp
-          );
+          return Math.pow(this.expandingBase() + 1, game.unlocks.impCount.Tauntimp);
         },
       },
       Whipimp: {
@@ -13547,12 +12338,7 @@ function newGame() {
           amt = (amt - 1) * 100;
           var s = game.unlocks.impCount.Whipimp == 1 ? "" : "s";
           message(
-            "Seeing the " +
-              name +
-              s +
-              " fall is causing all of your Trimps to work " +
-              amt.toFixed(2) +
-              "% harder!",
+            "Seeing the " + name + s + " fall is causing all of your Trimps to work " + amt.toFixed(2) + "% harder!",
             "Loot",
             "star",
             "exotic",
@@ -13574,11 +12360,7 @@ function newGame() {
           var amt = Math.pow(1.003, game.unlocks.impCount.Venimp);
           amt = (amt - 1) * 100;
           message(
-            "The ground up " +
-              name +
-              " now increases your Trimps' breed speed by " +
-              amt.toFixed(2) +
-              "%!",
+            "The ground up " + name + " now increases your Trimps' breed speed by " + amt.toFixed(2) + "%!",
             "Loot",
             "glass",
             "exotic",
@@ -13631,9 +12413,7 @@ function newGame() {
           game.global.titimpLeft = timeRemaining;
           var roll = Math.floor(Math.random() * 100);
           var text = "That " + name + " made your Trimps super strong!";
-          if (roll == 1 && !fromMagimp)
-            text +=
-              ' (Titimp wishes to remind you that his name is pronounced "Tie Timp")';
+          if (roll == 1 && !fromMagimp) text += ' (Titimp wishes to remind you that his name is pronounced "Tie Timp")';
           message(text, "Loot", "*hammer", "exotic", "exotic");
         },
       },
@@ -13678,11 +12458,7 @@ function newGame() {
           var amt = Math.pow(1.003, game.unlocks.impCount.Magnimp);
           amt = (amt - 1) * 100;
           message(
-            "You killed a " +
-              name +
-              "! The strong magnetic forces now increase your loot by " +
-              amt.toFixed(2) +
-              "%!",
+            "You killed a " + name + "! The strong magnetic forces now increase your loot by " + amt.toFixed(2) + "%!",
             "Loot",
             "magnet",
             "exotic",
@@ -13906,13 +12682,7 @@ function newGame() {
         },
         Void: {
           resourceType: "Any",
-          upgrade: [
-            "AutoStorage",
-            "Heirloom",
-            "ImprovedAutoStorage",
-            "MapAtZone",
-            "AutoEquip",
-          ],
+          upgrade: ["AutoStorage", "Heirloom", "ImprovedAutoStorage", "MapAtZone", "AutoEquip"],
         },
         Frozen: {
           resourceType: "Any",
@@ -13945,10 +12715,7 @@ function newGame() {
         filterUpgrade: true,
         specialFilter: function (world) {
           var tier = Math.floor((world - 125) / 15);
-          return (
-            game.global.bionicOwned == tier + 1 ||
-            game.global.roboTrimpLevel == tier
-          );
+          return game.global.bionicOwned == tier + 1 || game.global.roboTrimpLevel == tier;
         },
         getShriekValue: function () {
           var level = game.global.roboTrimpLevel;
@@ -13958,37 +12725,20 @@ function newGame() {
         },
         createMap: function (tier) {
           game.global.bionicOwned++;
-          if (game.global.bionicOwned == 1)
-            message(
-              "You found a map to the Bionic Wonderland. Sounds fun!",
-              "Story"
-            );
+          if (game.global.bionicOwned == 1) message("You found a map to the Bionic Wonderland. Sounds fun!", "Story");
           else
             message(
               "You found a map to an even more advanced version of the Bionic Wonderland! Looks scary... Your scientists remind you that you can only carry 3 of these incredibly heavy, metallic maps at a time.",
               "Story"
             );
           var roman = romanNumeral(tier + 1);
-          createMap(
-            tier * 15 + 125,
-            "Bionic Wonderland " + roman,
-            "Bionic",
-            3,
-            100,
-            2.6,
-            true
-          );
+          createMap(tier * 15 + 125, "Bionic Wonderland " + roman, "Bionic", 3, 100, 2.6, true);
           purgeBionics();
         },
         fire: function (fromTalent) {
-          var level =
-            game.global.mapsOwnedArray[getMapIndex(game.global.currentMapId)]
-              .level;
+          var level = game.global.mapsOwnedArray[getMapIndex(game.global.currentMapId)].level;
           var bionicTier = parseInt((level - 125) / 15, 10) + 1;
-          if (
-            level + 15 < getObsidianStart() + 100 &&
-            bionicTier == game.global.bionicOwned
-          ) {
+          if (level + 15 < getObsidianStart() + 100 && bionicTier == game.global.bionicOwned) {
             this.createMap(bionicTier);
           }
           if (fromTalent === true) return;
@@ -14004,27 +12754,13 @@ function newGame() {
               text +=
                 "<br/><br/><b>Special Bionic Wonderland QOL Bonuses</b><br/>You will also find some special new Quality of Life bonuses in Bionic Wonderland maps! If you see a Bionic Wonderland map with a yellow background, that means there's a permanent QOL unlock inside. For your first map, you've unlocked Foremany!<br/><br/><b>Foremany</b><br/>" +
                 game.bwRewards.Foremany.description;
-              tooltip(
-                "confirm",
-                null,
-                "update",
-                text,
-                null,
-                "RoboTrimp",
-                null,
-                null,
-                true
-              );
+              tooltip("confirm", null, "update", text, null, "RoboTrimp", null, null, true);
               game.global.roboTrimpLevel = 1;
-              document.getElementById("chainHolder").style.visibility =
-                "visible";
+              document.getElementById("chainHolder").style.visibility = "visible";
             } else {
               game.global.roboTrimpLevel++;
               var values = game.global.roboTrimpLevel;
-              values = [
-                values * 20,
-                ((1 - this.getShriekValue()) * 100).toFixed(1),
-              ];
+              values = [values * 20, ((1 - this.getShriekValue()) * 100).toFixed(1)];
               message(
                 "<span class='icomoon icon-chain'></span> Hey look, another baby RoboTrimp! You decide to add him to your collection. You now deal " +
                   Math.floor(values[0]) +
@@ -14035,10 +12771,7 @@ function newGame() {
               );
               for (var reward in game.bwRewards) {
                 if (level == game.bwRewards[reward].requires) {
-                  if (
-                    game.bwRewards[reward].fire &&
-                    typeof game.bwRewards[reward].fire === "function"
-                  )
+                  if (game.bwRewards[reward].fire && typeof game.bwRewards[reward].fire === "function")
                     game.bwRewards[reward].fire();
                   message("You also just unlocked " + reward + "!", "Notices");
                 }
@@ -14083,16 +12816,7 @@ function newGame() {
           game.global.autoStorageAvailable = true;
           document.getElementById("autoStorageBtn").style.display = "block";
           createHeirloom();
-          message(
-            "You found an Heirloom!",
-            "Loot",
-            "*archive",
-            null,
-            "secondary",
-            null,
-            null,
-            true
-          );
+          message("You found an Heirloom!", "Loot", "*archive", null, "secondary", null, null, true);
         },
       },
       ImprovedAutoStorage: {
@@ -14108,26 +12832,10 @@ function newGame() {
         fire: function () {
           var text =
             "<p>From the void, an auspicious presence reaches out and fills your mind. You feel at peace with the world. It asks you what you desire most. Wait... hasn't this happened before? Last time you asked for your Trimps to be smart enough to manage storage structures on their own. You can make it better this time! You excitedly ask for your Trimps to waste less resources when managing resources on their own. The presence lets you know that it is done, then dissipates. You get serious déjà-vu while regretting not asking to go home.</p><p style='font-weight: bold'>From now on, storage facilities will be constructed instantly. If you collect more resources from one source than you can hold, the extra resources will be used to build new storage facilities without wasting any resources. You may not be home, but your Trimps are now quite talented!</p>";
-          tooltip(
-            "confirm",
-            null,
-            "update",
-            text,
-            null,
-            "Auspicious Presence Part II",
-            null,
-            null,
-            true
-          );
+          tooltip("confirm", null, "update", text, null, "Auspicious Presence Part II", null, null, true);
           enableImprovedAutoStorage();
           createHeirloom();
-          message(
-            "You found an Heirloom!",
-            "Loot",
-            "*archive",
-            null,
-            "secondary"
-          );
+          message("You found an Heirloom!", "Loot", "*archive", null, "secondary");
         },
       },
       MapAtZone: {
@@ -14143,27 +12851,11 @@ function newGame() {
         fire: function () {
           var text =
             "<p>From the void, an auspicious presence reaches out and fills your mind. You feel at peace with the world. It asks you what you desire most. Wait... how many times has this happened now? You're fairly positive that there was something you regretted not asking last time, but you can't quite remember. You've asked for Trimps to be able to manage storage structures, and you've asked for them to be better at managing those structures. Even though you're content with your storage solutions, you suddenly realize the perfect request! You wish the Trimps would stop pushing so far through the Zones while you're sleeping, so you ask for a way to tell the Trimps to stop fighting at a Zone of your choosing. The presence lets you know that it is done, then dissipates. You realize as soon as it leaves that you could have asked to go home, but you don't really want to anymore. Next time you'll make sure to ask for invincible Trimps though, that may have been a better choice.</p><p style='font-weight: bold'>From now on, you have access to the Map At Zone setting. This setting can be accessed through the Map Sidebar, Settings, or the 'Configure Maps' popup!</p>";
-          tooltip(
-            "confirm",
-            null,
-            "update",
-            text,
-            null,
-            "Auspicious Presence Part III",
-            null,
-            null,
-            true
-          );
+          tooltip("confirm", null, "update", text, null, "Auspicious Presence Part III", null, null, true);
           game.global.canMapAtZone = true;
           addNewSetting("mapAtZone");
           createHeirloom();
-          message(
-            "You found an Heirloom!",
-            "Loot",
-            "*archive",
-            null,
-            "secondary"
-          );
+          message("You found an Heirloom!", "Loot", "*archive", null, "secondary");
         },
       },
       AutoEquip: {
@@ -14179,27 +12871,11 @@ function newGame() {
         fire: function () {
           var text =
             "<p>From the void, an auspicious presence reaches out and fills your mind. You feel at peace with the world. It asks you what you desire most. Wait... This has DEFINITELY happened before... hasn't it? You're pretty sure it has, but you have no actual memory of it. But you do... but also you don't. Wait, who even are you? Where are you? What are you?</p><p>You sit on the ground and contemplate things for a few hours while the Auspicious Presence waits patiently. You finally stand up and demand that the Trimps become smart enough to level up their own equipment! You can't see how this could go badly. The presence lets you know that it is done, then it dissipates. As soon as it is gone, you realize you could have just asked for invincible Trimps, but you're pretty sure you'll remember next time.</p><p style='font-weight: bold'>From now on, you have access to AutoEquip!</p>";
-          tooltip(
-            "confirm",
-            null,
-            "update",
-            text,
-            null,
-            "Auspicious Presence Part IV",
-            null,
-            null,
-            true
-          );
+          tooltip("confirm", null, "update", text, null, "Auspicious Presence Part IV", null, null, true);
           game.global.autoEquipUnlocked = true;
           toggleAutoEquip(true);
           createHeirloom();
-          message(
-            "You found an Heirloom!",
-            "Loot",
-            "*archive",
-            null,
-            "secondary"
-          );
+          message("You found an Heirloom!", "Loot", "*archive", null, "secondary");
         },
       },
       AncientTreasure: {
@@ -14238,8 +12914,7 @@ function newGame() {
           if (game.global.challengeActive == "Smithless") {
             game.challenges.Smithless.ranMelting = true;
             var text = toAdd == 2 ? "These buildings are" : "This building is";
-            text +=
-              " completely useless right now! Maybe you'll be able to hire some Metalworkers eventually...";
+            text += " completely useless right now! Maybe you'll be able to hire some Metalworkers eventually...";
             message(text, "Notices");
             return;
           }
@@ -14281,19 +12956,9 @@ function newGame() {
         canRunWhenever: true,
         fire: function () {
           createHeirloom();
-          if (
-            game.global.world >= 60 &&
-            game.global.voidDeaths == 0 &&
-            game.global.voidBuff == "bleed"
-          )
+          if (game.global.world >= 60 && game.global.voidDeaths == 0 && game.global.voidBuff == "bleed")
             giveSingleAchieve("Survivor");
-          message(
-            "You found an Heirloom!",
-            "Loot",
-            "*archive",
-            null,
-            "secondary"
-          );
+          message("You found an Heirloom!", "Loot", "*archive", null, "secondary");
         },
       },
       Keys: {
@@ -14352,11 +13017,7 @@ function newGame() {
             ? "The world feels a little bit less angry as you fire off your handy Portal Generator. You can tell that somewhere in some dimension, a Megablimp is no more. In front of you, " +
               (game.global.runningChallengeSquared
                 ? "a " + color + ", shining box appears"
-                : "45 " +
-                  resource +
-                  " and a " +
-                  color +
-                  ", shining box appear") +
+                : "45 " + resource + " and a " + color + ", shining box appear") +
               " on the ground. In tiny writing on the box, you can make out the words 'Time portal. THIS SIDE UP'."
             : "Don't ever let anyone tell you that you didn't just kill that Megablimp. Because you did. As he melts away into nothingness, you notice a " +
               color +
@@ -14410,8 +13071,7 @@ function newGame() {
       },
       Shieldblock: {
         world: 10,
-        message:
-          "That thing dropped a book. Doesn't look like an ordinary book. Looks... blockier...",
+        message: "That thing dropped a book. Doesn't look like an ordinary book. Looks... blockier...",
         level: "last",
         icon: "book",
         title: "Shieldblock",
@@ -14430,8 +13090,7 @@ function newGame() {
       },
       Bounty: {
         world: -1,
-        message:
-          "It's all shiny and stuff. You're pretty sure you've never seen a book this shiny.",
+        message: "It's all shiny and stuff. You're pretty sure you've never seen a book this shiny.",
         level: "last",
         icon: "book",
         title: "Bounty",
@@ -14444,8 +13103,7 @@ function newGame() {
       },
       Supershield: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Shield!",
+        message: "You found a book that will teach you how to upgrade your Shield!",
         level: "last",
         icon: "book",
         title: "Supershield",
@@ -14457,8 +13115,7 @@ function newGame() {
       },
       Dagadder: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Dagger!",
+        message: "You found a book that will teach you how to upgrade your Dagger!",
         level: "last",
         icon: "book",
         title: "Dagadder",
@@ -14470,8 +13127,7 @@ function newGame() {
       },
       Bootboost: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Boots!",
+        message: "You found a book that will teach you how to upgrade your Boots!",
         level: "last",
         icon: "book",
         title: "Bootboost",
@@ -14483,8 +13139,7 @@ function newGame() {
       },
       Megamace: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Mace!",
+        message: "You found a book that will teach you how to upgrade your Mace!",
         level: "last",
         icon: "book",
         title: "Megamace",
@@ -14496,8 +13151,7 @@ function newGame() {
       },
       Hellishmet: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Helmet!",
+        message: "You found a book that will teach you how to upgrade your Helmet!",
         level: "last",
         icon: "book",
         title: "Hellishmet",
@@ -14509,8 +13163,7 @@ function newGame() {
       },
       Polierarm: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Polearm!",
+        message: "You found a book that will teach you how to upgrade your Polearm!",
         level: "last",
         icon: "book",
         title: "Polierarm",
@@ -14522,8 +13175,7 @@ function newGame() {
       },
       Pantastic: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Pants!",
+        message: "You found a book that will teach you how to upgrade your Pants!",
         level: "last",
         icon: "book",
         title: "Pantastic",
@@ -14535,8 +13187,7 @@ function newGame() {
       },
       Axeidic: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Battleaxe!",
+        message: "You found a book that will teach you how to upgrade your Battleaxe!",
         level: "last",
         icon: "book",
         title: "Axeidic",
@@ -14548,8 +13199,7 @@ function newGame() {
       },
       Smoldershoulder: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Shoulderguards!",
+        message: "You found a book that will teach you how to upgrade your Shoulderguards!",
         level: "last",
         icon: "book",
         title: "Smoldershoulder",
@@ -14561,8 +13211,7 @@ function newGame() {
       },
       Greatersword: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Greatsword!",
+        message: "You found a book that will teach you how to upgrade your Greatsword!",
         level: "last",
         icon: "book",
         title: "Greatersword",
@@ -14574,8 +13223,7 @@ function newGame() {
       },
       Bestplate: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Breastplate!",
+        message: "You found a book that will teach you how to upgrade your Breastplate!",
         title: "Bestplate",
         level: "last",
         icon: "book",
@@ -14587,8 +13235,7 @@ function newGame() {
       },
       Harmbalest: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Arbalest!",
+        message: "You found a book that will teach you how to upgrade your Arbalest!",
         title: "Harmbalest",
         level: "last",
         specialFilter: function () {
@@ -14603,8 +13250,7 @@ function newGame() {
       },
       GambesOP: {
         world: -1,
-        message:
-          "You found a book that will teach you how to upgrade your Gambeson!",
+        message: "You found a book that will teach you how to upgrade your Gambeson!",
         title: "GambesOP",
         level: "last",
         specialFilter: function () {
@@ -14644,9 +13290,7 @@ function newGame() {
             }
             var copy = booksNeeded == 1 ? "copy" : booksNeeded + " copies";
             message(
-              "The " +
-                copy +
-                " of 'Speedexplorer' under these bushes will certainly be useful!",
+              "The " + copy + " of 'Speedexplorer' under these bushes will certainly be useful!",
               "Unlocks",
               null,
               null,
@@ -14708,10 +13352,7 @@ function newGame() {
         fire: function () {
           game.global.mapsUnlocked = true;
           createMap(80, "The Prison", "Prison", 2.6, 100, 2.6, true);
-          message(
-            "You found The Prison! You have a bad feeling about going in...",
-            "Story"
-          );
+          message("You found The Prison! You have a bad feeling about going in...", "Story");
         },
       },
       BionicWonderland: {
@@ -14722,10 +13363,7 @@ function newGame() {
         canRunOnce: true,
         title: "Bionic Wonderland",
         fire: function () {
-          message(
-            "You found a map to the Bionic Wonderland. Sounds fun!",
-            "Story"
-          );
+          message("You found a map to the Bionic Wonderland. Sounds fun!", "Story");
           game.global.bionicOwned++;
           createMap(125, "Bionic Wonderland", "Bionic", 3, 100, 2.6, true);
         },
@@ -14748,8 +13386,7 @@ function newGame() {
       Mansion: {
         world: -1,
         startAt: 8,
-        message:
-          "You found plans for a Mansion! Your Trimps will be pretty stoked",
+        message: "You found plans for a Mansion! Your Trimps will be pretty stoked",
         level: [10, 20],
         icon: "*home4",
         title: "Mansion",
@@ -14788,8 +13425,7 @@ function newGame() {
       UberHouse: {
         world: -1,
         startAt: 29,
-        message:
-          "This book talks about adding a second floor to your homes! Mind... blown...",
+        message: "This book talks about adding a second floor to your homes! Mind... blown...",
         level: [10, 20],
         icon: "book",
         title: "A Tale of Two Stories",
@@ -14801,8 +13437,7 @@ function newGame() {
       UberMansion: {
         world: -1,
         startAt: 34,
-        message:
-          "This book will teach you how to make your Trimps share their mansions!",
+        message: "This book will teach you how to make your Trimps share their mansions!",
         level: [10, 20],
         icon: "book",
         title: "Sharing is Caring",
@@ -14878,8 +13513,7 @@ function newGame() {
       Collector: {
         world: -1,
         startAt: 50,
-        message:
-          "You found plans for some sort of overly complicated solar panel.",
+        message: "You found plans for some sort of overly complicated solar panel.",
         level: [3, 19],
         icon: "dashboard",
         title: "Collector",
@@ -14906,8 +13540,7 @@ function newGame() {
         world: -1,
         startAt: 23,
         blockU2: true,
-        message:
-          "You found blueprints for some sort of nursery that can harness more power from gems.",
+        message: "You found blueprints for some sort of nursery that can harness more power from gems.",
         level: [5, 20],
         icon: "home",
         title: "Nursery",
@@ -14925,13 +13558,7 @@ function newGame() {
         repeat: 5,
         fire: function (level) {
           var amt = rewardResource("gems", 0.5, level, true);
-          message(
-            "You found " + prettify(amt) + " gems! Terrific!",
-            "Loot",
-            "*diamond",
-            null,
-            "secondary"
-          );
+          message("You found " + prettify(amt) + " gems! Terrific!", "Loot", "*diamond", null, "secondary");
         },
       },
       //This one is for depths maps
@@ -14944,13 +13571,7 @@ function newGame() {
         filter: true,
         fire: function (level) {
           var amt = rewardResource("gems", 0.5, level, true);
-          message(
-            "You found " + prettify(amt) + " gems! Terrific!",
-            "Loot",
-            "*diamond",
-            null,
-            "secondary"
-          );
+          message("You found " + prettify(amt) + " gems! Terrific!", "Loot", "*diamond", null, "secondary");
         },
       },
       Any: {
@@ -14984,23 +13605,11 @@ function newGame() {
         filter: true,
         fire: function (level) {
           if (game.global.challengeActive == "Transmute") {
-            message(
-              "As expected, there was no Metal here.",
-              "Loot",
-              "*cubes",
-              null,
-              "primary"
-            );
+            message("As expected, there was no Metal here.", "Loot", "*cubes", null, "primary");
             return;
           }
           var amt = rewardResource("metal", 0.5, level, true);
-          message(
-            "You just found " + prettify(amt) + " bars of metal! Convenient!",
-            "Loot",
-            "*cubes",
-            null,
-            "primary"
-          );
+          message("You just found " + prettify(amt) + " bars of metal! Convenient!", "Loot", "*cubes", null, "primary");
         },
       },
       Food: {
@@ -15013,9 +13622,7 @@ function newGame() {
         fire: function (level) {
           var amt = rewardResource("food", 0.5, level, true);
           message(
-            "That guy just left " +
-              prettify(amt) +
-              " food on the ground! Sweet!",
+            "That guy just left " + prettify(amt) + " food on the ground! Sweet!",
             "Loot",
             "apple",
             null,
@@ -15128,8 +13735,7 @@ function newGame() {
       },
       //Non Equipment
       Bloodlust: {
-        message:
-          "You found an ancient book titled Bloodlust. You should look at it or something.",
+        message: "You found an ancient book titled Bloodlust. You should look at it or something.",
         world: 1,
         level: 9,
         icon: "book",
@@ -15184,8 +13790,7 @@ function newGame() {
         },
       },
       Smithy: {
-        message:
-          "Your equipment isn't going to cut it in this Universe. Better get someone to upgrade it for you!",
+        message: "Your equipment isn't going to cut it in this Universe. Better get someone to upgrade it for you!",
         world: 5,
         level: 9,
         blockU1: true,
@@ -15256,8 +13861,7 @@ function newGame() {
         title: "Mechanical Dish",
         fire: function () {
           this.canRunOnce = false;
-          if (!game.global.runningChallengeSquared || game.global.stormDone)
-            unlockJob("Meteorologist");
+          if (!game.global.runningChallengeSquared || game.global.stormDone) unlockJob("Meteorologist");
         },
       },
       Dominance: {
@@ -15289,10 +13893,7 @@ function newGame() {
         icon: "book",
         title: "Trimpma Sutra",
         fire: function () {
-          if (
-            game.global.challengeActive == "Trapper" ||
-            game.global.challengeActive == "Trappapalooza"
-          ) {
+          if (game.global.challengeActive == "Trapper" || game.global.challengeActive == "Trappapalooza") {
             message(
               "Your Scientists let you know that your Trimps won't understand the book, but they offer to hold on to it for you for later. How nice of them!",
               "Notices"
@@ -15322,10 +13923,7 @@ function newGame() {
         icon: "book",
         title: "Miner",
         fire: function () {
-          if (
-            challengeActive("Metal") ||
-            game.global.challengeActive == "Transmute"
-          ) {
+          if (challengeActive("Metal") || game.global.challengeActive == "Transmute") {
             var challenge = challengeActive("Metal")
               ? game.challenges.Metal
               : game.challenges[game.global.challengeActive];
@@ -15369,8 +13967,7 @@ function newGame() {
         },
       },
       Explorer: {
-        message:
-          "You found a book detailing the intricacies of solo exploration!",
+        message: "You found a book detailing the intricacies of solo exploration!",
         world: 15,
         level: 39,
         icon: "book",
@@ -15380,8 +13977,7 @@ function newGame() {
         },
       },
       Speedscience: {
-        message:
-          "You found a book called Speedscience! What do you think it could possibly do?!",
+        message: "You found a book called Speedscience! What do you think it could possibly do?!",
         brokenPlanet: -1,
         world: -2,
         level: 39,
@@ -15400,8 +13996,7 @@ function newGame() {
         },
       },
       Megascience: {
-        message:
-          "You found a book called Megascience! It seems to fade in and out of reality.",
+        message: "You found a book called Megascience! It seems to fade in and out of reality.",
         brokenPlanet: 1,
         addClass: "brokenUpgrade",
         world: -2,
@@ -15414,8 +14009,7 @@ function newGame() {
         },
       },
       Gigastation: {
-        message:
-          "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
+        message: "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
         brokenPlanet: 1,
         addClass: "brokenUpgrade",
         world: -1,
@@ -15429,8 +14023,7 @@ function newGame() {
         },
       },
       Gigastation2: {
-        message:
-          "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
+        message: "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
         brokenPlanet: 1,
         addClass: "brokenUpgrade",
         world: -2,
@@ -15445,8 +14038,7 @@ function newGame() {
         },
       },
       Gigastation3: {
-        message:
-          "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
+        message: "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
         brokenPlanet: 1,
         addClass: "brokenUpgrade",
         world: -33,
@@ -15461,8 +14053,7 @@ function newGame() {
         },
       },
       Gigastation4: {
-        message:
-          "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
+        message: "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
         brokenPlanet: 1,
         addClass: "brokenUpgrade",
         world: -5,
@@ -15477,8 +14068,7 @@ function newGame() {
         },
       },
       Gigastation5: {
-        message:
-          "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
+        message: "You found blueprints detailing how to upgrade your Warpstation. Blimey!",
         brokenPlanet: 1,
         addClass: "brokenUpgrade",
         world: -10,
@@ -15501,10 +14091,7 @@ function newGame() {
         blockU2: true,
         title: "Magmamancers",
         fire: function () {
-          if (
-            challengeActive("Metal") ||
-            game.global.challengeActive == "Transmute"
-          ) {
+          if (challengeActive("Metal") || game.global.challengeActive == "Transmute") {
             var challenge = game.challenges[game.global.challengeActive];
             challenge.holdMagma = true;
             message(
@@ -15576,10 +14163,7 @@ function newGame() {
         icon: "book",
         title: "Speedminer",
         fire: function () {
-          if (
-            challengeActive("Metal") ||
-            game.global.challengeActive == "Transmute"
-          ) {
+          if (challengeActive("Metal") || game.global.challengeActive == "Transmute") {
             var challenge = challengeActive("Metal")
               ? game.challenges.Metal
               : game.challenges[game.global.challengeActive];
@@ -15655,8 +14239,7 @@ function newGame() {
         },
       },
       Foreman: {
-        message:
-          "You found a crafting foreman! He will build buildings automatically for you!",
+        message: "You found a crafting foreman! He will build buildings automatically for you!",
         world: -1,
         level: 89,
         icon: "user",
@@ -15701,10 +14284,7 @@ function newGame() {
         icon: "certificate",
         title: "The Prismatic Palace Awaits...",
         fire: function () {
-          message(
-            "You found a map to a strange place. Better go kill stuff in it!",
-            "Story"
-          );
+          message("You found a map to a strange place. Better go kill stuff in it!", "Story");
           createMap(20, "Prismatic Palace", "Prismatic", 4, 100, 4, true, true);
         },
       },
@@ -15724,9 +14304,7 @@ function newGame() {
         world: -1,
         level: 99,
         get icon() {
-          return game.global.world == mutations.Magma.start() - 1
-            ? "*archive2"
-            : "book";
+          return game.global.world == mutations.Magma.start() - 1 ? "*archive2" : "book";
         },
         title: "Coordination",
         fire: function () {
@@ -15754,8 +14332,7 @@ function newGame() {
         },
       },
       Egg: {
-        message:
-          "This egg looks crazy. Seriously, guys, come look at this crazy egg!",
+        message: "This egg looks crazy. Seriously, guys, come look at this crazy egg!",
         world: 17,
         level: 55,
         icon: "record",
@@ -15793,8 +14370,7 @@ function newGame() {
         },
       },
       Worshipper: {
-        message:
-          "Having some Trimps Worship Scruffy might help him grow stronger quicker!",
+        message: "Having some Trimps Worship Scruffy might help him grow stronger quicker!",
         world: 50,
         level: [10, 70],
         blockU1: true,
@@ -15813,10 +14389,7 @@ function newGame() {
           game.global.mapsUnlocked = true;
           unlockMapStuff();
           createMap(6, "Tricky Paradise", "Plentiful", 1.2, 45, 0.85);
-          message(
-            "You found your first map! Travel to your map chamber to check it out.",
-            "Story"
-          );
+          message("You found your first map! Travel to your map chamber to check it out.", "Story");
         },
       },
       easterEgg: {
@@ -15828,10 +14401,7 @@ function newGame() {
         title: "Colored Egg",
         icon: "*droplet",
         addClass: function () {
-          return (
-            "easterEgg easterEgg" +
-            getRandomIntSeeded(game.global.eggSeed + 1, 0, 4)
-          );
+          return "easterEgg easterEgg" + getRandomIntSeeded(game.global.eggSeed + 1, 0, 4);
         },
         chance: 0.2,
         fire: function () {},
@@ -15846,13 +14416,7 @@ function newGame() {
         title: "Map Fragments",
         fire: function () {
           var amt = rewardResource("fragments");
-          message(
-            "You found " + prettify(amt) + " map fragments!",
-            "Loot",
-            "th",
-            null,
-            "secondary"
-          );
+          message("You found " + prettify(amt) + " map fragments!", "Loot", "th", null, "secondary");
         },
       },
       //portal Trumps
@@ -15867,9 +14431,7 @@ function newGame() {
           game.global.totalGifts += amt;
           amt = addMaxHousing(amt, bwRewardUnlocked("AutoStructure"));
           message(
-            "You have cleared enough land to support " +
-              prettify(amt) +
-              " more Trimps!",
+            "You have cleared enough land to support " + prettify(amt) + " more Trimps!",
             "Loot",
             "gift",
             null,
@@ -15886,9 +14448,7 @@ function newGame() {
         fire: function (level) {
           var amt = rewardResource("food", 0.5, level);
           message(
-            "That guy just left " +
-              prettify(amt) +
-              " food on the ground! Sweet!",
+            "That guy just left " + prettify(amt) + " food on the ground! Sweet!",
             "Loot",
             "apple",
             null,
@@ -15921,23 +14481,11 @@ function newGame() {
         repeat: 6,
         fire: function (level) {
           if (game.global.challengeActive == "Transmute") {
-            message(
-              "As expected, there was no Metal here.",
-              "Loot",
-              "*cubes",
-              null,
-              "primary"
-            );
+            message("As expected, there was no Metal here.", "Loot", "*cubes", null, "primary");
             return;
           }
           var amt = rewardResource("metal", 0.5, level);
-          message(
-            "You just found " + prettify(amt) + " bars of metal! Convenient!",
-            "Loot",
-            "*cubes",
-            null,
-            "primary"
-          );
+          message("You just found " + prettify(amt) + " bars of metal! Convenient!", "Loot", "*cubes", null, "primary");
         },
       },
       spireMetals: {
@@ -15947,21 +14495,13 @@ function newGame() {
         repeat: 4,
         fire: function (level) {
           if (game.global.challengeActive == "Transmute") {
-            message(
-              "As expected, there was no Metal here.",
-              "Loot",
-              "*cubes",
-              null,
-              "primary"
-            );
+            message("As expected, there was no Metal here.", "Loot", "*cubes", null, "primary");
             return;
           }
           if (!game.global.spireActive) return;
           var amt = rewardResource("metal", 25, level);
           message(
-            "There sure is a lot of metal just tossed around in this Spire! You just found " +
-              prettify(amt) +
-              " more!",
+            "There sure is a lot of metal just tossed around in this Spire! You just found " + prettify(amt) + " more!",
             "Loot",
             "*safe",
             "spireMetalsMsg",
@@ -15986,21 +14526,14 @@ function newGame() {
         tooltip: function () {
           var catchAmt = getPerkLevel("Bait") + 1;
           var s = catchAmt > 1 ? "s" : "";
-          return (
-            "Each Trap allows you to catch " +
-            prettify(catchAmt) +
-            " thing" +
-            s +
-            "."
-          );
+          return "Each Trap allows you to catch " + prettify(catchAmt) + " thing" + s + ".";
         },
         cost: {
           food: 10,
           wood: 10,
         },
         first: function () {
-          if (document.getElementById("trimps").style.visibility == "hidden")
-            fadeIn("trimps", 10);
+          if (document.getElementById("trimps").style.visibility == "hidden") fadeIn("trimps", 10);
         },
       },
       Barn: {
@@ -16077,8 +14610,7 @@ function newGame() {
         purchased: 0,
         craftTime: 20,
         AP: true,
-        tooltip:
-          "A better house for your Trimps! Each house supports up to $incby$ more Trimp{s}.",
+        tooltip: "A better house for your Trimps! Each house supports up to $incby$ more Trimp{s}.",
         cost: {
           food: [1500, 1.22],
           wood: [750, 1.22],
@@ -16095,8 +14627,7 @@ function newGame() {
         purchased: 0,
         craftTime: 60,
         AP: true,
-        tooltip:
-          "A pretty sick mansion for your Trimps to live in. Each Mansion supports $incby$ more Trimp{s}.",
+        tooltip: "A pretty sick mansion for your Trimps to live in. Each Mansion supports $incby$ more Trimp{s}.",
         cost: {
           gems: [100, 1.2],
           food: [3000, 1.2],
@@ -16152,8 +14683,7 @@ function newGame() {
         purchased: 0,
         craftTime: 480,
         AP: true,
-        tooltip:
-          "A Gateway to another dimension, where your Trimps can sleep and work. Supports $incby$ Trimp{s}.",
+        tooltip: "A Gateway to another dimension, where your Trimps can sleep and work. Supports $incby$ Trimp{s}.",
         cost: {
           fragments: [3000, 1.14],
           gems: [20000, 1.14],
@@ -16234,8 +14764,7 @@ function newGame() {
           if (this.owned > 0) return;
           var buildings = game.buildings;
           var collectors = buildings.Collector.owned;
-          if (autoBattle.oneTimers.Collectology.owned)
-            collectors *= autoBattle.oneTimers.Collectology.getHubs();
+          if (autoBattle.oneTimers.Collectology.owned) collectors *= autoBattle.oneTimers.Collectology.getHubs();
           var total =
             buildings.Hut.owned +
             buildings.House.owned +
@@ -16244,10 +14773,7 @@ function newGame() {
             buildings.Resort.owned +
             buildings.Gateway.owned +
             collectors;
-          addMaxHousing(
-            this.increase.by * total,
-            bwRewardUnlocked("AutoStructure")
-          );
+          addMaxHousing(this.increase.by * total, bwRewardUnlocked("AutoStructure"));
           this.owned = total;
           this.purchased = total;
         },
@@ -16271,12 +14797,8 @@ function newGame() {
         fire: function () {
           if (game.upgrades.Gymystic.done === 0) return;
           var oldBlock = game.buildings.Gym.increase.by;
-          game.buildings.Gym.increase.by *=
-            game.upgrades.Gymystic.modifier +
-            0.01 * (game.upgrades.Gymystic.done - 1);
-          game.global.block +=
-            (game.buildings.Gym.increase.by - oldBlock) *
-            game.buildings.Gym.owned;
+          game.buildings.Gym.increase.by *= game.upgrades.Gymystic.modifier + 0.01 * (game.upgrades.Gymystic.done - 1);
+          game.global.block += (game.buildings.Gym.increase.by - oldBlock) * game.buildings.Gym.owned;
         },
       },
       Smithy: {
@@ -16318,10 +14840,7 @@ function newGame() {
         },
         fire: function () {
           addSoldierHealth(this.getBaseMult() - 1);
-          if (
-            game.global.challengeActive == "Quest" &&
-            game.challenges.Quest.questId == 6
-          )
+          if (game.global.challengeActive == "Quest" && game.challenges.Quest.questId == 6)
             game.challenges.Quest.checkQuest();
         },
       },
@@ -16370,8 +14889,7 @@ function newGame() {
         craftTime: 1000,
         blockU1: true,
         tooltip: function () {
-          if (game.buildings.Microchip.purchased == 5)
-            return "Congratulations, you've purchased all 5 Microchips!";
+          if (game.buildings.Microchip.purchased == 5) return "Congratulations, you've purchased all 5 Microchips!";
           var text =
             "Unlocks a" +
             (game.buildings.Microchip.owned == 0 ? "" : "nother") +
@@ -16387,8 +14905,7 @@ function newGame() {
           if (this.owned == 5) {
             this.locked = 1;
             var elem = document.getElementById("Microchip");
-            if (elem)
-              document.getElementById("buildingsHere").removeChild(elem);
+            if (elem) document.getElementById("buildingsHere").removeChild(elem);
           }
           if (this.owned > 5) this.owned = 5;
         },
@@ -16504,16 +15021,11 @@ function newGame() {
         owned: 0,
         blockU2: true,
         tooltip: function () {
-          var text =
-            "Each trainer will increase the base amount your soldiers can block by ";
+          var text = "Each trainer will increase the base amount your soldiers can block by ";
           var heirloomBonus = getHeirloomBonus("Shield", "trainerEfficiency");
           var modifier = game.jobs.Trainer.modifier;
           if (heirloomBonus > 0) {
-            modifier = calcHeirloomBonus(
-              "Shield",
-              "trainerEfficiency",
-              modifier
-            ).toFixed(1);
+            modifier = calcHeirloomBonus("Shield", "trainerEfficiency", modifier).toFixed(1);
             return (
               text +
               modifier +
@@ -16538,8 +15050,7 @@ function newGame() {
         locked: 1,
         allowAutoFire: true,
         owned: 0,
-        tooltip:
-          "Each explorer will find an average of $modifier$ fragments each second.",
+        tooltip: "Each explorer will find an average of $modifier$ fragments each second.",
         cost: {
           food: [15000, 1.1],
         },
@@ -16562,10 +15073,7 @@ function newGame() {
             "<p>Each Geneticist will increase the health of each Trimp by 1% (compounding), but slows the rate at which baby Trimps grow by 2% (compounding).</p>";
           if (this.owned > 0) {
             var breedMult = Math.pow(0.98, game.jobs.Geneticist.owned);
-            var breedDisplay =
-              breedMult > 0.0001
-                ? breedMult.toFixed(4)
-                : breedMult.toExponential(3);
+            var breedDisplay = breedMult > 0.0001 ? breedMult.toFixed(4) : breedMult.toExponential(3);
             var healthMult = Math.pow(1.01, this.owned);
             var healthDisplay = prettify(healthMult * 100 - 100) + "%";
             text +=
@@ -16595,9 +15103,7 @@ function newGame() {
         get tooltip() {
           var timeStr;
           var max = 120;
-          var timeOnZone = Math.floor(
-            (getGameTime() - game.global.zoneStarted) / 60000
-          );
+          var timeOnZone = Math.floor((getGameTime() - game.global.zoneStarted) / 60000);
           if (game.talents.magmamancer.purchased) timeOnZone += 5;
           if (game.talents.stillMagmamancer.purchased) {
             timeOnZone = Math.floor(timeOnZone + game.global.spireRows);
@@ -16609,10 +15115,7 @@ function newGame() {
           if (timeOnZone >= max) timeStr = "over " + max + " minutes (Max)";
           else {
             var remaining = 10 - (timeOnZone % 10);
-            var nextBonus =
-              (this.getBonusPercent(false, Math.floor(timeOnZone / 10) + 1) -
-                1) *
-              100;
+            var nextBonus = (this.getBonusPercent(false, Math.floor(timeOnZone / 10) + 1) - 1) * 100;
             timeStr =
               prettify(timeOnZone) +
               " minute" +
@@ -16637,9 +15140,7 @@ function newGame() {
             "%</b>, and " +
             (game.talents.magmamancer.purchased
               ? "counting your Magmamancermancy " +
-                (game.talents.stillMagmamancer.purchased
-                  ? " Masteries"
-                  : " Mastery") +
+                (game.talents.stillMagmamancer.purchased ? " Masteries" : " Mastery") +
                 " "
               : "") +
             "you've been on this Zone for " +
@@ -16653,9 +15154,7 @@ function newGame() {
           else
             textString +=
               "<p>After training your first Magmamancer, your bonus metal will be " +
-              prettify(
-                nextMag * (Math.pow(1.2, this.getBonusPercent(true)) - 1) * 100
-              ) +
+              prettify(nextMag * (Math.pow(1.2, this.getBonusPercent(true)) - 1) * 100) +
               "%. (Hold Ctrl to see formula)</p>";
           if (ctrlPressed)
             textString +=
@@ -16677,9 +15176,7 @@ function newGame() {
             var timeOnZone = getGameTime() - game.global.zoneStarted;
             if (game.talents.magmamancer.purchased) timeOnZone += 300000;
             if (game.talents.stillMagmamancer.purchased) {
-              timeOnZone = Math.floor(
-                timeOnZone + 60000 * game.global.spireRows
-              );
+              timeOnZone = Math.floor(timeOnZone + 60000 * game.global.spireRows);
               var extraMax = game.global.spireRows * 0.05;
               timeMax = Math.floor(extraMax + timeMax);
             }
@@ -16689,12 +15186,7 @@ function newGame() {
             else if (timeOnZone <= 0) return 1;
           } else timeOnZone = forceTime;
           if (justStacks) return timeOnZone;
-          return (
-            1 +
-            (1 - Math.pow(boostMult, this.owned)) *
-              boostMax *
-              (Math.pow(expInc, timeOnZone) - 1)
-          );
+          return 1 + (1 - Math.pow(boostMult, this.owned)) * boostMax * (Math.pow(expInc, timeOnZone) - 1);
         },
       },
       Amalgamator: {
@@ -16703,9 +15195,7 @@ function newGame() {
         allowAutoFire: true,
         get tooltip() {
           var ratio = this.getTriggerThresh();
-          var currentRatio =
-            game.resources.trimps.realMax() /
-            game.resources.trimps.getCurrentSend();
+          var currentRatio = game.resources.trimps.realMax() / game.resources.trimps.getCurrentSend();
           var text =
             "<p>Amalgamators cannot be hired or fired manually. They are magical beings that could barely be considered Trimps anymore, and they will automatically show up to your town whenever your total population to army size ratio rises above <b>" +
             prettify(ratio) +
@@ -16756,8 +15246,7 @@ function newGame() {
           return Math.pow(this.populationModifier, this.owned);
         },
         getDamageMult: function () {
-          if (game.talents.amalg.purchased)
-            return Math.pow(1 + this.damageModifier, this.owned);
+          if (game.talents.amalg.purchased) return Math.pow(1 + this.damageModifier, this.owned);
           return this.owned * this.damageModifier + 1;
         },
       },
@@ -16806,11 +15295,8 @@ function newGame() {
               (game.buildings.Antenna.owned < 10 ? " and " : ", ") +
               "Wood from chopping";
             if (game.buildings.Antenna.owned >= 10) {
-              text +=
-                (game.buildings.Antenna.owned >= 15 ? ", " : " and ") +
-                " Health for your Soldiers";
-              if (game.buildings.Antenna.owned >= 15)
-                text += ", and Metal from mining";
+              text += (game.buildings.Antenna.owned >= 15 ? ", " : " and ") + " Health for your Soldiers";
+              if (game.buildings.Antenna.owned >= 15) text += ", and Metal from mining";
             }
             text += "!</p>";
           }
@@ -16892,11 +15378,7 @@ function newGame() {
       Helium: {
         tooltip: function () {
           return (
-            "Increase " +
-            heliumOrRadon() +
-            " gain by " +
-            prettify(game.goldenUpgrades.Helium.nextAmt() * 100) +
-            "%."
+            "Increase " + heliumOrRadon() + " gain by " + prettify(game.goldenUpgrades.Helium.nextAmt() * 100) + "%."
           );
         },
         nextAmt: function () {
@@ -16907,11 +15389,7 @@ function newGame() {
       },
       Battle: {
         tooltip: function () {
-          return (
-            "Increase Trimp attack and health by " +
-            prettify(game.goldenUpgrades.Battle.nextAmt() * 100) +
-            "%."
-          );
+          return "Increase Trimp attack and health by " + prettify(game.goldenUpgrades.Battle.nextAmt() * 100) + "%.";
         },
         nextAmt: function () {
           return 0.03 * (game.global.goldenUpgrades + 1);
@@ -17058,18 +15536,11 @@ function newGame() {
           },
         },
         fire: function () {
-          game.resources.trimps.maxSoldiers = Math.ceil(
-            1.25 * game.resources.trimps.maxSoldiers
-          );
+          game.resources.trimps.maxSoldiers = Math.ceil(1.25 * game.resources.trimps.maxSoldiers);
           if (getPerkLevel("Coordinated"))
             game.portal.Coordinated.currentSend = Math.ceil(
               game.portal.Coordinated.currentSend *
-                (0.25 *
-                  Math.pow(
-                    game.portal.Coordinated.modifier,
-                    getPerkLevel("Coordinated")
-                  ) +
-                  1)
+                (0.25 * Math.pow(game.portal.Coordinated.modifier, getPerkLevel("Coordinated")) + 1)
             );
         },
       },
@@ -17087,10 +15558,7 @@ function newGame() {
           },
         },
         fire: function (heldCtrl, noTip) {
-          if (
-            game.buildings.Warpstation.purchased >
-            game.buildings.Warpstation.owned
-          ) {
+          if (game.buildings.Warpstation.purchased > game.buildings.Warpstation.owned) {
             clearQueue("Warpstation");
           }
           var oldAmt = game.buildings.Warpstation.owned;
@@ -17100,13 +15568,9 @@ function newGame() {
           game.buildings.Warpstation.cost.metal[0] *= 1.75;
           game.buildings.Warpstation.purchased = 1;
           game.buildings.Warpstation.owned = 1;
-          addMaxHousing(
-            game.buildings.Warpstation.increase.by,
-            bwRewardUnlocked("AutoStructure")
-          );
+          addMaxHousing(game.buildings.Warpstation.increase.by, bwRewardUnlocked("AutoStructure"));
           if (!noTip) noTip = false;
-          if ((ctrlPressed || heldCtrl) && oldAmt > 1)
-            buyBuilding("Warpstation", false, noTip, oldAmt - 1);
+          if ((ctrlPressed || heldCtrl) && oldAmt > 1) buyBuilding("Warpstation", false, noTip, oldAmt - 1);
         },
       },
 
@@ -17139,8 +15603,7 @@ function newGame() {
             unlockJob("Lumberjack");
             buyAutoJobs(true);
           }
-          if (getEnergyShieldMult() > 0)
-            document.getElementById("blockDiv").style.visibility = "visible";
+          if (getEnergyShieldMult() > 0) document.getElementById("blockDiv").style.visibility = "visible";
         },
       },
       Bloodlust: {
@@ -17160,8 +15623,7 @@ function newGame() {
           pauseFight(true);
           fadeIn("pauseFight", 1);
           if (usingRealTimeOffline) {
-            if (game.global.pauseFight)
-              offlineProgress.fightBtn.innerHTML = "Enable AutoFight";
+            if (game.global.pauseFight) offlineProgress.fightBtn.innerHTML = "Enable AutoFight";
             else offlineProgress.fightBtn.style.display = "none";
           }
         },
@@ -17190,8 +15652,7 @@ function newGame() {
         //4
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will increase the block gained from each Gym by 50%.",
+        tooltip: "This book will increase the block gained from each Gym by 50%.",
         done: 0,
         cost: {
           resources: {
@@ -17202,9 +15663,7 @@ function newGame() {
         },
         fire: function () {
           game.global.block = Math.ceil(1.5 * game.global.block);
-          game.buildings.Gym.increase.by = Math.ceil(
-            1.5 * game.buildings.Gym.increase.by
-          );
+          game.buildings.Gym.increase.by = Math.ceil(1.5 * game.buildings.Gym.increase.by);
         },
       },
       Trapstorm: {
@@ -17249,11 +15708,7 @@ function newGame() {
           equipment.blockNow = true;
           equipment.tooltip = game.equipment.Shield.blocktip;
           equipment.blockCalculated = Math.round(
-            equipment.block *
-              Math.pow(
-                1.19,
-                (equipment.prestige - 1) * game.global.prestige.block + 1
-              )
+            equipment.block * Math.pow(1.19, (equipment.prestige - 1) * game.global.prestige.block + 1)
           );
           levelEquipment("Shield", 1);
         },
@@ -17329,10 +15784,7 @@ function newGame() {
           },
         },
         fire: function () {
-          message(
-            "You just made a map to the Dimension of Anger! Should be fun!",
-            "Notices"
-          );
+          message("You just made a map to the Dimension of Anger! Should be fun!", "Notices");
           createMap(20, "Dimension of Anger", "Hell", 3, 100, 2.5, true, true);
         },
       },
@@ -17349,10 +15801,7 @@ function newGame() {
           },
         },
         fire: function () {
-          message(
-            "You just made a map to the Dimension of Rage! Sounds like a great time!",
-            "Notices"
-          );
+          message("You just made a map to the Dimension of Rage! Sounds like a great time!", "Notices");
           createMap(15, "Dimension of Rage", "Hell", 3, 100, 6, true, true);
         },
       },
@@ -17375,14 +15824,8 @@ function newGame() {
           var base = game.upgrades.Blockmaster.done ? 6 : 4;
           game.buildings.Gym.increase.by =
             base *
-            Math.pow(
-              game.upgrades.Gymystic.modifier +
-                0.01 * game.upgrades.Gymystic.done,
-              game.buildings.Gym.owned
-            );
-          game.global.block +=
-            (game.buildings.Gym.increase.by - oldBlock) *
-            game.buildings.Gym.owned;
+            Math.pow(game.upgrades.Gymystic.modifier + 0.01 * game.upgrades.Gymystic.done, game.buildings.Gym.owned);
+          game.global.block += (game.buildings.Gym.increase.by - oldBlock) * game.buildings.Gym.owned;
         },
       },
       SuperShriek: {
@@ -17392,8 +15835,7 @@ function newGame() {
           var text =
             "This book will teach your Robotrimp how to do a much better job of shrieking, allowing MagnetoShriek to be used on multiple Corrupted cells in addition to Improbabilities. Upgraded MagnetoShriek starts off only being able to affect 1 cell at a time, but each use after purchasing this upgrade will extend the bonus by one additional cell, up to a max of 5 cells (resets on portal). <br/><br/> Each new Bionic Wonderland clear starting at Z185 will permanently increase the cell count cap by 1.";
           var cap = 5;
-          if (game.global.roboTrimpLevel >= 5)
-            cap += game.global.roboTrimpLevel - 4;
+          if (game.global.roboTrimpLevel >= 5) cap += game.global.roboTrimpLevel - 4;
           var cleared = game.global.roboTrimpLevel - 4;
           text +=
             " <b>You have cleared " +
@@ -17458,8 +15900,7 @@ function newGame() {
       //Jobs, in order of unlock
       Miners: {
         locked: 1,
-        tooltip:
-          "You really don't like reading books, but it seems better than mining yourself.",
+        tooltip: "You really don't like reading books, but it seems better than mining yourself.",
         done: 0,
         allowed: 0,
         cost: {
@@ -17493,8 +15934,7 @@ function newGame() {
       },
       Trainers: {
         locked: 1,
-        tooltip:
-          "This book holds all of the secrets of upper management. Train your Trimps to train other Trimps.",
+        tooltip: "This book holds all of the secrets of upper management. Train your Trimps to train other Trimps.",
         done: 0,
         allowed: 0,
         cost: {
@@ -17509,8 +15949,7 @@ function newGame() {
       },
       Explorers: {
         locked: 1,
-        tooltip:
-          "This book will allow you to hire trimps who can create map fragments for you!",
+        tooltip: "This book will allow you to hire trimps who can create map fragments for you!",
         done: 0,
         allowed: 0,
         cost: {
@@ -17544,8 +15983,7 @@ function newGame() {
       UberHut: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will increase the space gained from each Hut by 100%.",
+        tooltip: "This book will increase the space gained from each Hut by 100%.",
         done: 0,
         cost: {
           resources: {
@@ -17555,18 +15993,14 @@ function newGame() {
           },
         },
         fire: function () {
-          addMaxHousing(
-            game.buildings.Hut.owned * game.buildings.Hut.increase.by,
-            bwRewardUnlocked("AutoStructure")
-          );
+          addMaxHousing(game.buildings.Hut.owned * game.buildings.Hut.increase.by, bwRewardUnlocked("AutoStructure"));
           game.buildings.Hut.increase.by *= 2;
         },
       },
       UberHouse: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will increase the space gained from each House by 100%.",
+        tooltip: "This book will increase the space gained from each House by 100%.",
         done: 0,
         cost: {
           resources: {
@@ -17586,8 +16020,7 @@ function newGame() {
       UberMansion: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will increase the space gained from each Mansion by 100%.",
+        tooltip: "This book will increase the space gained from each Mansion by 100%.",
         done: 0,
         cost: {
           resources: {
@@ -17607,8 +16040,7 @@ function newGame() {
       UberHotel: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will increase the space gained from each Hotel by 100%.",
+        tooltip: "This book will increase the space gained from each Hotel by 100%.",
         done: 0,
         cost: {
           resources: {
@@ -17628,8 +16060,7 @@ function newGame() {
       UberResort: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will increase the space gained from each Resort by 100%.",
+        tooltip: "This book will increase the space gained from each Resort by 100%.",
         done: 0,
         cost: {
           resources: {
@@ -17872,8 +16303,7 @@ function newGame() {
       Potency: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will teach your trimps how to be 10% more efficient at making baby Trimps!",
+        tooltip: "This book will teach your trimps how to be 10% more efficient at making baby Trimps!",
         done: 0,
         cost: {
           resources: {
@@ -17889,8 +16319,7 @@ function newGame() {
         //5
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will teach your Trainers to increase block by an additional 5%!",
+        tooltip: "This book will teach your Trainers to increase block by an additional 5%!",
         done: 0,
         cost: {
           resources: {
@@ -17901,9 +16330,7 @@ function newGame() {
           },
         },
         fire: function () {
-          game.jobs.Trainer.modifier = Math.ceil(
-            (game.jobs.Trainer.modifier += 5)
-          );
+          game.jobs.Trainer.modifier = Math.ceil((game.jobs.Trainer.modifier += 5));
         },
       },
       Efficiency: {
@@ -17972,8 +16399,7 @@ function newGame() {
       Speedscience: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will teach your Trimps how to science things 25% faster!",
+        tooltip: "This book will teach your Trimps how to science things 25% faster!",
         done: 0,
         cost: {
           resources: {
@@ -17987,8 +16413,7 @@ function newGame() {
       Speedexplorer: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will teach your Trimps how to explore 300% more efficiently!",
+        tooltip: "This book will teach your Trimps how to explore 300% more efficiently!",
         done: 0,
         cost: {
           resources: {
@@ -18051,8 +16476,7 @@ function newGame() {
       Megascience: {
         locked: 1,
         allowed: 0,
-        tooltip:
-          "This book will teach your Trimps how to science things ?% faster!",
+        tooltip: "This book will teach your Trimps how to science things ?% faster!",
         done: 0,
         cost: {
           resources: {
@@ -18070,8 +16494,7 @@ function newGame() {
       Trap: {
         done: 0,
         message: function () {
-          if (game.global.universe == 2)
-            return "It's time to get some Trimps up in here.";
+          if (game.global.universe == 2) return "It's time to get some Trimps up in here.";
           return "Maybe there's something meaty and delicious here to Trap.";
         },
         cost: {
@@ -18124,8 +16547,7 @@ function newGame() {
       Shed: {
         done: 0,
         message: function () {
-          if (game.global.universe == 2)
-            return "Wet wood won't work! Better get a Shed going.";
+          if (game.global.universe == 2) return "Wet wood won't work! Better get a Shed going.";
           return "A nice Shed would allow you to keep more wood on hand.";
         },
         cost: {
@@ -18140,8 +16562,7 @@ function newGame() {
       Forge: {
         done: 0,
         message: function () {
-          if (game.global.universe == 2)
-            return "What better place to store metal than a building that can smelt it?";
+          if (game.global.universe == 2) return "What better place to store metal than a building that can smelt it?";
           return "A nice Forge would allow you to store more metal.";
         },
         cost: {
@@ -18217,11 +16638,7 @@ function newGame() {
         },
         cost: {
           special: function () {
-            return (
-              game.triggers.upgrades.done > 0 &&
-              game.resources.science.owned > 0 &&
-              game.triggers.jobs.done > 0
-            );
+            return game.triggers.upgrades.done > 0 && game.resources.science.owned > 0 && game.triggers.jobs.done > 0;
           },
         },
         fire: function () {
@@ -18265,23 +16682,15 @@ function newGame() {
       breeding: {
         done: 0,
         message: function () {
-          if (
-            game.global.challengeActive == "Trapper" ||
-            game.global.challengeActive == "Trappapalooza"
-          )
+          if (game.global.challengeActive == "Trapper" || game.global.challengeActive == "Trappapalooza")
             return "Your Trimps look really bored.";
           else if (game.global.universe == 2)
             return "Better hurry up to the fighting Zones so you don't have to sit around here all day watching Trimps breed.";
-          else
-            return "Apparently the Trimps breed if they're not working. Doesn't look pleasant.";
+          else return "Apparently the Trimps breed if they're not working. Doesn't look pleasant.";
         },
         cost: {
           special: function () {
-            return game.resources.trimps.owned -
-              game.resources.trimps.employed >=
-              2
-              ? true
-              : false;
+            return game.resources.trimps.owned - game.resources.trimps.employed >= 2 ? true : false;
           },
         },
         fire: function () {
@@ -18328,8 +16737,7 @@ function newGame() {
       },
       AutoJobs: {
         requires: 140,
-        description:
-          "Unlock the Job Automator, the envy of Human Resourceimps across the Universe.",
+        description: "Unlock the Job Automator, the envy of Human Resourceimps across the Universe.",
         fire: function () {
           toggleAutoJobs(true);
         },
@@ -18339,8 +16747,7 @@ function newGame() {
         get description() {
           var text =
             "Unlock the AutoStructure tool, allowing you to automatically purchase structures. In addition, all housing and battle territory bonuses will come with ready-to-fight Trimps inside";
-          if (game.global.highestLevelCleared >= 229)
-            text += " (Not including the Dimensional Generator)";
+          if (game.global.highestLevelCleared >= 229) text += " (Not including the Dimensional Generator)";
           text += "!";
           return text;
         },
@@ -18350,8 +16757,7 @@ function newGame() {
       },
       Geneticistassist: {
         requires: 170,
-        description:
-          "Unlock Geneticistassist, the most powerful Geneticist Automator in this side of the galaxy!",
+        description: "Unlock Geneticistassist, the most powerful Geneticist Automator in this side of the galaxy!",
         fire: function () {
           tooltip("The Geneticistassist", null, "update");
           game.global.Geneticistassist = true;
@@ -18362,20 +16768,15 @@ function newGame() {
       },
       DoubleBuild: {
         requires: 185,
-        description:
-          "Stacked items in the Building Queue will be constructed two at a time.",
+        description: "Stacked items in the Building Queue will be constructed two at a time.",
       },
       DecaBuild: {
         requires: 305,
-        description:
-          "Stacked items in the Building Queue will be constructed ten at a time.",
+        description: "Stacked items in the Building Queue will be constructed ten at a time.",
       },
     },
     get workspaces() {
-      return (
-        Math.ceil(this.resources.trimps.realMax() / 2) -
-        this.resources.trimps.employed
-      );
+      return Math.ceil(this.resources.trimps.realMax() / 2) - this.resources.trimps.employed;
     },
     set workspaces(value) {
       console.warn("workspaces is now a getter, and does not need to be set");
