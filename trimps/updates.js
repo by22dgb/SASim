@@ -9554,31 +9554,31 @@ function toggleSetting(setting, elem, fromPortal, updateOnly, backwards, fromHot
             }
         }
         if (menuOption.onToggle) menuOption.onToggle();
-        if (fromPortal) {
-            document.getElementById("ptabInfoText").innerHTML = menuOption.enabled ? "Less Info" : "More Info";
-            displayPortalUpgrades(true);
-            return;
-        }
-        var menuElem = [];
-        menuElem[0] = elem ? elem : document.getElementById("toggle" + setting);
-        if (typeof menuOption.secondLocation !== "undefined") {
-            for (var z = 0; z < menuOption.secondLocation.length; z++) {
-                menuElem.push(document.getElementById(menuOption.secondLocation[z]));
-            }
-        }
-        for (var x = 0; x < menuElem.length; x++) {
-            if (menuElem[x] === null) continue;
-            menuElem[x].innerHTML = menuOption.titles[menuOption.enabled];
-            swapClass("settingBtn", "settingBtn" + menuOption.enabled, menuElem[x]);
-            if (setting == "deleteSave") return;
-            if (!updateOnly && elem) cancelTooltip(true);
-            menuElem[x].onmouseover = function (event) {
-                tooltip(menuOption.titles[menuOption.enabled], "customText", event, menuOption.description);
-            };
-        }
-        if (!updateOnly && elem)
-            tooltip(menuOption.titles[menuOption.enabled], "customText", "update", menuOption.description);
     }
+    if (fromPortal) {
+        document.getElementById("ptabInfoText").innerHTML = menuOption.enabled ? "Less Info" : "More Info";
+        displayPortalUpgrades(true);
+        return;
+    }
+    var menuElem = [];
+    menuElem[0] = elem ? elem : document.getElementById("toggle" + setting);
+    if (typeof menuOption.secondLocation !== "undefined") {
+        for (var z = 0; z < menuOption.secondLocation.length; z++) {
+            menuElem.push(document.getElementById(menuOption.secondLocation[z]));
+        }
+    }
+    for (var x = 0; x < menuElem.length; x++) {
+        if (menuElem[x] === null) continue;
+        menuElem[x].innerHTML = menuOption.titles[menuOption.enabled];
+        swapClass("settingBtn", "settingBtn" + menuOption.enabled, menuElem[x]);
+        if (setting == "deleteSave") return;
+        if (!updateOnly && elem) cancelTooltip(true);
+        menuElem[x].onmouseover = function (event) {
+            tooltip(menuOption.titles[menuOption.enabled], "customText", event, menuOption.description);
+        };
+    }
+    if (!updateOnly && elem)
+        tooltip(menuOption.titles[menuOption.enabled], "customText", "update", menuOption.description);
 }
 
 function achievementCompatibilityUnlock() {
