@@ -1429,7 +1429,7 @@
                                 </div>
                             </div>
                             <div class="row" id="gridRow">
-                                <div class="col-xs-2" id="battleBtnsColumn">
+                                <div class="col-xs-3" id="battleBtnsColumn">
                                     <div
                                         id="battleSideTitle"
                                         onmouseover="getZoneStats(event)"
@@ -1547,6 +1547,67 @@
                                         >
                                             Exit Spire
                                         </span>
+                                    </div>
+
+                                    <div id="extraMapBtns" class="col-xs-off">
+                                        <div class="battleSideBtnContainer">
+                                            <span
+                                                class="btn settingBtn1 fightBtn"
+                                                id="togglemapLoot2"
+                                                onmouseout="tooltip('hide')"
+                                                onclick="toggleSetting('mapLoot')"
+                                            >
+                                            </span>
+                                        </div>
+                                        <div class="battleSideBtnContainer">
+                                            <span
+                                                class="btn settingBtn1 fightBtn"
+                                                id="togglerepeatUntil"
+                                                onmouseout="tooltip('hide')"
+                                                onclick="toggleSetting('repeatUntil')"
+                                            >
+                                            </span>
+                                        </div>
+                                        <div class="battleSideBtnContainer">
+                                            <span
+                                                class="btn settingBtn1 fightBtn"
+                                                id="toggleexitTo"
+                                                onmouseout="tooltip('hide')"
+                                                onclick="toggleSetting('exitTo')"
+                                            >
+                                            </span>
+                                        </div>
+                                        <div class="battleSideBtnContainer">
+                                            <span
+                                                class="btn settingBtn1 fightBtn"
+                                                id="togglemapAtZone2"
+                                                onmouseout="tooltip('hide')"
+                                                onclick="toggleSetting('mapAtZone')"
+                                            >
+                                            </span>
+                                        </div>
+                                        <div
+                                            class="battleSideBtnContainer"
+                                            style="display: none"
+                                            id="repeatVoidsContainer"
+                                        >
+                                            <span
+                                                class="btn settingBtn1 fightBtn"
+                                                id="togglerepeatVoids"
+                                                onmouseout="tooltip('hide')"
+                                                onclick="toggleSetting('repeatVoids')"
+                                            >
+                                            </span>
+                                        </div>
+                                        <div class="battleSideBtnContainer" style="display: none" id="climbBwContainer">
+                                            <span
+                                                class="btn settingBtn1 fightBtn"
+                                                id="toggleclimbBw2"
+                                                onmouseout="tooltip('hide')"
+                                                onclick="toggleSetting('climbBw')"
+                                            >
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xs-10" id="gridContainer">
@@ -1874,62 +1935,6 @@
                                         <div id="extraGridInfoBtns">
                                             <span class="btn btn-info" onclick="restoreGrid()">Continue</span>
                                         </div>
-                                    </div>
-                                </div>
-                                <div id="extraMapBtns" class="col-xs-off">
-                                    <div class="battleSideBtnContainer">
-                                        <span
-                                            class="btn settingBtn1 fightBtn"
-                                            id="togglemapLoot2"
-                                            onmouseout="tooltip('hide')"
-                                            onclick="toggleSetting('mapLoot')"
-                                        >
-                                        </span>
-                                    </div>
-                                    <div class="battleSideBtnContainer">
-                                        <span
-                                            class="btn settingBtn1 fightBtn"
-                                            id="togglerepeatUntil"
-                                            onmouseout="tooltip('hide')"
-                                            onclick="toggleSetting('repeatUntil')"
-                                        >
-                                        </span>
-                                    </div>
-                                    <div class="battleSideBtnContainer">
-                                        <span
-                                            class="btn settingBtn1 fightBtn"
-                                            id="toggleexitTo"
-                                            onmouseout="tooltip('hide')"
-                                            onclick="toggleSetting('exitTo')"
-                                        >
-                                        </span>
-                                    </div>
-                                    <div class="battleSideBtnContainer">
-                                        <span
-                                            class="btn settingBtn1 fightBtn"
-                                            id="togglemapAtZone2"
-                                            onmouseout="tooltip('hide')"
-                                            onclick="toggleSetting('mapAtZone')"
-                                        >
-                                        </span>
-                                    </div>
-                                    <div class="battleSideBtnContainer" style="display: none" id="repeatVoidsContainer">
-                                        <span
-                                            class="btn settingBtn1 fightBtn"
-                                            id="togglerepeatVoids"
-                                            onmouseout="tooltip('hide')"
-                                            onclick="toggleSetting('repeatVoids')"
-                                        >
-                                        </span>
-                                    </div>
-                                    <div class="battleSideBtnContainer" style="display: none" id="climbBwContainer">
-                                        <span
-                                            class="btn settingBtn1 fightBtn"
-                                            id="toggleclimbBw2"
-                                            onmouseout="tooltip('hide')"
-                                            onclick="toggleSetting('climbBw')"
-                                        >
-                                        </span>
                                     </div>
                                 </div>
                             </div>
