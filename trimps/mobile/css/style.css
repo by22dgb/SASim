@@ -62,14 +62,21 @@ body {
     background-size: auto 100%;
 }
 
-#topRow {
-    /*height: 285px;*/
-    height: 18vw;
+#firstRow {
+	height: 15%;
     margin-bottom: 10px;
 }
 
-#firstRow {
-	height: 18vw;
+#secondRow {
+    margin-bottom: 10px;
+}
+
+#thirdRow {
+	height: 35%;
+    margin-bottom: 10px;
+}
+
+#fourthRow {
     margin-bottom: 10px;
 }
 
@@ -558,6 +565,8 @@ body {
 	padding: 0;
 	padding: 0.5%;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
 }
 
 .psText:hover, .bdHover:hover{
@@ -599,16 +608,6 @@ body {
 
 }
 
-.bdPercent{
-	
-}
-
-.bdNumber{
-	
-}
-
-.collectRow {}
-
 #trapArea {
     border: 1px solid white;
     display: inline-block;
@@ -618,7 +617,6 @@ body {
     width: 85%;
 }
 
-#trappingBar {}
 
 #trappingProgress {
     margin-top: 3%;
@@ -844,7 +842,7 @@ body {
 }
 
 .buyContainerSizeLg{
-	height: calc(99vh - 22.2vw - 175px);
+	height: calc(99vh - 22.2vw - 161px);
 }
 
 #outerBuyContainer{
@@ -1064,6 +1062,8 @@ body {
 	border: 1px solid black;
 	display: table-cell !important;
 	text-align: center;
+	font-size: 1.6vw !important;
+	height: 8vw;
 }
 
 .col-xs-off{
@@ -1088,7 +1088,6 @@ body {
 	border: 1px solid black !important;
 	cursor: pointer;
 	text-align: center;
-
 }
 
 #togglesaveAndExit.settingBtn0{
@@ -1286,10 +1285,6 @@ body {
     margin-bottom: 0;
 }
 
-#rightCol {
-	height: calc(100vh - 18vw - 58px);
-	padding-left: .25vw;
-}
 
 .ownedArea {
     font-size: 1.3em;
@@ -7348,9 +7343,6 @@ input[type=range]{background: transparent;}
 		width: 80%;
 		left: 10% !important;
 	}
-	#settingsTable > tbody > tr > td {
-        font-size: 1.2vw !important;
-    }   
     /* SPIRE TD */
     #floatingCombatText {
         width: calc(39vw - 4px) !important;
@@ -7416,9 +7408,6 @@ input[type=range]{background: transparent;}
 	}
 	.buyContainerSizeSm{
 		height: calc(99vh - 19vw - 165px);
-	}
-	.buyContainerSizeLg{
-		height: calc(99vh - 22.2vw - 161px);
 	}
 	.infoSpanNature {
 		font-size: 1vw;
