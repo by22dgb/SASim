@@ -10314,7 +10314,7 @@ function mapsSwitch(updateOnly, fromRecycle) {
 function toggleMapGridHtml(on, currentMapObj) {
     var settings = on ? ["block", "2", "8", "block"] : ["none", "off", "10", "none"];
     if (window.location.pathname == "/mobile/index.html")
-        settings = on ? ["block", "12", "9", "block"] : ["none", "off", "10", "none"];
+        settings = on ? ["block", "12", "9", "block"] : ["none", "off", "9", "none"];
     document.getElementById("mapGrid").style.display = settings[0];
     if (game.options.menu.extraMapBtns.enabled) {
         swapClass("col-xs", "col-xs-" + settings[1], document.getElementById("extraMapBtns"));
