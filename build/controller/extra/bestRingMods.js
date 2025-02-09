@@ -1,29 +1,30 @@
 /*
 Functions for calculating best ring mods.
 */
-import { uiSetMods, uiUpdateMod } from "../../view/extra/bestRingModsView.js";
-import { getKillTime, getDustPs, modifiedAutoBattle, startSimulation, } from "../autoBattleController.js";
-import { equipRingMods, getRing, unequipRingMods, } from "../bonusesController.js";
+import { displayBestMods, uiSetMods, uiUpdateMod } from "../../view/extra/bestRingModsView.js";
+import { getKillTime, getDustPs, modifiedAutoBattle, startSimulation } from "../autoBattleController.js";
+import { equipRingMods, getRing, unequipRingMods } from "../bonusesController.js";
 import { getModsToRun } from "./get.js";
-let MODSTORUN = [];
-let CURRENTMODS;
-let ORIGINALMODS;
+
 export function findBestMod() {
     const ring = getRing().stats;
     ORIGINALMODS = ring.mods;
     const lvl = ring.level;
-    if (lvl < 5)
-        return; // No mods
+    if (lvl < 5) return; // No mods
     if (lvl < 15) {
         MODSTORUN = getModsToRun(1);
-    }
-    else {
+    } else if (lvl < 30) {
         MODSTORUN = getModsToRun(2);
+    } else {
+        MODSTORUN = getModsToRun(3);
     }
     uiSetMods(MODSTORUN);
     CURRENTMODS = MODSTORUN.shift();
+    BESTMODSDPS = [CURRENTMODS, 0];
+    BESTMODSTIME = [CURRENTMODS, Infinity];
     simulateNextMod();
 }
+
 function simulateNextMod() {
     unequipRingMods();
     const mod = listMods(CURRENTMODS);
@@ -31,24 +32,41 @@ function simulateNextMod() {
     modifiedAutoBattle();
     startSimulation(onUpdate, onComplete);
 }
+
 function onUpdate() {
     const killTime = getKillTime();
     const dustPs = getDustPs();
+    updateBestMods(killTime, dustPs);
     uiUpdateMod(listMods(CURRENTMODS), killTime, dustPs);
 }
+
 function onComplete() {
     const mod = MODSTORUN.shift();
     if (mod !== undefined) {
         CURRENTMODS = mod;
         simulateNextMod();
-    }
-    else {
+    } else {
         unequipRingMods();
         equipRingMods(listMods(ORIGINALMODS));
+        displayBestMods(BESTMODSDPS[0], BESTMODSTIME[0]);
     }
 }
+
 function listMods(mod) {
-    if (Array.isArray(mod))
-        return mod;
+    if (Array.isArray(mod)) return mod;
     return [mod];
 }
+
+function updateBestMods(killTime, dustPs) {
+    if (killTime < BESTMODSTIME[1]) {
+        BESTMODSTIME = [CURRENTMODS, killTime];
+    }
+    if (dustPs > BESTMODSDPS[1]) {
+        BESTMODSDPS = [CURRENTMODS, dustPs];
+    }
+}
+let MODSTORUN = [];
+let CURRENTMODS;
+let ORIGINALMODS;
+let BESTMODSDPS;
+let BESTMODSTIME;
