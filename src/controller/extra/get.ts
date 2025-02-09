@@ -15,6 +15,7 @@ export function getItemsToRun(withDoppel: boolean, withRing: boolean) {
         const item = getItem(name);
         if (item.state === Trinary.Yes) {
             if (!withDoppel && name === "Doppelganger_Signet") continue;
+            if (!withDoppel && name === "Doppelganger_Diadem") continue;
             itemsToRun.push(name);
         }
     }

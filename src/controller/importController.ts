@@ -36,7 +36,6 @@ export function stringPaste(paste: string) {
     startSimulationFromButton();
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function importSave(savegame: any) {
     clear(true);
     modifiedAutoBattleWithBuild();
@@ -131,7 +130,6 @@ function findBonusesSplit(row: string[]): number {
     return -1;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function equipRowItems(ABItems: any, items: string[]) {
     items.forEach((itemLevel, index) => {
         if (itemLevel !== "") {

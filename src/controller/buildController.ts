@@ -36,7 +36,6 @@ export function buildFromSave() {
     buildItems(saveString.items);
 
     // Set ring
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ringMods = saveString.ring.mods as any as string[];
     setRingLevel(saveString.ring.level);
     equipRingMods(ringMods);
@@ -70,7 +69,6 @@ export function setPresets(presets: typeof autoBattle.presets) {
     names.forEach((name, index) => {
         index += 1;
         const presetName = Object.keys(autoBattle.presets)[index] as keyof typeof autoBattle.presets;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const preset = presets[presetName] as any;
         if (preset.length > 0) {
             updatePresetButton(name, index);
@@ -83,7 +81,6 @@ export function loadPreset(buttonName: string) {
     const r = /\d/;
     const id = Number(buttonName.match(r));
     const presetName = ("p" + id) as keyof typeof autoBattle.presets;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const preset = autoBattle.presets[presetName] as any[];
     const newItems: string[] = [];
 

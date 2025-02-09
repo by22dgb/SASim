@@ -7,6 +7,7 @@ import { displayBestItem, uiSetDropsItems, uiUpdateDropItem } from "../../view/e
 import { getResults, IResults, modifiedAutoBattle, startSimulation } from "../autoBattleController.js";
 import { equipItemBackendOnly } from "../itemEquipController.js";
 import { getItemsToRun } from "./get.js";
+import { updateTimeSpent } from "../../view/simulationView.js";
 
 export function testDropItems() {
     runAllItems();
@@ -27,7 +28,7 @@ function runAllItems() {
 function simulateNextItem() {
     equipItemBackendOnly(STORAGE.currentItem as keyof IABTypes["items"]);
     modifiedAutoBattle();
-    startSimulation(onUpdate, onComplete);
+    startSimulation(onUpdate, onComplete, onInterrupt);
 }
 
 function baseOnComplete() {
@@ -55,6 +56,12 @@ function onComplete() {
     } else if (STORAGE.bestTime[0] !== "") {
         displayBestItem(STORAGE.bestTime[0], STORAGE.bestWR[0], STORAGE.bestIncome[0]);
     }
+}
+
+function onInterrupt() {
+    equipItemBackendOnly(STORAGE.currentItem as keyof IABTypes["items"]);
+    const results = getResults();
+    updateTimeSpent(results.isRunning, results.timeUsed, results.runtime);
 }
 
 function setBestItem() {

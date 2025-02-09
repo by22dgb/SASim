@@ -13,6 +13,8 @@ export function getItemsToRun(withDoppel, withRing) {
         if (item.state === Trinary.Yes) {
             if (!withDoppel && name === "Doppelganger_Signet")
                 continue;
+            if (!withDoppel && name === "Doppelganger_Diadem")
+                continue;
             itemsToRun.push(name);
         }
     }

@@ -12,32 +12,32 @@ import { conConfig, gameController } from "./gameController.js";
 import { updateResistances } from "./resistanceController.js";
 import { setSimResultsDps } from "./resultsController.js";
 import { getRemainingEnemies } from "./saveController.js";
-
 export function getAutoRun() {
     return _isAutoRun;
 }
-
 export function updateAutoRun() {
     _isAutoRun = !_isAutoRun;
 }
-
 export function startSimulation(onUpdate, onComplete, onInterrupt) {
     if (gameController.isRunning()) {
         return;
     }
     if (onUpdate) {
         conConfig.setOnUpdate(onUpdate);
-    } else {
+    }
+    else {
         conConfig.setOnUpdate(liveUpdate);
     }
     if (onComplete) {
         conConfig.setOnComplete(onComplete);
-    } else {
-        conConfig.setOnComplete(() => {});
+    }
+    else {
+        conConfig.setOnComplete(() => { });
     }
     if (onInterrupt) {
         conConfig.setOnInterrupt(onInterrupt);
-    } else {
+    }
+    else {
         conConfig.setOnInterrupt(liveInterrupt);
     }
     if (conConfig.runtime === 0) {
@@ -45,45 +45,38 @@ export function startSimulation(onUpdate, onComplete, onInterrupt) {
     }
     runSimulation();
 }
-
 export function stopSimulation() {
     gameController.stop();
 }
-
 function liveUpdate() {
     const results = getResults();
     uiUpdateLiveResults(results);
     setSimResultsDps(getDustPs());
 }
-
 function liveInterrupt() {
     const results = getResults();
     updateTimeSpent(results.isRunning, results.timeUsed, results.runtime);
 }
-
 function runSimulation() {
     gameController.start();
 }
-
 export function startSimulationFromButton() {
     conConfig.incRuntime();
-    conConfig.setOnComplete(() => {});
+    conConfig.setOnComplete(() => { });
     if (!gameController.modified && !gameController.isRunning()) {
         conConfig.setOnUpdate(liveUpdate);
         runSimulation();
-    } else {
+    }
+    else {
         startSimulation();
     }
 }
-
 export function getEnemyLevel() {
     return autoBattle.enemyLevel;
 }
-
 export function getMaxEnemyLevel() {
     return autoBattle.maxEnemyLevel;
 }
-
 export function printAllInfo() {
     // Returns all info for human eye, interacts directly with autoBattle object for safety, use for testing, do not use for anything useful.
     const info = [];
@@ -95,7 +88,8 @@ export function printAllInfo() {
     for (const [item, value] of Object.entries(autoBattle.items)) {
         if (value.equipped) {
             items[item] = value.level;
-        } else {
+        }
+        else {
             uneqItems[item] = value.level;
         }
     }
@@ -125,19 +119,16 @@ export function printAllInfo() {
         console.log(entry);
     });
 }
-
 export function modifiedAutoBattle() {
     gameController.halt = true;
     gameController.modified = true;
     resetAutoBattle();
 }
-
 export function resetAutoBattle() {
     gameController.lastUpdate = Date.now();
     conConfig.resetRuntime();
     conConfig.resetFunctions();
 }
-
 export function modifiedAutoBattleWithBuild() {
     modifiedAutoBattle();
     updateResistances();
@@ -146,28 +137,23 @@ export function modifiedAutoBattleWithBuild() {
         startSimulationFromButton();
     }
 }
-
 export function setRuntime(runtime) {
     const milliSeconds = runtime * 1000 * 60 * 60;
     conConfig.setBaseRuntime(milliSeconds);
 }
-
 export function getDustPs() {
     return autoBattle.getDustPs();
 }
-
 export function getClearingTime() {
     const enemyLevel = autoBattle.enemyLevel;
     const toKill = enemyCount(enemyLevel);
     return (toKill / autoBattle.sessionEnemiesKilled) * autoBattle.lootAvg.counter;
 }
-
 export function getKillTime() {
     const timeUsed = autoBattle.lootAvg.counter;
     const enemiesKilled = autoBattle.sessionEnemiesKilled;
     return timeUsed / enemiesKilled;
 }
-
 export function getResults() {
     const enemyLevel = autoBattle.enemyLevel;
     // Standards
@@ -236,14 +222,12 @@ export function getResults() {
         bestFight,
     };
 }
-
 export const enemyCount = (level) => {
-    if (level < 20) return 10 * level;
+    if (level < 20)
+        return 10 * level;
     return 190 + 15 * (level - 19);
 };
-
 export function simIsRunning() {
     return gameController.isRunning();
 }
-
 let _isAutoRun = false;

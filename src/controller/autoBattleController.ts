@@ -31,8 +31,6 @@ export interface IResults {
     bestFight: string;
 }
 
-let _isAutoRun = false;
-
 export function getAutoRun() {
     return _isAutoRun;
 }
@@ -117,10 +115,8 @@ export function printAllInfo() {
     const enemyLevel = autoBattle.enemyLevel;
     info.push(`Levels: ${maxEnemyLevel} ${enemyLevel}`);
 
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     const uneqItems = {} as any;
     const items = {} as any;
-    /* eslint-enable @typescript-eslint/no-explicit-any */
     for (const [item, value] of Object.entries(autoBattle.items)) {
         if (value.equipped) {
             items[item] = value.level;
@@ -291,3 +287,5 @@ export const enemyCount = (level: number) => {
 export function simIsRunning() {
     return gameController.isRunning();
 }
+
+let _isAutoRun = false;
