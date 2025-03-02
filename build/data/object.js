@@ -12,7 +12,7 @@ export let autoBattle = {
     speed: 1,
     enemyLevel: 1,
     maxEnemyLevel: 1,
-    autoLevel: false,
+    autoLevel: false, // Changed from true
     dust: 0,
     shards: 0,
     shardDust: 0,
@@ -88,6 +88,7 @@ export let autoBattle = {
             dustMult: 0,
             gooStored: 0,
             lastGoo: -1,
+            immune: "",
             bleed: {
                 time: 0,
                 mod: 0,
@@ -104,6 +105,7 @@ export let autoBattle = {
                 time: 0,
                 mod: 0,
                 count: 0,
+                timeApplied: 0,
             },
         };
     },
@@ -234,11 +236,17 @@ export let autoBattle = {
             equipped: false,
             hidden: false,
             level: 1,
-            description: function(){
-                return "可以使敌人流血，持续10秒。使怒怒的流血伤害+" + prettify(this.bleedMod() * 100) + "%" + ((this.level >= 5) ? "，攻击力+" + prettify(this.attack()) : "") + "。使怒怒触发流血的概率+" + prettify(this.bleedChance()) + "%，如果敌人震荡或中毒了，则使概率翻倍。";
+            description: function () {
+                return ("可以使敌人流血，持续10秒。使怒怒的流血伤害+" +
+                    prettify(this.bleedMod() * 100) +
+                    "%" +
+                    (this.level >= 5 ? "，攻击力+" + prettify(this.attack()) : "") +
+                    "。使怒怒触发流血的概率+" +
+                    prettify(this.bleedChance()) +
+                    "%，如果敌人震荡或中毒了，则使概率翻倍。");
             },
             upgrade: "每5级使怒怒的攻击力+10，流血伤害+20%。每级使怒怒的流血伤害+5%，触发流血的概率+3%",
-            attack: function(){
+            attack: function () {
                 return Math.floor(this.level / 5) * 10;
             },
             bleedChance: function(){
@@ -252,8 +260,12 @@ export let autoBattle = {
             doStuff: function(){
                 autoBattle.trimp.attack += this.attack();
                 autoBattle.trimp.bleedMod += this.bleedMod();
-                if (autoBattle.trimp.bleedTime < 10000) autoBattle.trimp.bleedTime = 10000;
-                autoBattle.trimp.bleedChance += (autoBattle.enemy.poison.time > 0 || autoBattle.enemy.shock.time > 0) ? (this.bleedChance() * 2) : this.bleedChance();
+                if (autoBattle.trimp.bleedTime < 10000)
+                    autoBattle.trimp.bleedTime = 10000;
+                autoBattle.trimp.bleedChance +=
+                    autoBattle.enemy.poison.time > 0 || autoBattle.enemy.shock.time > 0
+                        ? this.bleedChance() * 2
+                        : this.bleedChance();
             },
             startPrice: 25,
             priceMod: 4
@@ -272,8 +284,10 @@ export let autoBattle = {
             },
             doStuff: function(){
                 autoBattle.trimp.poisonMod += this.effect();
-                autoBattle.trimp.poisonChance += (autoBattle.enemy.shock.time > 0 || autoBattle.enemy.bleed.time > 0) ? 50 : 25;
-                if (autoBattle.trimp.poisonTime < 10000) autoBattle.trimp.poisonTime = 10000;
+                autoBattle.trimp.poisonChance +=
+                    autoBattle.enemy.shock.time > 0 || autoBattle.enemy.bleed.time > 0 ? 50 : 25;
+                if (autoBattle.trimp.poisonTime < 10000)
+                    autoBattle.trimp.poisonTime = 10000;
             },
             priceMod: 6,
             startPrice: 50
@@ -283,15 +297,18 @@ export let autoBattle = {
             equipped: false,
             hidden: false,
             level: 1,
-            description: function(){
-                return "可以使敌人震荡，持续10秒。使怒怒的震荡伤害+" + prettify(this.shockMod() * 100) + "%。使怒怒触发震荡的概率+35%，如果敌人流血或中毒了，则使概率翻倍。";
+            description: function () {
+                return ("可以使敌人震荡，持续10秒。使怒怒的震荡伤害+" +
+                    prettify(this.shockMod() * 100) +
+                    "%。使怒怒触发震荡的概率+35%，如果敌人流血或中毒了，则使概率翻倍。");
             },
             upgrade: "每级使怒怒的震荡伤害+10%",
-            shockMod: function(){
-                return 0.15 + (0.1 * this.level);
+            shockMod: function () {
+                return 0.15 + 0.1 * this.level;
             },
-            doStuff: function(){
-                autoBattle.trimp.shockChance += (autoBattle.enemy.bleed.time > 0 || autoBattle.enemy.poison.time > 0) ? 70 : 35;
+            doStuff: function () {
+                autoBattle.trimp.shockChance +=
+                    autoBattle.enemy.bleed.time > 0 || autoBattle.enemy.poison.time > 0 ? 70 : 35;
                 autoBattle.trimp.shockMod += this.shockMod();
                 autoBattle.trimp.shockTime = 10000;
             },
@@ -355,8 +372,8 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 87,
-            description: function(){
-                return "使怒怒的防御力+" + prettify(this.defense()) + "。所有抗性+" + prettify(this.resistance()) + "%。";
+            description: function () {
+                return ("使怒怒的防御力+" + prettify(this.defense()) + "。所有抗性+" + prettify(this.resistance()) + "%。");
             },
             upgrade: "每级使怒怒的防御力+2，所有抗性+5%",
             defense: function(){
@@ -388,8 +405,8 @@ export let autoBattle = {
             effect: function(){
                 return 0.2 + (0.1 * this.level);
             },
-            dustIncrease: function(){
-                return this.effect() + Math.max(0, (autoBattle.trimp.lifesteal - autoBattle.enemy.lifestealResist));
+            dustIncrease: function () {
+                return this.effect() + Math.max(0, autoBattle.trimp.lifesteal - autoBattle.enemy.lifestealResist);
             },
             startPrice: 650,
             priceMod: 4
@@ -426,7 +443,7 @@ export let autoBattle = {
             level: 1,
             zone: 98,
             description: function(){
-                return "当怒怒触发中毒造成伤害时，每层中毒使怒怒的生命值恢复" + prettify(this.healAmt()) + "。怒怒的中毒触发速度增加" + prettify((1 - this.tickMult()) * 100) + "%。";
+                return "当怒怒触发中毒造成伤害时，每层中毒使怒怒的生命值恢复" + prettify(this.healAmt()) + "。怒怒的中毒触发速度+" + prettify((1 - this.tickMult()) * 100) + "%。";
             },
             upgrade: "每级使怒怒的生命值恢复量+0.5，中毒触发速度+1%",
             healAmt: function(){
@@ -467,7 +484,7 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 103,
-            description: function(){
+            description: function () {
                 return "使怒怒的防御力+" + prettify(this.defense()) + "。使怒怒的生命值+" + prettify(this.health()) + "。";
             },
             upgrade: "每级使怒怒的防御力+6，生命值+100",
@@ -546,21 +563,27 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 113,
-            description: function(){
-                return "如果怒怒中毒、流血或震荡了，则使它的攻击力+" + prettify(this.attack()) + "，攻击间隔-15%，吸血+" + prettify(this.lifesteal() * 100) + "%，受到的伤害减少" + prettify((1 - this.damageTakenMult()) * 100) + "%。";
+            description: function () {
+                return ("如果怒怒中毒、流血或震荡了，则使它的攻击力+" +
+                    prettify(this.attack()) +
+                    "，攻击间隔-15%，吸血+" +
+                    prettify(this.lifesteal() * 100) +
+                    "%，受到的伤害-" +
+                    prettify((1 - this.damageTakenMult()) * 100) +
+                    "%。");
             },
             upgrade: "每级使怒怒的攻击力+6，吸血+6%，受到的伤害-3%(相互叠乘，最终会逼近75%)",
-            damageTakenMult: function(){
-                return (((0.825 * Math.pow(0.93, (this.level - 1))) / 1.5) + 0.25);
+            damageTakenMult: function () {
+                return (0.825 * Math.pow(0.93, this.level - 1)) / 1.5 + 0.25;
             },
-            attack: function(){
-                return 9 + (6 * this.level);
+            attack: function () {
+                return 9 + 6 * this.level;
             },
-            lifesteal: function(){
-                return 0.09 + (0.06 * this.level);
+            lifesteal: function () {
+                return 0.09 + 0.06 * this.level;
             },
-            doStuff: function(){
-                if (autoBattle.trimp.bleed.time > 0 || autoBattle.trimp.shock.time > 0 || autoBattle.trimp.poison.time > 0){
+            doStuff: function () {
+                if (autoBattle.trimp.bleed.time > 0 || autoBattle.trimp.shock.time > 0 || autoBattle.trimp.poison.time > 0) {
                     autoBattle.trimp.damageTakenMult *= this.damageTakenMult();
                     autoBattle.trimp.attack += this.attack();
                     autoBattle.trimp.lifesteal += this.lifesteal();
@@ -578,7 +601,7 @@ export let autoBattle = {
             level: 1,
             zone: 115,
             description: function(){
-                return "使怒怒的防御力+" + prettify(this.defense()) + "，触发震荡的概率+" + prettify(this.shockChance()) + "%，震荡伤害+" + prettify(this.shockMod() * 100) + "%，所有抗性+50%。如果敌人震荡了，则使它的攻击间隔增加" + prettify((this.enemySpeed() - 1) * 100) + "%。";
+                return "使怒怒的防御力+" + prettify(this.defense()) + "，触发震荡的概率+" + prettify(this.shockChance()) + "%，震荡伤害+" + prettify(this.shockMod() * 100) + "%，所有抗性+50%。如果敌人震荡了，则使它的攻击间隔+" + prettify((this.enemySpeed() - 1) * 100) + "%。";
             },
             upgrade: "每级使怒怒的防御力+3，触发震荡的概率+15%，震荡伤害+15%，敌人的攻击间隔+2%",
             defense: function(){
@@ -682,18 +705,21 @@ export let autoBattle = {
             description: function(){
                 return "使怒怒触发流血的概率+" + prettify(this.bleedChance()) + "%，攻击力+" + prettify(this.attack()) + "。使敌人的攻击间隔-25%，攻击力-25%。每次怒怒或敌人触发流血时，使怒怒的攻击进度条填充" + prettify(this.barFill() * 100) + "%。";
             },
-            upgrade: "每级使怒怒触发流血的概率+5%，攻击力+2，攻击进度条多填充5%",
-            attack: function(){
-                return 6 + (this.level * 2)
+            upgrade: "每级使怒怒触发流血的概率+5%，攻击力+2，攻击进度条多填充5%(最高为160%)",
+            attack: function () {
+                return 6 + this.level * 2;
             },
-            onBleed: function(){
-                autoBattle.trimp.lastAttack += (autoBattle.trimp.attackSpeed * this.barFill());
+            onBleed: function () {
+                autoBattle.trimp.lastAttack += autoBattle.trimp.attackSpeed * this.barFill();
             },
             bleedChance: function(){
                 return 25 + (5 * this.level);
             },
-            barFill: function(){
-                return 0.20 + (0.05 * this.level);
+            barFill: function () {
+                var fill = 0.2 + 0.05 * this.level;
+                if (fill > 1.6)
+                    fill = 1.6;
+                return fill;
             },
             doStuff: function(){
                 autoBattle.trimp.bleedChance += this.bleedChance();
@@ -721,7 +747,7 @@ export let autoBattle = {
             },
             doStuff: function(){
                 autoBattle.trimp.attack += this.attack();
-                if (autoBattle.enemy.bleed.time <= 0 && autoBattle.enemy.poison.time <= 0){
+                if (autoBattle.enemy.bleed.time <= 0 && autoBattle.enemy.poison.time <= 0) {
                     autoBattle.trimp.lifesteal += this.lifesteal();
                 }
             },
@@ -756,8 +782,9 @@ export let autoBattle = {
             doStuff: function(){
                 autoBattle.trimp.shockMod += this.shockMod();
                 autoBattle.trimp.shockChance += this.shockChance();
-                if (autoBattle.enemy.shock.time >= 0) autoBattle.trimp.attackSpeed *= this.attackSpeed();
-                autoBattle.trimp.attack += (Math.min(10, autoBattle.enemy.shock.count) * this.attack());
+                if (autoBattle.enemy.shock.time >= 0)
+                    autoBattle.trimp.attackSpeed *= this.attackSpeed();
+                autoBattle.trimp.attack += Math.min(10, autoBattle.enemy.shock.count) * this.attack();
                 autoBattle.trimp.shockResist += this.shockResist();
             },
             priceMod: 5,
@@ -834,24 +861,33 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 138,
-            description: function(){
-                return "使怒怒的防御力+" + prettify(this.defense()) + "，生命值+" + prettify(this.health()) + "，流血抗性+" + prettify(this.resist()) + "%。如果怒怒装备了可以使敌人流血的物品，则使怒怒的攻击力+" + prettify(this.attack()) + "。"
+            description: function () {
+                return ("使怒怒的防御力+" +
+                    prettify(this.defense()) +
+                    "，生命值+" +
+                    prettify(this.health()) +
+                    "，流血抗性+" +
+                    prettify(this.resist()) +
+                    "%。如果怒怒装备了可以使敌人流血的物品，则使怒怒的攻击力+" +
+                    prettify(this.attack()) +
+                    "。");
             },
             upgrade: "每级使怒怒的防御力+30，生命值+1000，流血抗性+20%，攻击力+5",
-            attack: function(){
-                return 10 + (5 * this.level);
+            attack: function () {
+                return 10 + 5 * this.level;
             },
-            defense: function(){
-                return (-10 + (this.level * 30));
+            defense: function () {
+                return -10 + this.level * 30;
             },
-            health: function(){
-                return (-500 + (this.level * 1000));
+            health: function () {
+                return -500 + this.level * 1000;
             },
-            resist: function(){
-                return 30 + (20 * this.level);
+            resist: function () {
+                return 30 + 20 * this.level;
             },
-            doStuff: function(){
-                if (autoBattle.items.Rusty_Dagger.equipped || autoBattle.items.Big_Cleaver.equipped || autoBattle.items.Bag_of_Nails.equipped) autoBattle.trimp.attack += this.attack();
+            doStuff: function () {
+                if (autoBattle.items.Rusty_Dagger.equipped || autoBattle.items.Big_Cleaver.equipped)
+                    autoBattle.trimp.attack += this.attack();
                 autoBattle.trimp.maxHealth += this.health();
                 autoBattle.trimp.defense += this.defense();
                 autoBattle.trimp.bleedResist += this.resist();
@@ -868,7 +904,7 @@ export let autoBattle = {
             description: function(){
                 return "使敌人常时震荡，至少多受到" + prettify(this.shockMod() * 100) + "%伤害。使怒怒的生命值+" + prettify(this.health()) + "，中毒抗性+" + prettify(this.resist()) +  "%，中毒可以多叠加3层。";
             },
-            upgrade: "每级使被常时震荡的敌人受到的伤害+20%。每级使怒怒的生命值+500，中毒抗性+20%",
+            upgrade: "每级使被常时震荡的敌人受到的伤害+20%。每级使怒怒的生命值+1000，中毒抗性+20%",
             shockMod: function(){
                 return (0.2 * this.level);
             },
@@ -880,7 +916,7 @@ export let autoBattle = {
             },
             doStuff: function(){
                 var enemy = autoBattle.enemy;
-                if (enemy.shock.time <= 0 || enemy.shock.mod < this.shockMod()){
+                if (enemy.shock.time <= 0 || enemy.shock.mod < this.shockMod()) {
                     enemy.shock.time = 9999999;
                     enemy.shock.mod = this.shockMod();
                 }
@@ -1013,11 +1049,12 @@ export let autoBattle = {
             health: function(){
                 return 500 + (1000 * this.level);
             },
-            afterCheck: function(){
-                if (autoBattle.enemy.poison.time > 0 || autoBattle.enemy.bleed.time > 0){
+            afterCheck: function () {
+                if (autoBattle.enemy.poison.time > 0 || autoBattle.enemy.bleed.time > 0) {
                     var mod = 20 / autoBattle.frameTime;
-                    autoBattle.trimp.health -= (autoBattle.trimp.maxHealth * mod * autoBattle.trimp.damageTakenMult);
-                    if (autoBattle.trimp.health < 0.01) autoBattle.trimp.health = 0;
+                    autoBattle.trimp.health -= autoBattle.trimp.maxHealth * mod * autoBattle.trimp.damageTakenMult;
+                    if (autoBattle.trimp.health < 0.01)
+                        autoBattle.trimp.health = 0;
                 }
             },
             doStuff: function(){
@@ -1036,24 +1073,35 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 165,
-            description: function(){
-                return "使怒怒的攻击力+" + prettify(this.attack()) + "，吸血+" + prettify(this.lifesteal() * 100) + "%，流血伤害+" + prettify(this.bleedMod() * 100) + "%，触发流血的概率+" + prettify(this.bleedChance()) + "%。如果怒怒装备了可以使敌人流血的物品，则使敌人在进入战斗前生命值上限减少25%。"
+            description: function () {
+                return ("使怒怒的攻击力+" +
+                    prettify(this.attack()) +
+                    "，吸血+" +
+                    prettify(this.lifesteal() * 100) +
+                    "%，流血伤害+" +
+                    prettify(this.bleedMod() * 100) +
+                    "%，触发流血的概率+" +
+                    prettify(this.bleedChance()) +
+                    "%。如果怒怒装备了可以使敌人流血的物品，则使敌人在进入战斗前生命值上限-25%。");
             },
             upgrade: "每级使怒怒的攻击力+75，吸血+10%，流血伤害+75%，触发流血的概率+50%",
-            attack: function(){
-                return 125 + (75 * this.level);
+            attack: function () {
+                return 125 + 75 * this.level;
             },
-            lifesteal: function(){
-                return 0.3 + (0.1 * this.level);
+            lifesteal: function () {
+                return 0.3 + 0.1 * this.level;
             },
-            bleedMod: function(){
-                return 0.25 + (0.75 * this.level);
+            bleedMod: function () {
+                return 0.25 + 0.75 * this.level;
             },
-            bleedChance: function(){
-                return 25 + (50 * this.level);
+            bleedChance: function () {
+                return 25 + 50 * this.level;
             },
-            onEnemy: function(){
-                if (autoBattle.items.Rusty_Dagger.equipped || autoBattle.items.Big_Cleaver.equipped || autoBattle.items.Bag_of_Nails.equipped){
+            onEnemy: function () {
+                if (autoBattle.items.Rusty_Dagger.equipped ||
+                    autoBattle.items.Big_Cleaver.equipped ||
+                    autoBattle.items.Bag_of_Nails.equipped ||
+                    autoBattle.items.Doppelganger_Diadem.equipped) {
                     autoBattle.enemy.baseHealth *= 0.75;
                     autoBattle.enemy.maxHealth *= 0.75;
                     autoBattle.enemy.health = autoBattle.enemy.maxHealth;
@@ -1077,9 +1125,9 @@ export let autoBattle = {
             startPrice: 2.7e9,
             priceMod: 10,
             description: function(){
-                return "可以使敌人流血，持续10秒。使怒怒的减速气场无效。当敌人流血时，使它们的攻击力减少25%。使怒怒的攻击力+" + prettify(this.attack()) + "，流血伤害+" + prettify(this.bleedMod() * 100) + "%，生命值+" + prettify(this.health()) + "。"
+                return "可以使敌人流血，持续10秒。使怒怒的减速气场无效。当敌人流血时，使它们的攻击力-25%。使怒怒的攻击力+" + prettify(this.attack()) + "，流血伤害+" + prettify(this.bleedMod() * 100) + "%，生命值+" + prettify(this.health()) + "。"
             },
-            upgrade: "每级怒怒的攻击力+100，流血伤害+75%，生命值+500",
+            upgrade: "每级使怒怒的攻击力+100，流血伤害+75%，生命值+500",
             attack: function(){
                 return 150 + (this.level * 100);
             },
@@ -1108,7 +1156,7 @@ export let autoBattle = {
             level: 1,
             zone: 170,
             description: function(){
-                return "使怒怒的生命值+" + prettify(this.health()) + "，防御力+" + prettify(this.defense()) + "，吸血+" + prettify(this.lifesteal() * 100) + "%。怒怒每失去1%生命值，就使它的攻击力增加0.5%。当怒怒的生命值低于50%时，使它受到的伤害减少30%。" 
+                return "使怒怒的生命值+" + prettify(this.health()) + "，防御力+" + prettify(this.defense()) + "，吸血+" + prettify(this.lifesteal() * 100) + "%。怒怒每失去1%生命值，就使它的攻击力+0.5%。当怒怒的生命值低于50%时，使它受到的伤害-30%。" 
             },
             upgrade: "每级使怒怒的生命值+1000，防御力+100，吸血+25%",
             health: function(){
@@ -1284,7 +1332,7 @@ export let autoBattle = {
             level: 1,
             zone: 210,
             description: function(){
-                return "使怒怒的攻击力+" + prettify(this.attack()) + "，流血伤害+" + prettify(this.bleedMod() * 100) + "%，震荡伤害+" + prettify(this.shockMod() * 100) + "%，中毒伤害+" + prettify(this.poisonMod()) + "，中毒层数叠加数+1，中毒触发速度增加10%。";
+                return "使怒怒的攻击力+" + prettify(this.attack()) + "，流血伤害+" + prettify(this.bleedMod() * 100) + "%，震荡伤害+" + prettify(this.shockMod() * 100) + "%，中毒伤害+" + prettify(this.poisonMod()) + "，中毒层数叠加数+1，中毒触发速度+10%。";
             },
             upgrade: "每级使怒怒的攻击力+2500，流血伤害+300%，震荡伤害+300%，中毒伤害+1000",
             attack: function(){
@@ -1318,8 +1366,8 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 220,
-            description: function(){
-            return "如果击杀敌人时它中毒了，且从未有流血生效过，则多掉落" + this.dustMult() + "倍魔尘。";
+            description: function () {
+                return "如果击杀敌人时它中毒了，且从未有流血生效过，则多掉落" + this.dustMult() + "倍魔尘。";
             },
             upgrade: "每级使敌人多掉落1倍魔尘",
             dustMult: function(){
@@ -1340,7 +1388,7 @@ export let autoBattle = {
             description: function(){
                 return "使怒怒的生命值+" + prettify(this.health()) + "。如果敌人流血了，且至少经过5秒，则使怒怒的攻击力+" + prettify(this.attack()) + "，且敌人每秒额外受到流血伤害" + prettify(this.bleedTickMult() * 100) + "%数值的伤害。"
             },
-            upgrade: "使怒怒的攻击力+10000，生命值+5000，每秒额外受到流血伤害的数值再+100%",
+            upgrade: "每级使怒怒的攻击力+10000，生命值+5000，每秒额外受到流血伤害的数值再+100%",
             health: function(){
                 return 5000 + (5000 * this.level);
             },
@@ -1350,12 +1398,13 @@ export let autoBattle = {
             attack: function(){
                 return 15000 + (10000 * this.level);
             },
-            doStuff: function(){
-                if (autoBattle.enemy.bleed.time > 0 && autoBattle.battleTime > 5000) autoBattle.trimp.attack += this.attack();
+            doStuff: function () {
+                if (autoBattle.enemy.bleed.time > 0 && autoBattle.battleTime > 5000)
+                    autoBattle.trimp.attack += this.attack();
                 autoBattle.trimp.maxHealth += this.health();
             },
-            afterCheck: function(){
-                if (autoBattle.enemy.bleed.time > 0 && autoBattle.battleTime > 5000){
+            afterCheck: function () {
+                if (autoBattle.enemy.bleed.time > 0 && autoBattle.battleTime > 5000) {
                     var bdamage = autoBattle.getBleedDamage(autoBattle.enemy, autoBattle.trimp);
                     var pct = this.bleedTickMult() * (autoBattle.frameTime / 1000);
                     bdamage *= pct;
@@ -1367,6 +1416,7 @@ export let autoBattle = {
             startPrice: 15e5,
             priceMod: 20
         },
+        //Dopp Diadem 250
         //Final calc items
         //After all shock resist
         Stormbringer: {
@@ -1401,22 +1451,30 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 84,
-            description: function(){
-                return "其他物品触发流血时，流血至少持续" + this.bleedTime() + "秒。使怒怒触发流血的概率+" + prettify(this.bleedChance()) + "%。如果敌人流血了，则使怒怒的吸血+" + prettify(this.lifesteal() * 100) + "%。";
+            description: function () {
+                return ("其他物品触发流血时，流血至少持续" +
+                    this.bleedTime() +
+                    "秒。使怒怒触发流血的概率+" +
+                    prettify(this.bleedChance()) +
+                    "%。如果敌人流血了，则使怒怒的吸血+" +
+                    prettify(this.lifesteal() * 100) +
+                    "%。");
             },
             upgrade: "每级使敌人的流血持续时间+1秒，怒怒触发流血的概率+4%，怒怒的吸血+2.5%",
-            bleedTime: function(){
-                return 11 + (1 * this.level);
+            bleedTime: function () {
+                return 11 + 1 * this.level;
             },
-            lifesteal: function(){
-                return 0.175 + (0.025 * this.level);
+            lifesteal: function () {
+                return 0.175 + 0.025 * this.level;
             },
-            bleedChance: function(){
-                return 21 + (this.level * 4);
+            bleedChance: function () {
+                return 21 + this.level * 4;
             },
-            doStuff: function(){
-                if (autoBattle.trimp.bleedTime > 0 && autoBattle.trimp.bleedTime < (this.bleedTime() * 1000)) autoBattle.trimp.bleedTime = this.bleedTime() * 1000;
-                if (autoBattle.enemy.bleed.time > 0) autoBattle.trimp.lifesteal += this.lifesteal();
+            doStuff: function () {
+                if (autoBattle.trimp.bleedTime > 0 && autoBattle.trimp.bleedTime < this.bleedTime() * 1000)
+                    autoBattle.trimp.bleedTime = this.bleedTime() * 1000;
+                if (autoBattle.enemy.bleed.time > 0)
+                    autoBattle.trimp.lifesteal += this.lifesteal();
                 autoBattle.trimp.bleedChance += this.bleedChance();
             },
             startPrice: 300
@@ -1446,7 +1504,8 @@ export let autoBattle = {
                     autoBattle.trimp.defense += this.defense();
                 }
                 var poisonTime = this.poisonTime();
-                if (autoBattle.trimp.poisonTime > 0 && autoBattle.trimp.poisonTime < poisonTime) autoBattle.trimp.poisonTime = poisonTime;
+                if (autoBattle.trimp.poisonTime > 0 && autoBattle.trimp.poisonTime < poisonTime)
+                    autoBattle.trimp.poisonTime = poisonTime;
                 autoBattle.trimp.poisonChance += this.poisonChance();
             },
             startPrice: 150,
@@ -1476,8 +1535,11 @@ export let autoBattle = {
             },
             doStuff: function(){
                 var bleedChance = autoBattle.trimp.bleedChance;
-                if (autoBattle.items.Sacrificial_Shank.equipped) bleedChance = Math.floor(bleedChance * 0.75);
-                if (bleedChance > autoBattle.enemy.bleedResist && autoBattle.trimp.bleedTime > 0 && autoBattle.trimp.bleedMod > 0){
+                if (autoBattle.items.Sacrificial_Shank.equipped)
+                    bleedChance = Math.floor(bleedChance * 0.75);
+                if (bleedChance > autoBattle.enemy.bleedResist &&
+                    (autoBattle.trimp.bleedTime > 0 || autoBattle.items.Doppelganger_Diadem.equipped) &&
+                    autoBattle.trimp.bleedMod > 0) {
                     autoBattle.trimp.defense += this.defense();
                     autoBattle.trimp.maxHealth += this.health();
                     autoBattle.trimp.lifesteal += this.lifesteal();
@@ -1564,11 +1626,17 @@ export let autoBattle = {
             level: 1,
             zone: 145,
             enemyReduced: 0,
-            description: function(){
-                return "使怒怒和敌人(在计算抗性之前)触发概率最高的异常状态，其触发概率变为原来的0.75倍。每因此使怒怒或敌人减少10%的触发概率，就使怒怒的攻击间隔-" + prettify((1 - this.attackTime()) * 100) + "%，所有抗性+" + prettify(this.resist()) + "%，吸血+" + prettify(this.lifesteal() * 100) + "%。";
+            description: function () {
+                return ("使怒怒和敌人(在计算抗性之前)触发概率最高的异常状态，其触发概率变为原来的0.75倍。每因此使怒怒或敌人减少10%的触发概率，就使怒怒的攻击间隔-" +
+                    prettify((1 - this.attackTime()) * 100) +
+                    "%，所有抗性+" +
+                    prettify(this.resist()) +
+                    "%，吸血+" +
+                    prettify(this.lifesteal() * 100) +
+                    "%。");
             },
             upgrade: "每因该物品使怒怒或敌人减少10%的触发概率，每级就使怒怒的攻击间隔-1%，所有抗性+1%，吸血+1%",
-            attackTime: function(){
+            attackTime: function () {
                 return Math.pow(0.99, this.level);
             },
             resist: function(){
@@ -1670,8 +1738,8 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 155,
-            description: function(){
-                return "使怒怒的攻击力+" + prettify(this.attack()) + "，使怒怒的吸血减少25%。"
+            description: function () {
+                return "使怒怒的攻击力+" + prettify(this.attack()) + "，使怒怒的吸血减少为原来的75%。";
             },
             upgrade: "每级使怒怒的攻击力+100",
             attack: function(){
@@ -1717,7 +1785,7 @@ export let autoBattle = {
             description: function(){
             return "使怒怒的生命值+" + prettify((this.statMult() -1) * 100) + "%，攻击力+" + prettify((this.statMult() -1) * 100) + "%。如果敌人未中毒，则使怒怒的吸血+" + prettify(this.lifesteal() * 100) + "%。";
             },
-            upgrade: "使怒怒的生命值、攻击力和吸血+50%",
+            upgrade: "每级使怒怒的生命值、攻击力和吸血+50%",
             statMult: function(){
                 return 4.5 + (this.level * 0.5);
             },
@@ -1733,7 +1801,31 @@ export let autoBattle = {
             startPrice: 200000,
             priceMod: 20
         },
-        Doppelganger_Signet: { //actual final attack item
+        Doppelganger_Diadem: {
+            owned: false,
+            equipped: false,
+            hidden: false,
+            level: 1,
+            zone: 250,
+            description: function () {
+                return "可以使敌人流血，持续10秒。如果怒怒装备了分身纹章，则使攻击力翻倍，如果分身存在，再使攻击力翻倍。使分身的生命值+50%，且每次战斗中可以复活一次。";
+            },
+            doStuff: function () {
+                if (autoBattle.trimp.bleedTime <= 10000)
+                    autoBattle.trimp.bleedTime = 10000;
+                if (autoBattle.items.Doppelganger_Signet.equipped) {
+                    autoBattle.trimp.attack *= 2;
+                    if (!autoBattle.trimp.doppDown)
+                        autoBattle.trimp.attack *= 2;
+                    if (typeof autoBattle.trimp.doppLives === "undefined")
+                        autoBattle.trimp.doppLives = 1;
+                }
+            },
+            noUpgrade: true,
+            dustType: "shards",
+        },
+        Doppelganger_Signet: {
+            //actual final attack item
             owned: false,
             equipped: false,
             hidden: false,
@@ -1741,20 +1833,39 @@ export let autoBattle = {
             zone: 190,
             longText: true,
             description: function(){
-                return "召唤一个分身，在分身存在期间，使怒怒受到的伤害减少50%，攻击力翻倍，且中毒层数叠加数+1。分身会在受到等于生命值上限的伤害或可以击杀敌人时爆炸，对敌人造成伤害，该伤害的数值为本次战斗怒怒造成的伤害，并使敌人的防御力减少50%。";
+                return "召唤一个分身，在分身存在期间，使怒怒受到的伤害-50%，攻击力翻倍，且中毒层数叠加数+1。分身会在受到等于生命值上限的伤害或可以击杀敌人时爆炸，对敌人造成伤害，该伤害的数值为本次战斗怒怒造成的伤害，并使敌人的防御力-50%。";
             },
             onDeath: function(){
                 var damageDealt = autoBattle.enemy.dmgTaken;
                 autoBattle.damageCreature(autoBattle.enemy, damageDealt, false, true);
                 autoBattle.enemy.defense *= 0.5;
-                autoBattle.trimp.doppDown = true;
+                if (autoBattle.trimp.doppLives)
+                    autoBattle.trimp.doppLives--;
+                else
+                    autoBattle.trimp.doppDown = true;
+            },
+            doppHealth: function () {
+                var healthAmt = autoBattle.trimp.maxHealth;
+                if (autoBattle.items.Doppelganger_Diadem.equipped) {
+                    healthAmt *= 1.5;
+                    if (!autoBattle.trimp.doppLives)
+                        healthAmt *= 2;
+                }
+                return healthAmt;
+            },
+            explodeDmg: function () {
+                var damageAmt = autoBattle.enemy.dmgTaken;
+                if (autoBattle.items.Doppelganger_Diadem.equipped && autoBattle.trimp.doppLives == 1)
+                    damageAmt *= 3;
+                return damageAmt;
             },
             doStuff: function(){
                 if (autoBattle.trimp.doppDown) return;
                 autoBattle.trimp.attack *= 2;
                 autoBattle.trimp.damageTakenMult *= 0.5;
                 autoBattle.trimp.poisonRate++;
-                if (autoBattle.trimp.dmgTaken >= autoBattle.trimp.maxHealth || autoBattle.enemy.dmgTaken >= autoBattle.enemy.health) this.onDeath();
+                if (autoBattle.trimp.dmgTaken >= this.doppHealth() || this.explodeDmg() >= autoBattle.enemy.health)
+                    this.onDeath();
             },
             noUpgrade: true,
             dustType: "shards"
@@ -1766,10 +1877,10 @@ export let autoBattle = {
             hidden: false,
             level: 1,
             zone: 230,
-            description: function(){
-                return "怒怒触发中毒时造成的伤害变为" + this.poisonMult() + "倍。"
+            description: function () {
+                return "使怒怒触发中毒时造成的伤害变为" + this.poisonMult() + "倍。";
             },
-            upgrade: "触发中毒时造成的伤害倍率+1",
+            upgrade: "每级使触发中毒时造成的伤害倍率+1",
             poisonMult: function(){
                 return 2 + this.level;
             },
@@ -1779,6 +1890,84 @@ export let autoBattle = {
             startPrice: 5e5,
             priceMod: 20,
             dustType: "shards",
+        },
+        Gaseous_Greataxe: {
+            owned: false,
+            equipped: false,
+            hidden: false,
+            level: 1,
+            zone: 260,
+            dustMult: function () {
+                var mult = 0.75 + (this.level - 1) * 0.01;
+                if (mult > 1)
+                    mult = 1;
+                return mult;
+            },
+            description: function () {
+                return ("使怒怒的中毒伤害乘以流血伤害和震荡伤害中较高者的数值。使中毒层数叠加数翻倍。使怒怒触发的中毒可以多叠加" +
+                    prettify(this.maxStacks()) +
+                    "层。每10秒再使中毒层数的上限增加该层数的10%，并使中毒伤害+10%(相互叠乘)。使魔尘和晶块的获取量-" +
+                    Math.round((1 - this.dustMult()) * 100) +
+                    "%。");
+            },
+            upgrade: "每级使该装备怒怒触发的中毒可以多叠加的层数+20%(相互叠乘)，获取量减少的数值-1%",
+            maxStacks: function () {
+                return Math.floor(100 * Math.pow(1.2, this.level - 1));
+            },
+            doStuff: function () {
+                var higherMod = autoBattle.trimp.shockMod > autoBattle.trimp.bleedMod
+                    ? autoBattle.trimp.shockMod
+                    : autoBattle.trimp.bleedMod;
+                if (higherMod < 1)
+                    higherMod = 1;
+                autoBattle.trimp.poisonMod *= higherMod;
+                var timeStacks = Math.floor(autoBattle.battleTime / 10000);
+                autoBattle.trimp.poisonMod *= Math.pow(1.1, timeStacks);
+                autoBattle.trimp.poisonStack += Math.floor(this.maxStacks() * ((timeStacks + 10) * 0.1));
+                autoBattle.trimp.poisonRate *= 2;
+            },
+            dustType: "shards",
+            startPrice: 1e10,
+            priceMod: 20,
+        },
+        The_Fibrillator: {
+            owned: false,
+            equipped: false,
+            hidden: false,
+            level: 1,
+            zone: 270,
+            description: function () {
+                return ("使怒怒的攻击力和中毒伤害变为" +
+                    prettify(this.shockMod()) +
+                    "倍。当前敌人单次震荡中每经过10秒，就使该物品的攻击力和中毒伤害加成倍率+" +
+                    prettify(this.shockMod() - 1) +
+                    "。使怒怒触发的震荡最少持续30秒(效果优先级高于撕裂之镰)。使怒怒的生命值变为" +
+                    prettify(this.healthMod()) +
+                    "倍。");
+            },
+            upgrade: "每级使攻击力和中毒伤害加成倍率增加的数值+0.05，怒怒的生命值倍率+0.25倍",
+            shockMod: function () {
+                return 1.1 + (this.level - 1) * 0.05;
+            },
+            healthMod: function () {
+                return 2 + (this.level - 1) * 0.25;
+            },
+            doStuff: function () {
+                autoBattle.trimp.maxHealth *= this.healthMod();
+                var shockSeconds = 0;
+                if (autoBattle.enemy.shock.time > 0) {
+                    shockSeconds = (autoBattle.battleTime - autoBattle.enemy.shock.timeApplied) / 1000;
+                    shockSeconds = Math.floor(shockSeconds / 10);
+                    var shockMod = this.shockMod();
+                    var toAdd = (shockMod - 1) * shockSeconds;
+                    toAdd += shockMod;
+                    autoBattle.trimp.attack *= toAdd;
+                    autoBattle.trimp.poisonMod *= toAdd;
+                }
+            },
+            dustType: "shards",
+            startPrice: 1e12,
+            priceMod: 20,
         },
     },
     bonuses: {
@@ -1800,6 +1989,7 @@ export let autoBattle = {
             level: 0,
             price: 30000,
             priceMod: 3,
+            max: 50,
         },
         Stats: {
             description: function () {
@@ -1811,6 +2001,7 @@ export let autoBattle = {
             level: 0,
             price: 20000,
             priceMod: 3,
+            max: 50,
         },
         Scaffolding: {
             description: function () {
@@ -1823,6 +2014,7 @@ export let autoBattle = {
             price: 50,
             useShards: true,
             priceMod: 10,
+            max: 18,
         },
     },
     oneTimers: {
@@ -1911,8 +2103,7 @@ export let autoBattle = {
             requiredItems: 42,
             useShards: true,
             onPurchase: function () {
-                document.getElementById("autoBattleRingBtn").style.display =
-                    "inline-block";
+                document.getElementById("autoBattleRingBtn").style.display = "inline-block";
             },
         },
         Mass_Hysteria: {
@@ -1922,7 +2113,7 @@ export let autoBattle = {
             useShards: true,
         },
         Burstier: {
-            description: "Gamma Burst now triggers at 4 stacks.",
+            description: "Gamma Burst requires 1 fewer attack before triggering.",
             owned: false,
             requiredItems: 48,
             useShards: true,
@@ -1979,6 +2170,9 @@ export let autoBattle = {
         this.trimp.slowAura = 1;
         this.trimp.dustMult = 0;
         this.checkItems();
+        if (this.enemy.immune != "") {
+            this.trimp[this.enemy.immune + "Chance"] = 0;
+        }
         var trimpAttackTime = this.trimp.attackSpeed;
         if (this.trimp.lastAttack >= trimpAttackTime) {
             this.trimp.lastAttack -= trimpAttackTime;
@@ -2008,8 +2202,7 @@ export let autoBattle = {
             this.enemy.lastExplode += this.frameTime;
             if (this.enemy.lastExplode >= this.enemy.explodeFreq) {
                 this.enemy.lastExplode -= this.enemy.explodeFreq;
-                var dmg = this.enemy.explodeDamage * this.getAttack(this.enemy) -
-                    this.trimp.defense;
+                var dmg = this.enemy.explodeDamage * this.getAttack(this.enemy) - this.trimp.defense;
                 this.damageCreature(this.trimp, dmg);
             }
         }
@@ -2066,9 +2259,10 @@ export let autoBattle = {
             if (itemObj.doStuff)
                 itemObj.doStuff();
         }
-        if (this.items.Sundering_Scythe.equipped &&
-            this.trimp.shockTime > 10000)
+        if (this.items.Sundering_Scythe.equipped && this.trimp.shockTime > 10000)
             this.trimp.shockTime = 10000;
+        if (this.items.The_Fibrillator.equipped && this.trimp.shockTime > 0 && this.trimp.shockTime < 30000)
+            this.trimp.shockTime = 30000;
         if (this.items.Blessed_Protector.equipped)
             this.items.Blessed_Protector.afterCheck(); //after anything that might hurt huffy
         if (this.items.Grounded_Crown.equipped)
@@ -2086,10 +2280,7 @@ export let autoBattle = {
         if (creature.isEthereal && !ignoreEth)
             creature.health += dmg;
         else {
-            if (!fromGoo &&
-                creature.isTrimp &&
-                this.items.Goo_Golem.equipped &&
-                this.items.Goo_Golem.active()) {
+            if (!fromGoo && creature.isTrimp && this.items.Goo_Golem.equipped && this.items.Goo_Golem.active()) {
                 creature.gooStored += dmg;
             }
             else {
@@ -2142,19 +2333,16 @@ export let autoBattle = {
             return 1;
         return Math.pow(this.enemy.berserkMod, Math.floor(this.enemy.berserkStack / this.enemy.berserkEvery));
     },
-    rollDamage: function (attacker, luck = false) {
+    rollDamage: function (attacker) {
         var baseAttack = this.getAttack(attacker);
         var attack = baseAttack * 0.2;
         var roll = Math.floor(Math.random() * 201);
-        if (luck) {
-            roll = 100 + luck * 100;
-        }
         roll -= 100;
         roll /= 100;
         return baseAttack + attack * roll;
     },
-    attack: function (attacker, defender, luck = 0) {
-        var damage = this.rollDamage(attacker, luck);
+    attack: function (attacker, defender) {
+        var damage = this.rollDamage(attacker);
         var shockMod = 1;
         if (defender.shock.time > 0) {
             shockMod = 1 + defender.shock.mod;
@@ -2191,9 +2379,7 @@ export let autoBattle = {
         if (bleedChance > 0 &&
             attacker.bleedMod > 0 &&
             attacker.bleedTime > 0 &&
-            (defender.bleed.time <= 0 ||
-                (this.items.Sundering_Scythe.equipped &&
-                    defender.bleed.time <= 5000))) {
+            (defender.bleed.time <= 0 || (this.items.Sundering_Scythe.equipped && defender.bleed.time <= 5000))) {
             var roll = Math.floor(Math.random() * 100);
             if (roll < bleedChance) {
                 if (this.items.Bloodstained_Gloves.equipped)
@@ -2209,9 +2395,7 @@ export let autoBattle = {
             }
         }
         var poisonChance = attacker.poisonChance - defender.poisonResist;
-        if (poisonChance > 0 &&
-            attacker.poisonMod > 0 &&
-            attacker.poisonTime > 0) {
+        if (poisonChance > 0 && attacker.poisonMod > 0 && attacker.poisonTime > 0) {
             var roll = Math.floor(Math.random() * 100);
             if (roll < poisonChance) {
                 if (defender.poison.time < attacker.poisonTime)
@@ -2221,8 +2405,7 @@ export let autoBattle = {
                     defender.poison.mod = attacker.poisonMod;
                     if (defender.poison.stacks < attacker.poisonStack) {
                         defender.poison.stacks++;
-                        if (attacker.isTrimp &&
-                            this.items.The_Globulator.equipped)
+                        if (attacker.isTrimp && this.items.The_Globulator.equipped)
                             this.items.The_Globulator.onPoisonStack(defender.poison.stacks);
                     }
                     else
@@ -2234,14 +2417,13 @@ export let autoBattle = {
         if (shockChance > 0 &&
             attacker.shockMod > 0 &&
             attacker.shockTime > 0 &&
-            (defender.shock.time <= 0 ||
-                (defender.shock.time == 9999999 &&
-                    attacker.shockMod > defender.shock.mod))) {
+            (defender.shock.time <= 0 || (defender.shock.time == 9999999 && attacker.shockMod > defender.shock.mod))) {
             var roll = Math.floor(Math.random() * 100);
             if (roll < shockChance) {
                 if (attacker.isTrimp && this.items.Eelimp_in_a_Bottle.equipped)
                     defender.lastAttack = 0;
                 defender.shock.time = attacker.shockTime;
+                defender.shock.timeApplied = autoBattle.battleTime;
                 defender.shock.mod = attacker.shockMod;
                 defender.shock.count++;
             }
@@ -2348,6 +2530,10 @@ export let autoBattle = {
         for (var x = 0; x < effectsCount; x++) {
             var roll = getRandomIntSeeded(seed++, 0, effects.length);
             var effect = effects[roll];
+            if (x == 0 && this.enemyLevel > 150) {
+                var immunities = ["Poison Immune", "Shock Immune", "Bleed Immune"];
+                effect = immunities[(this.enemyLevel - 151) % 3];
+            }
             if (!doubleResist && effect.search("Resistant") != -1) {
                 var offset = this.enemyLevel % 3;
                 roll = getRandomIntSeeded(seed++, 0, 100);
@@ -2405,8 +2591,7 @@ export let autoBattle = {
                         this.enemy.poisonStack += Math.floor(this.enemyLevel / 10);
                     else
                         this.enemy.poisonStack++;
-                    this.enemy.poisonTime =
-                        2500 + Math.ceil(this.enemyLevel / 5) * 2500;
+                    this.enemy.poisonTime = 2500 + Math.ceil(this.enemyLevel / 5) * 2500;
                     break;
                 case "Bloodletting":
                     this.enemy.bleedChance += Math.ceil(this.enemyLevel * 3 * repeatMod);
@@ -2421,37 +2606,41 @@ export let autoBattle = {
                 case "Poison Resistant":
                     this.enemy.poisonResist += 10 * this.enemyLevel;
                     effects.splice(effects.indexOf(effect), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Bleed Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Bleed Resistant") != -1)
                         effects.splice(effects.indexOf("Shock Resistant"), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Shock Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Shock Resistant") != -1)
                         effects.splice(effects.indexOf("Bleed Resistant"), 1);
                     break;
                 case "Bleed Resistant":
                     this.enemy.bleedResist += 10 * this.enemyLevel;
                     effects.splice(effects.indexOf(effect), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Poison Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Poison Resistant") != -1)
                         effects.splice(effects.indexOf("Shock Resistant"), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Shock Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Shock Resistant") != -1)
                         effects.splice(effects.indexOf("Poison Resistant"), 1);
                     break;
                 case "Shock Resistant":
                     this.enemy.shockResist += 10 * this.enemyLevel;
                     effects.splice(effects.indexOf(effect), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Bleed Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Bleed Resistant") != -1)
                         effects.splice(effects.indexOf("Poison Resistant"), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Poison Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Poison Resistant") != -1)
                         effects.splice(effects.indexOf("Bleed Resistant"), 1);
                     break;
+                case "Poison Immune":
+                    this.enemy.immune = "poison";
+                    effects.splice(effects.indexOf("Poison Resistant"), 1);
+                    break;
+                case "Shock Immune":
+                    this.enemy.immune = "shock";
+                    effects.splice(effects.indexOf("Shock Resistant"), 1);
+                    break;
+                case "Bleed Immune":
+                    this.enemy.immune = "bleed";
+                    effects.splice(effects.indexOf("Bleed Resistant"), 1);
+                    break;
                 case "Defensive":
-                    this.enemy.defense += Math.ceil(this.enemy.level *
-                        0.75 *
-                        Math.pow(1.05, this.enemy.level));
+                    this.enemy.defense += Math.ceil(this.enemy.level * 0.75 * Math.pow(1.05, this.enemy.level));
                     break;
                 case "Lifestealing":
                     this.enemy.lifesteal += Math.min(1, this.enemyLevel / 50);
@@ -2531,6 +2720,9 @@ export let autoBattle = {
         if (this.items.Lifegiving_Gem.equipped) {
             amt *= 1 + this.items.Lifegiving_Gem.dustIncrease();
         }
+        if (this.items.Gaseous_Greataxe.equipped) {
+            amt *= this.items.Gaseous_Greataxe.dustMult();
+        }
         amt += this.trimp.dustMult;
         if (this.oneTimers.Dusty_Tome.owned) {
             amt *= 1 + 0.05 * (this.maxEnemyLevel - 1);
@@ -2542,9 +2734,7 @@ export let autoBattle = {
             }
             amt *= mutMult;
         }
-        if (this.items.Box_of_Spores.equipped &&
-            !this.enemy.hadBleed &&
-            this.enemy.poison.time > 0) {
+        if (this.items.Box_of_Spores.equipped && !this.enemy.hadBleed && this.enemy.poison.time > 0) {
             amt *= this.items.Box_of_Spores.dustMult();
         }
         if (this.scruffyLvl21)
@@ -2558,8 +2748,7 @@ export let autoBattle = {
         return Math.pow(this.enemy.enrageMult, enrages);
     },
     getDustReward: function () {
-        var amt = (1 + (this.enemy.level - 1) * 5) *
-            Math.pow(1.19, this.enemy.level - 1);
+        var amt = (1 + (this.enemy.level - 1) * 5) * Math.pow(1.19, this.enemy.level - 1);
         if (this.enemy.level >= 50)
             amt *= Math.pow(1.1, this.enemy.level - 49);
         amt *= this.getDustMult();
@@ -2686,16 +2875,12 @@ export let autoBattle = {
     getRingStatusDamage: function () {
         if (!this.oneTimers.The_Ring.owned)
             return 0;
-        return (this.rings.level *
-            25 *
-            Math.pow(1.5, Math.floor(this.rings.level / 10)));
+        return this.rings.level * 25 * Math.pow(1.5, Math.floor(this.rings.level / 10));
     },
     getRingPoisonDamage: function () {
         if (!this.oneTimers.The_Ring.owned)
             return 0;
-        return (this.rings.level *
-            15 *
-            Math.pow(5, Math.floor(this.rings.level / 10)));
+        return this.rings.level * 15 * Math.pow(5, Math.floor(this.rings.level / 10));
     },
     getRingStatusChance: function () {
         if (this.rings.level < 10)
@@ -2704,14 +2889,12 @@ export let autoBattle = {
         return calcLevel * 20 * Math.pow(1.25, Math.floor(calcLevel / 10));
     },
     getRingStatAmt: function (modObj) {
-        return (modObj.baseGain *
-            this.rings.level *
-            Math.pow(modObj.perTen, Math.floor(this.rings.level / 10)));
+        return modObj.baseGain * this.rings.level * Math.pow(modObj.perTen, Math.floor(this.rings.level / 10));
     },
     getRingSlots: function () {
-        var amt = Math.floor((this.rings.level - 5) / 10) + 1;
-        if (amt > 2)
-            amt = 2;
+        var amt = Math.floor(this.rings.level / 15) + 1;
+        if (amt > 3)
+            amt = 3;
         return amt;
     },
     levelRing: function () {
@@ -2811,9 +2994,7 @@ export let autoBattle = {
         },
     },
     getCurrencyName: function (item) {
-        var curName = this.items[item].dustType
-            ? this.items[item].dustType
-            : "dust";
+        var curName = this.items[item].dustType ? this.items[item].dustType : "dust";
         return curName.charAt(0).toUpperCase() + curName.slice(1);
     },
     hideMode: false,
@@ -2856,6 +3037,10 @@ export let autoBattle = {
         for (let x = 0; x < effectsCount; x++) {
             let roll = getRandomIntSeeded(seed++, 0, effects.length);
             let effect = effects[roll];
+            if (x == 0 && this.enemyLevel > 150) {
+                var immunities = ["Poison Immune", "Shock Immune", "Bleed Immune"];
+                effect = immunities[(this.enemyLevel - 151) % 3];
+            }
             if (!doubleResist && effect.search("Resistant") != -1) {
                 let offset = level % 3;
                 roll = getRandomIntSeeded(seed++, 0, 100);
@@ -2896,30 +3081,33 @@ export let autoBattle = {
                     break;
                 case "Poison Resistant":
                     effects.splice(effects.indexOf(effect), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Bleed Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Bleed Resistant") != -1)
                         effects.splice(effects.indexOf("Shock Resistant"), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Shock Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Shock Resistant") != -1)
                         effects.splice(effects.indexOf("Bleed Resistant"), 1);
                     break;
                 case "Bleed Resistant":
                     effects.splice(effects.indexOf(effect), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Poison Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Poison Resistant") != -1)
                         effects.splice(effects.indexOf("Shock Resistant"), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Shock Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Shock Resistant") != -1)
                         effects.splice(effects.indexOf("Poison Resistant"), 1);
                     break;
                 case "Shock Resistant":
                     effects.splice(effects.indexOf(effect), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Bleed Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Bleed Resistant") != -1)
                         effects.splice(effects.indexOf("Poison Resistant"), 1);
-                    if (!doubleResist ||
-                        selectedEffects.indexOf("Poison Resistant") != -1)
+                    if (!doubleResist || selectedEffects.indexOf("Poison Resistant") != -1)
                         effects.splice(effects.indexOf("Bleed Resistant"), 1);
+                    break;
+                case "Poison Immune":
+                    effects.splice(effects.indexOf("Poison Resistant"), 1);
+                    break;
+                case "Shock Immune":
+                    effects.splice(effects.indexOf("Shock Resistant"), 1);
+                    break;
+                case "Bleed Immune":
+                    effects.splice(effects.indexOf("Bleed Resistant"), 1);
                     break;
                 case "Enraging":
                     if (selectedEffectsCount[checkSelected] >= 2)
@@ -2953,114 +3141,6 @@ export let autoBattle = {
             profile.set(selectedEffects[x], selectedEffectsCount[x]);
         }
         return profile;
-    },
-    // Function to simulate max/min luck.
-    oneFight: function (luck) {
-        this.resetCombat();
-        while (this.trimp.health > 0 || this.enemy.health > 0) {
-            this.battleTime += this.frameTime;
-            this.enemy.maxHealth = this.enemy.baseHealth;
-            this.trimp.maxHealth = this.trimp.baseHealth;
-            this.enemy.attackSpeed = this.enemy.baseAttackSpeed;
-            this.trimp.attackSpeed = this.trimp.baseAttackSpeed;
-            this.trimp.attack = this.trimp.baseAttack;
-            this.enemy.attack = this.enemy.baseAttack;
-            this.trimp.shockChance = 0;
-            this.trimp.shockMod = 0;
-            this.trimp.shockTime = 0;
-            this.trimp.bleedChance = 0;
-            this.trimp.bleedMod = 0;
-            this.trimp.bleedTime = 0;
-            this.trimp.poisonChance = 0;
-            this.trimp.poisonTime = 0;
-            this.trimp.poisonMod = 0;
-            this.trimp.poisonStack = 2;
-            this.trimp.poisonTick = 1000;
-            this.trimp.poisonHeal = 0;
-            this.trimp.shockResist = 0;
-            this.trimp.poisonResist = 0;
-            this.trimp.bleedResist = 0;
-            this.trimp.defense = 0;
-            this.trimp.lifesteal = 0;
-            this.trimp.damageTakenMult = 1;
-            this.trimp.slowAura = 1;
-            this.trimp.dustMult = 0;
-            this.checkItems();
-            for (let mod of ["bleed", "poison", "shock"]) {
-                let chance = mod + "Chance";
-                let res = mod + "Resist";
-                let tchance = this.trimp[chance] - this.enemy[res];
-                if (tchance > 0 && tchance < 100) {
-                    this.trimp[chance] = this.enemy[res] + 100 * luck;
-                }
-                let echance = this.enemy[chance] - this.trimp[res];
-                if (echance > 0 && echance < 100) {
-                    this.enemy[chance] = this.trimp[res] + -100 * luck;
-                }
-            }
-            if (this.enemy.ethChance > 0) {
-                this.enemy.ethChance = luck === -1 ? 100 : 0;
-            }
-            var trimpAttackTime = this.trimp.attackSpeed;
-            this.enemy.lastAttack += this.frameTime;
-            this.trimp.lastAttack += this.frameTime;
-            if (this.trimp.lastAttack >= trimpAttackTime) {
-                this.trimp.lastAttack -= trimpAttackTime;
-                this.attack(this.trimp, this.enemy, luck);
-            }
-            this.checkPoison(this.trimp);
-            if (this.trimp.bleed.time > 0)
-                this.trimp.bleed.time -= this.frameTime;
-            if (this.trimp.shock.time > 0)
-                this.trimp.shock.time -= this.frameTime;
-            if (this.enemy.health <= 0) {
-                this.enemyDied();
-                return this.enemy;
-            }
-            if (this.trimp.health <= 0) {
-                this.trimpDied();
-                return this.trimp;
-            }
-            var enemyAttackTime = this.enemy.attackSpeed;
-            if (this.enemy.lastAttack >= enemyAttackTime) {
-                this.enemy.lastAttack -= enemyAttackTime;
-                this.attack(this.enemy, this.trimp, luck * -1);
-            }
-            if (!this.enemy.noSlow)
-                this.enemy.attackSpeed *= this.trimp.slowAura;
-            var enemyAttackTime = this.enemy.attackSpeed;
-            if (this.enemy.lastAttack >= enemyAttackTime) {
-                this.enemy.lastAttack -= enemyAttackTime;
-                this.attack(this.enemy, this.trimp);
-            }
-            if (this.enemy.explodeFreq != -1) {
-                this.enemy.lastExplode += this.frameTime;
-                if (this.enemy.lastExplode >= this.enemy.explodeFreq) {
-                    this.enemy.lastExplode -= this.enemy.explodeFreq;
-                    var dmg = this.enemy.explodeDamage * this.getAttack(this.enemy) -
-                        this.trimp.defense;
-                    this.damageCreature(this.trimp, dmg);
-                }
-            }
-            this.checkPoison(this.enemy);
-            if (this.enemy.bleed.time > 0)
-                this.enemy.bleed.time -= this.frameTime;
-            if (this.enemy.shock.time > 0 && this.enemy.shock.time != 9999999)
-                this.enemy.shock.time -= this.frameTime;
-            if (this.trimp.health > this.trimp.maxHealth)
-                this.trimp.health = this.trimp.maxHealth;
-            if (this.enemy.health > this.enemy.maxHealth)
-                this.enemy.health = this.enemy.maxHealth;
-            if (this.trimp.health <= 0) {
-                this.trimpDied();
-                return this.trimp;
-            }
-            if (this.enemy.health <= 0) {
-                this.enemyDied();
-                return this.enemy;
-            }
-        }
-        return "error?";
     },
 };
 /*

@@ -13,7 +13,6 @@ export function simulationView() {
     setupRuntimeInp();
     setupHover();
 }
-const testingEnabled = false; // Set true to enable testing.
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp");
     const hoverSpan = getHTMLElement("#importHover");
@@ -102,8 +101,7 @@ export function updateTimeSpent(isRunning, timeUsed, runtime) {
     else {
         timeProcessedSpan.innerText = "";
         finalTimeSpan.innerHTML = "";
-        isRunningSpan.innerHTML =
-            "&#9208;/" + convertMilliSecondsToTime(runtime);
+        isRunningSpan.innerHTML = "&#9208;/" + convertMilliSecondsToTime(runtime);
     }
 }
 function updateKills(enemiesKilled, trimpsKilled) {
@@ -166,3 +164,4 @@ function baseHover() {
     const shardsHovering = getHTMLElement("#baseShardsHovering");
     addHover(shardsHovered, shardsHovering);
 }
+const testingEnabled = false; // Set true to enable testing.

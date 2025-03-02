@@ -32,8 +32,6 @@ export function simulationView() {
     setupHover();
 }
 
-const testingEnabled = false; // Set true to enable testing.
-
 function setupImportBtns() {
     const importInp = getHTMLElement("#saveImportInp") as HTMLInputElement;
     const hoverSpan = getHTMLElement("#importHover") as HTMLDivElement;
@@ -62,9 +60,7 @@ function addImportAction(field: HTMLInputElement) {
 
 function setupPresetBtns() {
     for (let i = 1; i < 4; i++) {
-        const presetButton = getHTMLElement(
-            "#Preset" + CSS.escape(i.toString()) + "_Button",
-        ) as HTMLButtonElement;
+        const presetButton = getHTMLElement("#Preset" + CSS.escape(i.toString()) + "_Button") as HTMLButtonElement;
         clickingAnimation(presetButton);
         addPresetAction(presetButton);
     }
@@ -77,9 +73,7 @@ function addPresetAction(button: HTMLButtonElement) {
 }
 
 export function updatePresetButton(name: string, index: number) {
-    const button = getHTMLElement(
-        "#Preset" + CSS.escape(index.toString()) + "_Button",
-    ) as HTMLButtonElement;
+    const button = getHTMLElement("#Preset" + CSS.escape(index.toString()) + "_Button") as HTMLButtonElement;
     button.innerText = name;
     button.hidden = false;
 }
@@ -130,11 +124,7 @@ export function uiUpdateLiveResults(results: IResults) {
     updateBestFight(results.bestFight);
 }
 
-export function updateTimeSpent(
-    isRunning: boolean,
-    timeUsed: number,
-    runtime: number,
-) {
+export function updateTimeSpent(isRunning: boolean, timeUsed: number, runtime: number) {
     const timeProcessedSpan = getHTMLElement("#timeProcessed");
     const finalTimeSpan = getHTMLElement("#finalTime");
     const isRunningSpan = getHTMLElement("#isRunning");
@@ -146,8 +136,7 @@ export function updateTimeSpent(
     } else {
         timeProcessedSpan.innerText = "";
         finalTimeSpan.innerHTML = "";
-        isRunningSpan.innerHTML =
-            "&#9208; / " + convertMilliSecondsToTime(runtime);
+        isRunningSpan.innerHTML = "&#9208; / " + convertMilliSecondsToTime(runtime);
     }
 }
 
@@ -158,10 +147,7 @@ function updateKills(enemiesKilled: number, trimpsKilled: number) {
 
     enemiesKilledSpan.innerHTML = prettyNumber(enemiesKilled);
     trimpsKilledSpan.innerHTML = prettyNumber(trimpsKilled);
-    winRateSpan.innerHTML = round(
-        (enemiesKilled / (enemiesKilled + trimpsKilled)) * 100,
-        2,
-    ).toString();
+    winRateSpan.innerHTML = round((enemiesKilled / (enemiesKilled + trimpsKilled)) * 100, 2).toString();
 }
 
 function updateDustGains(gameDust: number, baseDust: number) {
@@ -223,14 +209,12 @@ function setupHover() {
 
 function baseHover() {
     const baseDustHovered = getHTMLElement("#baseDustHovered");
-    const baseDustHovering = getHTMLElement(
-        "#baseDustHovering",
-    ) as HTMLDivElement;
+    const baseDustHovering = getHTMLElement("#baseDustHovering") as HTMLDivElement;
     addHover(baseDustHovered, baseDustHovering);
 
     const shardsHovered = getHTMLElement("#baseShardsHovered");
-    const shardsHovering = getHTMLElement(
-        "#baseShardsHovering",
-    ) as HTMLDivElement;
+    const shardsHovering = getHTMLElement("#baseShardsHovering") as HTMLDivElement;
     addHover(shardsHovered, shardsHovering);
 }
+
+const testingEnabled = false; // Set true to enable testing.

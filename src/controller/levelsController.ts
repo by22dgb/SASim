@@ -3,15 +3,10 @@ Controller for the levels, effects and resistance divs.
 */
 
 import { builderData } from "../data/buildData.js";
-import { IABTypes } from "../data/buildTypes.js";
 import { autoBattle } from "../data/object.js";
 import { updateInput } from "../utility.js";
 import { updateEffects, updateLimbs } from "../view/levelsView.js";
-import {
-    getEnemyLevel,
-    modifiedAutoBattle,
-    modifiedAutoBattleWithBuild,
-} from "./autoBattleController.js";
+import { getEnemyLevel, modifiedAutoBattle, modifiedAutoBattleWithBuild } from "./autoBattleController.js";
 import { Item } from "./itemsController.js";
 
 export function getActiveEffects() {

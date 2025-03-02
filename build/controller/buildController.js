@@ -4,7 +4,7 @@ import { equipMutation, equipOneTimer, equipRingMods, equipScruffy, getOneTimers
 import { equipItem, levelItem } from "./itemEquipController.js";
 import { u2Mutations } from "../data/mutations.js";
 import { updatePresetButton } from "../view/simulationView.js";
-import { getLimbs, setEnemyLevel, setMaxEnemyLevel, } from "./levelsController.js";
+import { getLimbs, setEnemyLevel, setMaxEnemyLevel } from "./levelsController.js";
 import { uiUpdateBuildCost, updateLimbs } from "../view/levelsView.js";
 import { builderData } from "../data/buildData.js";
 import { getSaveData } from "./saveController.js";
@@ -25,7 +25,6 @@ export function buildFromSave() {
     const saveString = getSaveData();
     buildItems(saveString.items);
     // Set ring
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ringMods = saveString.ring.mods;
     setRingLevel(saveString.ring.level);
     equipRingMods(ringMods);
@@ -54,7 +53,6 @@ export function setPresets(presets) {
     names.forEach((name, index) => {
         index += 1;
         const presetName = Object.keys(autoBattle.presets)[index];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const preset = presets[presetName];
         if (preset.length > 0) {
             updatePresetButton(name, index);
@@ -66,7 +64,6 @@ export function loadPreset(buttonName) {
     const r = /\d/;
     const id = Number(buttonName.match(r));
     const presetName = ("p" + id);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const preset = autoBattle.presets[presetName];
     const newItems = [];
     preset.forEach((row) => {

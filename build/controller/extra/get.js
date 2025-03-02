@@ -6,12 +6,14 @@ import { getPossibleRingMods, getRing } from "../bonusesController.js";
 import { getItemsInOrder } from "../itemEquipController.js";
 import { getItem } from "../itemsController.js";
 export function getItemsToRun(withDoppel, withRing) {
-    let itemsToRun = [];
+    const itemsToRun = [];
     const names = getItemsInOrder();
     for (const name of names) {
         const item = getItem(name);
         if (item.state === Trinary.Yes) {
             if (!withDoppel && name === "Doppelganger_Signet")
+                continue;
+            if (!withDoppel && name === "Doppelganger_Diadem")
                 continue;
             itemsToRun.push(name);
         }
@@ -19,7 +21,7 @@ export function getItemsToRun(withDoppel, withRing) {
     if (!withRing)
         return itemsToRun;
     // Convert from keyof IABTypes["items"] to string[]
-    let itemsWithRing = [];
+    const itemsWithRing = [];
     for (const item of itemsToRun)
         itemsWithRing.push(item);
     const ring = getRing();
@@ -28,15 +30,27 @@ export function getItemsToRun(withDoppel, withRing) {
     }
     return itemsWithRing;
 }
+export function* permutations(array, length, start = 0) {
+    if (start >= array.length || length < 1) {
+        yield [];
+    }
+    else {
+        while (start <= array.length - length) {
+            const first = array[start];
+            for (const subset of permutations(array, length - 1, start + 1)) {
+                subset.push(first);
+                yield subset;
+            }
+            ++start;
+        }
+    }
+}
 export function getModsToRun(count) {
-    let modsToRun = [];
+    const modsToRun = [];
     const posMods = getPossibleRingMods();
     for (const mod in posMods)
         modsToRun.push(mod);
-    if (count > 1) {
-        modsToRun = modsToRun.flatMap((v, i) => modsToRun.slice(i + 1).map((w) => [v, w]));
-    }
-    return modsToRun;
+    return [...permutations(modsToRun, count)];
 }
 export function getOppositesLimit(items) {
     if (!items)
@@ -44,8 +58,9 @@ export function getOppositesLimit(items) {
     const allItems = getItemsOwned();
     const opposites = [];
     for (const item of allItems) {
-        if (!items.includes(item))
+        if (!items.includes(item) && getItem(item).state === Trinary.No) {
             opposites.push(item);
+        }
     }
     return opposites;
 }

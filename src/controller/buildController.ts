@@ -13,11 +13,7 @@ import {
 import { equipItem, levelItem } from "./itemEquipController.js";
 import { u2Mutations } from "../data/mutations.js";
 import { updatePresetButton } from "../view/simulationView.js";
-import {
-    getLimbs,
-    setEnemyLevel,
-    setMaxEnemyLevel,
-} from "./levelsController.js";
+import { getLimbs, setEnemyLevel, setMaxEnemyLevel } from "./levelsController.js";
 import { uiUpdateBuildCost, updateLimbs } from "../view/levelsView.js";
 import { builderData } from "../data/buildData.js";
 import { getSaveData } from "./saveController.js";
@@ -40,7 +36,6 @@ export function buildFromSave() {
     buildItems(saveString.items);
 
     // Set ring
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ringMods = saveString.ring.mods as any as string[];
     setRingLevel(saveString.ring.level);
     equipRingMods(ringMods);
@@ -73,10 +68,7 @@ export function setPresets(presets: typeof autoBattle.presets) {
     autoBattle.presets.names = names;
     names.forEach((name, index) => {
         index += 1;
-        const presetName = Object.keys(autoBattle.presets)[
-            index
-        ] as keyof typeof autoBattle.presets;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const presetName = Object.keys(autoBattle.presets)[index] as keyof typeof autoBattle.presets;
         const preset = presets[presetName] as any;
         if (preset.length > 0) {
             updatePresetButton(name, index);
@@ -89,7 +81,6 @@ export function loadPreset(buttonName: string) {
     const r = /\d/;
     const id = Number(buttonName.match(r));
     const presetName = ("p" + id) as keyof typeof autoBattle.presets;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const preset = autoBattle.presets[presetName] as any[];
     const newItems: string[] = [];
 
