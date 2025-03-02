@@ -224,9 +224,8 @@ Stylesheet
 #effectsDiv {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     padding: 0.3em 1em;
-    width: 40em;
 }
 
 /* Resistance */
